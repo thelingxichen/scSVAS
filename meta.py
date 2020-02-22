@@ -65,7 +65,7 @@ def get_newick(Z, cell_names):
     return netwick
 
 
-def run_call(cnv_fn=None, meta_fn=None, k=3,
+def run_call(cnv_fn=None, meta_fn=None, k=3, cut_n=50,
              out_prefix=None, **args):
     cnv_m, cell_names = read_cnv_fn(cnv_fn) 
 
@@ -74,6 +74,16 @@ def run_call(cnv_fn=None, meta_fn=None, k=3,
     nwk_fn = out_prefix + '.nwk'
     with open(nwk_fn, 'w') as f:
         f.write(newick)
+
+    t = phylogenetic.get_tree_from_newick(newick)
+    json = phylogenetic.get_nested_tree_json(t, cut_n)
+    json_fn = out_prefix + '_cut{}.json'.format(cut_n)
+    with open(json_fn, 'w') as f:
+        f.write(json)
+
+    cut_t = phylogenetic.cut_tree(t, k)
+    cut_nwk_fn = out_prefix + '_cut.nwk'
+    cut_t.write(format=1, outfile=cut_nwk_fn)
 
     # hc
     if meta_fn:
@@ -96,6 +106,7 @@ def run_call(cnv_fn=None, meta_fn=None, k=3,
 
     meta_fn = out_prefix + '_meta_scvar.csv' 
     meta_df.to_csv(meta_fn)
+    '''
 
 
 
