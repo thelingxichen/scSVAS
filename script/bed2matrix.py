@@ -16,6 +16,7 @@ Options:
 """
 import csv
 import sys
+import os
 import numpy as np
 import pandas as pd
 import docopt
@@ -44,9 +45,7 @@ def run_call(bed_fn=None, out_prefix=None, confidence=10,
         bp2index.update(res)
         regions += ['{}:{}-{}'.format(chrom, start, end) for start, end in zip(bps[:-1], bps[1:])]
 
-    print('cell', len(cells), 'regions', len(regions), 'bp2index', len(bp2index))
     matrix = np.full([len(cells), len(regions)], np.nan)
-    print(matrix.shape)
     bed_file = filter(lambda row: row.startswith('#chrom') or not row.startswith('#'), open(bed_fn, 'r'))
     for i, row in enumerate(csv.DictReader(bed_file, delimiter='\t')):
         if row.get('event_confidence', confidence) < confidence:
@@ -57,14 +56,12 @@ def run_call(bed_fn=None, out_prefix=None, confidence=10,
         for i in range(start_index, end_index):
             matrix[cell2index[cell_id], i] = cn
 
-    print('start writing into result.cnv.csv')
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)
     x = pd.DataFrame(matrix, index = cell2index.keys(), columns=regions)
     if not out_prefix:
         _, out_prefix = os.split(bed_fn)
     x.to_csv(out_prefix + '.cnv.csv', index=True)
-    print('finished')
 
 
 def run(call=None, **args):
