@@ -65,7 +65,7 @@ def get_newick(Z, cell_names):
     return netwick
 
 
-def run_call(cnv_fn=None, meta_fn=None, k=3, cut_n=50,
+def run_call(cnv_fn=None, meta_fn=None, k=3, cut_n=10,
              out_prefix=None, **args):
     cnv_m, cell_names = read_cnv_fn(cnv_fn) 
 
@@ -106,7 +106,6 @@ def run_call(cnv_fn=None, meta_fn=None, k=3, cut_n=50,
 
     meta_fn = out_prefix + '_meta_scvar.csv' 
     meta_df.to_csv(meta_fn)
-    '''
 
 
 

@@ -29,7 +29,8 @@ def run_call(bed_fn=None, out_prefix=None, confidence=10,
     cells = set() 
     bed_file = filter(lambda row: row.startswith('#chrom') or not row.startswith('#'), open(bed_fn, 'r'))
     for i, row in enumerate(csv.DictReader(bed_file, delimiter='\t')):
-        chrom, start, end, cell_id, cn = row['#chrom'], row['start'], row['end'], row['id'], row['copy_number']
+        chrom, start, end, cell_id = row['#chrom'], row['start'], row['end'], row['id'] 
+        if not chrom.startswith('chr'): chrom = 'chr'+chrom
         cells.add(cell_id)
         if chrom not in breakpoints:
             breakpoints[chrom] = set()
@@ -51,6 +52,9 @@ def run_call(bed_fn=None, out_prefix=None, confidence=10,
         if row.get('event_confidence', confidence) < confidence:
             continue
         chrom, start, end, cell_id, cn = row['#chrom'], row['start'], row['end'], row['id'], row['copy_number']
+        if cn == 'NA': cn = np.nan
+        if not chrom.startswith('chr'): chrom = 'chr'+chrom
+
         start_index = bp2index['{}:{}'.format(chrom, start)] 
         end_index = bp2index['{}:{}'.format(chrom, end)]
         for i in range(start_index, end_index):
@@ -58,10 +62,11 @@ def run_call(bed_fn=None, out_prefix=None, confidence=10,
 
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)
-    x = pd.DataFrame(matrix, index = cell2index.keys(), columns=regions)
+    df = pd.DataFrame(matrix, index = cell2index.keys(), columns=regions)
+    df.index.name = 'cell_id' 
     if not out_prefix:
-        _, out_prefix = os.split(bed_fn)
-    x.to_csv(out_prefix + '.cnv.csv', index=True)
+        _, out_prefix = os.path.split(bed_fn)
+    df.to_csv(out_prefix + '.cnv.csv', index=True)
 
 
 def run(call=None, **args):
