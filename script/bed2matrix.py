@@ -66,7 +66,7 @@ def run_call(bed_fn=None, out_prefix=None, confidence=10,
     df.index.name = 'cell_id' 
     if not out_prefix:
         _, out_prefix = os.path.split(bed_fn)
-    df.to_csv(out_prefix + '.cnv.csv', index=True)
+    df.to_csv(out_prefix + '_cnv.csv.gz', index=True, compression='gzip')
 
 
 def run(call=None, **args):
