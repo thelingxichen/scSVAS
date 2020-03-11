@@ -19,6 +19,7 @@ import docopt
 import pandas as pd
 from pybedtools import BedTool
 import gzip
+import os
 
 from utils import io
 
@@ -31,7 +32,9 @@ def get_cnv_bed(cnv_fn):
 
 
 def get_gene_bed(ref):
-    gene_dict = pickle.load(open('db/ens_gene.pickle', 'rb')).get(ref, {})
+    current_dir, _ = os.path.split(os.path.realpath(__file__))
+    fn = os.path.join(current_dir, 'db', 'ens_gene.pickle')
+    gene_dict = pickle.load(open(fn, 'rb')).get(ref, {})
     bed_str = ''
     for i, item in enumerate(gene_dict.items()):
         if i > 200: break
@@ -80,7 +83,6 @@ def run_call(cnv_fn=None, target_gene_fn=None, ref=None, out_prefix=None, **args
     cnv_df.index = cnv_df.index + 1
 
     gene_bed = get_gene_bed(ref)
-
     feature_list = []
     data_df = pd.DataFrame()
     matrix_df = pd.DataFrame()
