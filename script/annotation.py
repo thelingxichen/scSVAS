@@ -37,7 +37,6 @@ def get_gene_bed(ref):
     gene_dict = pickle.load(open(fn, 'rb')).get(ref, {})
     bed_str = ''
     for i, item in enumerate(gene_dict.items()):
-        if i > 200: break
         gene, region = item
         chrom, start, end, ens_id = region
         bed_str += '{}\t{}\t{}\t{}\n'.format(chrom, start, end, gene+','+ens_id)
