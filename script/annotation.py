@@ -34,7 +34,7 @@ def get_cnv_bed(cnv_fn):
 def get_gene_bed(ref):
     current_dir, _ = os.path.split(os.path.realpath(__file__))
     fn = os.path.join(current_dir, 'db', 'ens_gene.pickle')
-    gene_dict = pickle.load(open(fn, 'rb')).get(ref, {})
+    gene_dict = pickle.load(open(fn, 'rb')).get(ref + '_gene', {})
     bed_str = ''
     for i, item in enumerate(gene_dict.items()):
         gene, region = item
