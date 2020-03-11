@@ -12,12 +12,10 @@ Options:
     --cnv_fn=IN_FILE            Path of SCYN format cnv file.
     --target_gene_fn=IN_FILE    Path of intersted gene file.
     --ref=STR                   Reference version, [default: hg38]
-    --out_prefix=STR            Path of out file prefix, [default: ./test] 
+    --out_prefix=STR            Path of out file prefix, [default: ./test]
 """
-import os
 import pickle
 import docopt
-import numpy as np
 import pandas as pd
 from pybedtools import BedTool
 import gzip
@@ -27,8 +25,8 @@ from utils import io
 
 def get_cnv_bed(cnv_fn):
     index_name = 'cell_id'
-    cnv_df = io.read_cnv_fn(cnv_fn, index_name) 
-    bed_str = '\n'.join(cnv_df.columns).replace(':','\t').replace('-','\t')
+    cnv_df = io.read_cnv_fn(cnv_fn, index_name)
+    bed_str = '\n'.join(cnv_df.columns).replace(':', '\t').replace('-', '\t')
     return cnv_df, BedTool(bed_str, from_string=True)
 
 
@@ -49,7 +47,7 @@ def process_single_hit(gene, hit, cnv_df, feature_list, data_df, matrix_df):
 
     df = pd.DataFrame(data={'0': len(feature_list),
                             '1': cnv_df.index,
-                            '2': cnv_df[cnv_bed_str]}) 
+                            '2': cnv_df[cnv_bed_str]})
 
     data_df = data_df.append(df)
     return data_df
@@ -68,24 +66,25 @@ def process_multi_hits(gene, hits, cnv_df, feature_list, data_df, matrix_df):
 
     df = pd.DataFrame(data={'0': len(feature_list),
                             '1': cnv_df.index,
-                            '2': mean_df}) 
+                            '2': mean_df})
     data_df = data_df.append(df)
     return data_df
 
 
 def run_call(cnv_fn=None, target_gene_fn=None, ref=None, out_prefix=None, **args):
     cnv_df, cnv_bed = get_cnv_bed(cnv_fn)
+
     cnv_df.reset_index(inplace=True)
     cnv_df.index = cnv_df.index + 1
     feature_list = []
     data_df = pd.DataFrame()
     matrix_df = pd.DataFrame()
-    
+
     for i, item in enumerate(get_gene_bed(ref)):
         gene, gene_bed = item
 
-
         hits = gene_bed.window(cnv_bed).overlap(cols=[2, 3, 6, 7])
+
         if not hits:
             continue
         if len(hits) == 1:
@@ -100,9 +99,9 @@ def run_call(cnv_fn=None, target_gene_fn=None, ref=None, out_prefix=None, **args
     feature_df = pd.DataFrame(feature_list)
     feature_df.to_csv(out_prefix + '_features.tsv.gz', sep='\t', header=False, index=False, compression='gzip')
 
-    df = pd.DataFrame(data = {'0': [matrix_df.shape[1]],
-                              '1': [matrix_df.shape[0]],
-                              '2': [data_df.shape[0]]})
+    df = pd.DataFrame(data={'0': [matrix_df.shape[1]],
+                            '1': [matrix_df.shape[0]],
+                            '2': [data_df.shape[0]]})
     data_df = pd.concat([df, data_df])
     with gzip.open(out_prefix + '_matrix.mtx.gz', 'w') as f:
         f.write(b'%% cellranger-rna matrix format\n')
