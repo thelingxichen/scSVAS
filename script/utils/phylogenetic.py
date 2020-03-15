@@ -94,7 +94,7 @@ def get_leafs(t):
     return res
 
 
-def cut_tree(t, k):
+def cut_tree(t, k, prefix='n'):
     t = copy.deepcopy(t)
     if k == 1:
         return t
@@ -124,6 +124,7 @@ def cut_tree(t, k):
         print([n.name for n in leafs])
         '''
     cut_tree_aux(t, leafs)
+    set_tree(t, prefix=prefix)
     return t
 
 
@@ -145,26 +146,29 @@ def get_tree_from_newick(newick):
     return t
 
 
-def set_tree(t, node_id=0):
+def set_tree(t, node_id=0, prefix='n'):
     if not t.children:
+        if prefix == 'c':
+            t.name = '{}{}'.format(prefix, node_id)
         t.dist_to_root = t.dist
-        t.leafs = []
+        t.leafs = [t]
         t.nodes = [t]
         return
 
-    t.name = 'n{}'.format(node_id)
+    t.name = '{}{}'.format(prefix, node_id)
     t.dist_to_root = t.dist
     t.leafs = []
     t.nodes = [t]
     current_node_id = node_id + 1
     for c in t.children:
         c.parent = t
-        set_tree(c, current_node_id)
+        set_tree(c, current_node_id, prefix=prefix)
         for n in c.nodes:
             n.dist_to_root += t.dist 
-            if n.children:
+            if n.children or prefix == 'c':
                 current_node_id += 1 
         t.nodes += c.nodes 
+        t.leafs += c.leafs
     
 
 
