@@ -107,11 +107,12 @@ def run_call(cnv_fn=None, target_gene_fn=None, ref=None, out_prefix=None, **args
                             '1': [matrix_df.shape[0]],
                             '2': [data_df.shape[0]]})
     data_df = pd.concat([df, data_df])
+    data_df['2' = int(data_df['2'])
     with gzip.open(out_prefix + '_matrix.mtx.gz', 'w') as f:
-        f.write(b'%% cellranger-rna matrix format\n')
-        f.write(b'%% MatrixMarket matrix coordinate integer general\n')
-        f.write(b'%% feature index, cell index, copy number profile (index starts with 1)\n')
-        f.write(b'%% produced by scVar.1.0 \n')
+        f.write(b'%%MatrixMarket matrix coordinate integer general\n')
+        f.write(b'% cellranger-rna matrix format\n')
+        f.write(b'% feature index, cell index, copy number profile (index starts with 1)\n')
+        f.write(b'% produced by scVar.1.0 \n')
     data_df.to_csv(out_prefix + '_matrix.mtx.gz', sep=' ', header=False, index=False, compression='gzip', mode='a')
 
     matrix_df.index = cnv_df['cell_id']
