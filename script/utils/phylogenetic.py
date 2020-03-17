@@ -11,6 +11,18 @@ import sys
 
 sys.setrecursionlimit(100000)
 
+def to_newick(t):
+    return '({});'.format(to_newick_aux(t))
+
+def to_newick_aux(t):
+    if not t.children:
+        return '{}:{}'.format(t.name, t.dist)
+
+    res = ','.join([to_newick_aux(c) for c in t.children])
+    res = '({}){}:{}'.format(res, t.name, t.dist)
+    return res 
+
+
 def get_newick_aux(node, newick, parentdist, leaf_names):
     if node.is_leaf():
         return "%s:%.2f%s" % (leaf_names[node.id], parentdist - node.dist, newick)
@@ -67,7 +79,7 @@ def get_nested_tree_aux(t, k):
     res = {}
     res['dist_to_root'] = t.dist_to_root
     res['parent'] = t.parent.name if t.parent else 'NONE' 
-    res['newick'] = cut_t.write(format=1) 
+    res['newick'] = to_newick(cut_t)
     res['leafs'] = [n.name for n in t.leafs]
     node_dict[t.name] = res
     if t.children:
@@ -82,12 +94,12 @@ def get_evo_tree_dict(t, df):
     res = {}
     res['name'] = t.name
     res['parent'] = t.parent.name if t.parent else 'NONE' 
-    res['newick'] = t.write(format=1) 
+    res['newick'] = to_newick(t)
     res['lifetime'] = node_list[-1].dist_to_root/2*3
     res['dist_to_root'] = t.dist_to_root
     res['num_cells'] = len(df)
     res['leafs'] = [n.name for n in t.leafs]
-    res['links'] = t.links
+    res['links'] = [(l.source, l.target) for l in t.links]
     nodes_dict = {}
 
     set_tree_coords(t, df)
@@ -169,8 +181,9 @@ def set_tree(t, node_id=0, prefix='n'):
         t.links = []
         t.closest_child = None
         return
-
-    t.name = '{}{}'.format(prefix, node_id)
+    
+    if prefix:
+        t.name = '{}{}'.format(prefix, node_id)
     t.dist_to_root = t.dist
     t.leafs = []
     t.links = []
@@ -182,7 +195,7 @@ def set_tree(t, node_id=0, prefix='n'):
             t.closest_child = c
         c.parent = t
         set_tree(c, current_node_id, prefix=prefix)
-        t.links += [(t.name, c.name)]
+        t.links += [Link(t.name, c.name)]
         t.links += c.links
         for n in c.nodes:
             n.dist_to_root += t.dist 
@@ -213,6 +226,58 @@ def set_tree_coords_aux(t):
     t.start_y = t.children[0].start_y
     t.end_y = t.children[-1].end_y
     return 
-        
+
+class Link():
+    def __init__(self, source=None, target=None, dist=None, 
+                 meta=None):
+        self.source = source
+        self.target = target
+        self.dist = dist
+        self.meta = meta 
+
+    def __repr__(self):
+        return '{}->{}:{}'.format(self.source, self.target, self.dist)
 
 
+def reroot_tree(t, df):
+    # choose group close to normal as root
+    m = np.matrix(df.values)
+    norms = np.sum(np.multiply(m, m) + 4 - 4*m, axis=1)
+    root = str(df.index[np.argmin(norms)])
+    rerooted_t = reroot_tree_aux(t, root)
+    print(to_newick(rerooted_t))
+    while rerooted_t.name != root:
+        rerooted_t = reroot_tree_aux(rerooted_t, root)
+        print(to_newick(rerooted_t))
+
+    rerooted_t = prune_internal_node(rerooted_t)
+    set_tree(rerooted_t, prefix=None)
+    print(to_newick(rerooted_t))
+    return rerooted_t 
+
+
+def reroot_tree_aux(t, root):
+    if not t.children:
+        return t
+    childs = []
+    for c in t.children:
+        if c.name == root:
+            c.name = t.name
+            t.name = root
+            if not c.children:
+                continue
+        c = reroot_tree_aux(c, root)
+        childs.append(c)
+    t.children = childs
+    return t
+
+def prune_internal_node(t):
+    if not t.children:
+        return t
+    childs = []
+    for c in t.children:
+        if len(c.children) == 1:
+            c = c.children[0] 
+        childs.append(prune_internal_node(c))
+    t.children = childs
+    return t

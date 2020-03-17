@@ -82,6 +82,7 @@ def run_cnv(cnv_fn=None, meta_fn=None, k=7, cut_n=25,
         df = df.groupby(col).mean()
         newick = phylo.build_hc_tree(df, col)
         t = phylo.get_tree_from_newick(newick)
+        t = phylo.reroot_tree(t, df)
         evo_dict[col] = phylo.get_evo_tree_dict(t, meta_df[col]) 
     res = json.dumps(evo_dict, indent=4)
     json_fn = out_prefix + '_evo{}.json'.format(k)
