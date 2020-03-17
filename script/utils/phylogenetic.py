@@ -109,6 +109,7 @@ def get_evo_tree_dict(t, df):
         nodes_dict[n.name] = [n.x, n.y, n.start_y, n.end_y, c] 
     res['node_list'] = list(nodes_dict.keys())
     res['nodes'] = nodes_dict
+    # res['clonal_freqs'] = clonal_freqs
     return res
     
 
@@ -206,12 +207,19 @@ def set_tree(t, node_id=0, prefix='n'):
    
 def set_tree_coords(t, df):
     map_dict = df.apply(str).value_counts().to_dict()
-    count = 0 
+
+    count = map_dict.get(t.name, 0)/2 
+
     for i, n in enumerate(t.leafs):
         n.start_y = count 
         count += map_dict[n.name]
         n.end_y = count 
         n.y = i + 0.5 
+
+    if t.name in map_dict:
+        t.start_y = 0 
+        count += map_dict[t.name]/2
+        t.end_y = count
 
     set_tree_coords_aux(t)
 
@@ -223,8 +231,9 @@ def set_tree_coords_aux(t):
     for c in t.children:
         set_tree_coords_aux(c)
     t.y = (t.children[0].y + t.children[-1].y)/2
-    t.start_y = t.children[0].start_y
-    t.end_y = t.children[-1].end_y
+    if t.name.startswith('n'):
+        t.start_y = t.children[0].start_y
+        t.end_y = t.children[-1].end_y
     return 
 
 class Link():
