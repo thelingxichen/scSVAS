@@ -26,7 +26,7 @@ from utils import io
 from utils import embedding
 
 
-def run_cnv(cnv_fn=None, meta_fn=None, k=7, cut_n=25,
+def run_cnv(cnv_fn=None, meta_fn=None, k=7, cut_n=5,
              out_prefix=None, **args):
     k = int(k)
     cnv_index_name = 'cell_id'
@@ -69,21 +69,26 @@ def run_cnv(cnv_fn=None, meta_fn=None, k=7, cut_n=25,
     # UMAP 
     df = embedding.get_umap(cnv_df, cell_names, cnv_index_name)
     meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
+    '''
     meta_fn = out_prefix + '_meta_scvar.csv' 
     meta_df.to_csv(meta_fn)
-    '''
 
     ##### build tree by meta category label #####
     evo_dict = {}
     for col in meta_df.columns:
         if col.startswith('e_') or col.startswith('c_'):
             continue
-        df = pd.merge(meta_df[col], cnv_df, how='outer', on=cnv_index_name)
+        df = pd.merge(meta_df[col].apply(str), cnv_df, how='outer', on=cnv_index_name)
         df = df.groupby(col).mean()
-        newick = phylo.build_hc_tree(df, col)
-        t = phylo.get_tree_from_newick(newick)
-        t = phylo.reroot_tree(t, df)
+        normal = phylo.choose_normal(df)
+        tumor_df = df[~df.index.isin([normal])]
+        newick = phylo.build_hc_tree(tumor_df, col)
+        t = phylo.get_tree_from_newick(newick, root=normal)
         evo_dict[col] = phylo.get_evo_tree_dict(t, meta_df[col]) 
+        # t = phylo.reroot_normal(t, df)
+        t = phylo.reroot_tree(t, df)
+        phylo.annotate_shifts(t, cnv_df)
+        evo_dict[col+'_rerooted'] = phylo.get_evo_tree_dict(t, meta_df[col]) 
     res = json.dumps(evo_dict, indent=4)
     json_fn = out_prefix + '_evo{}.json'.format(k)
     with open(json_fn, 'w') as f:
