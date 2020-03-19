@@ -117,7 +117,7 @@ def run_cnv(cnv_fn=None, meta_fn=None, target_gene_fn=None,
         meta_df = pd.merge(meta_df, m_df, how='outer', on=cnv_index_name)
     else:
         meta_df = m_df
-    '''
+
     # PCA
     df = embedding.get_pca(cnv_df, cell_names, cnv_index_name)
     meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
@@ -127,7 +127,7 @@ def run_cnv(cnv_fn=None, meta_fn=None, target_gene_fn=None,
     # UMAP 
     df = embedding.get_umap(cnv_df, cell_names, cnv_index_name)
     meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
-    '''
+
     meta_fn = out_prefix + '_meta_scvar.csv' 
     meta_df.to_csv(meta_fn)
 

@@ -4,6 +4,7 @@ import pandas as pd
 
 def read_cnv_fn(cnv_fn, index_name):
     df = pd.read_csv(cnv_fn, index_col=0)
+    df = df.fillna(2) 
     df.index.name = index_name 
     return df
 
