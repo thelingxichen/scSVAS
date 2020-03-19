@@ -10,10 +10,14 @@ import json
 import sys
 import collections
 
+from utils import annotation as anno
+
 sys.setrecursionlimit(100000)
+
 
 def to_newick(t):
     return '({});'.format(to_newick_aux(t))
+
 
 def to_newick_aux(t):
     if not t.children:
@@ -362,25 +366,6 @@ def choose_ancestor_cnv(xs):
             cnv = freqs[0][0]
 
     return cnv
-
-
-######## annotate bin changes ############
-
-def annotate_shifts(t, cnv_df, shift=0.5):
-
-    for link in t.links:
-        p_cnv = link.source.cnv
-        c_cnv = link.target.cnv
-
-        shifts = np.array(c_cnv) - np.array(p_cnv)
-        amp_index = sum(np.argwhere(shifts > shift).tolist(),[])
-        loss_index = sum(np.argwhere(shifts < -shift).tolist(),[])
-        link.amp_bins = cnv_df.iloc[:,amp_index].columns.tolist()
-        link.loss_bins = cnv_df.iloc[:,loss_index].columns.tolist()
-        link.meta = '{} amp, {} loss'.format(len(link.amp_bins), len(link.loss_bins))
-
-
-
 
 
 

@@ -21,25 +21,41 @@ from pybedtools import BedTool
 import gzip
 import os
 
+from biotool import gene as genetool 
+
 from utils import io
+
+
+###### get bed fn ######
+
+def get_bin_bed(bin_list):
+    bed_str = '\n'.join(bin_list).replace(':', '\t').replace('-', '\t')
+    return BedTool(bed_str, from_string=True)
 
 
 def get_cnv_bed(cnv_fn):
     index_name = 'cell_id'
     cnv_df = io.read_cnv_fn(cnv_fn, index_name)
-    bed_str = '\n'.join(cnv_df.columns).replace(':', '\t').replace('-', '\t')
-    return cnv_df, BedTool(bed_str, from_string=True)
+    cnv_bed = get_bin_bed(cnv_df.columns)
+    return cnv_df, cnv_bed 
 
 
-def get_gene_bed(ref):
+def get_gene_bed(ref, use_db=True):
     current_dir, _ = os.path.split(os.path.realpath(__file__))
     fn = os.path.join(current_dir, 'db', 'ens_gene.pickle')
     gene_dict = pickle.load(open(fn, 'rb')).get(ref + '_gene', {})
+
+    if use_db:
+        gene_dir = os.path.join(current_dir, 'db', 'gene_list')
+        gene_list = genetool.read_gene_list_from_dir(gene_dir)
+
     bed_str = ''
     for i, item in enumerate(gene_dict.items()):
         gene, region = item
+        if use_db and gene not in gene_list:
+            continue
         chrom, start, end, ens_id = region
-        bed_str += '{}\t{}\t{}\t{}\n'.format(chrom, start, end, gene+','+ens_id)
+        bed_str += '{}\t{}\t{}\t{}\n'.format(chrom, start, end, gene + ',' + ens_id)
     return BedTool(bed_str, from_string=True)
 
 
@@ -81,7 +97,7 @@ def run_call(cnv_fn=None, target_gene_fn=None, ref=None, out_prefix=None, **args
     cnv_df.reset_index(inplace=True)
     cnv_df.index = cnv_df.index + 1
 
-    gene_bed = get_gene_bed(ref)
+    gene_bed = get_gene_bed(ref, use_db=False)
     feature_list = []
     data_df = pd.DataFrame()
     matrix_df = pd.DataFrame()
@@ -107,7 +123,7 @@ def run_call(cnv_fn=None, target_gene_fn=None, ref=None, out_prefix=None, **args
                             '1': [matrix_df.shape[0]],
                             '2': [data_df.shape[0]]})
     data_df = pd.concat([df, data_df])
-    data_df['2' = int(data_df['2'])
+    # data_df['2' == int(data_df['2'])
     with gzip.open(out_prefix + '_matrix.mtx.gz', 'w') as f:
         f.write(b'%%MatrixMarket matrix coordinate integer general\n')
         f.write(b'% cellranger-rna matrix format\n')
