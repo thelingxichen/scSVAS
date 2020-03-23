@@ -100,7 +100,7 @@ def get_nested_tree_aux(t, k):
 
     return node_dict 
 
-def get_evo_tree_dict(t, df):
+def get_evo_tree_dict(t, df, bins):
     node_list = sorted(t.nodes, key=lambda n: n.dist_to_root)
     res = {}
     res['name'] = t.name
@@ -110,14 +110,15 @@ def get_evo_tree_dict(t, df):
     res['dist_to_root'] = t.dist_to_root
     res['num_cells'] = len(df)
     res['leafs'] = [n.name for n in t.leafs]
-    res['links'] = [(l.source.name, l.target.name, l.meta) for l in t.links]
+    res['links'] = [(l.source.name, l.target.name, l.shift_bins) for l in t.links]
     nodes_dict = {}
 
     set_tree_coords(t, df)
     node_list = sorted(t.nodes, key=lambda n: n.dist_to_root)
     for n in node_list:
         c = n.closest_child.name if n.closest_child else 'NONE'
-        nodes_dict[n.name] = [n.x, n.y, n.start_y, n.end_y, c] 
+        nodes_dict[n.name] = [n.x, n.y, n.start_y, n.end_y, c, 
+                              {'cnv': dict(zip(bins, n.cnv))}] 
     res['node_list'] = list(nodes_dict.keys())
     res['nodes'] = nodes_dict
     # res['clonal_freqs'] = clonal_freqs
@@ -248,6 +249,7 @@ class Link():
         self.target = target
         self.dist = dist
         self.meta = meta 
+        self.shift_bins = {}
 
     def __repr__(self):
         return '{}->{}:{}'.format(self.source.name, self.target.name, self.dist)

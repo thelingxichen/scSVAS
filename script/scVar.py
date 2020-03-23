@@ -143,12 +143,12 @@ def run_cnv(cnv_fn=None, meta_fn=None, target_gene_fn=None,
         tumor_df = df[~df.index.isin([normal])]
         newick = phylo.build_hc_tree(tumor_df, col)
         t = phylo.get_tree_from_newick(newick, root=normal)
-        evo_dict[col] = phylo.get_evo_tree_dict(t, meta_df[col]) 
+        # evo_dict[col] = phylo.get_evo_tree_dict(t, meta_df[col]) 
         # t = phylo.reroot_normal(t, df)
         t = phylo.reroot_tree(t, df)
         evo_trees[col] = t
         annotate_shifts(t, cnv_df, target_gene_fn=target_gene_fn, ref=ref)
-        evo_dict[col+'_rerooted'] = phylo.get_evo_tree_dict(t, meta_df[col]) 
+        evo_dict[col+'_rerooted'] = phylo.get_evo_tree_dict(t, meta_df[col], cnv_df.columns.tolist()) 
     res = json.dumps(evo_dict, indent=4)
     json_fn = out_prefix + '_evo{}.json'.format(k)
     with open(json_fn, 'w') as f:
