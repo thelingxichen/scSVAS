@@ -81,7 +81,7 @@ def get_nested_tree_json(t, k):
 
 
 def get_nested_tree_aux(t, k):
-    cut_t, _ = cut_tree(t, k)
+    cut_t, map_list = cut_tree(t, k)
     node_list = sorted(t.nodes, key=lambda n: n.dist_to_root)
     node_dict = {}
     res = {}
@@ -91,7 +91,7 @@ def get_nested_tree_aux(t, k):
     res['leaftime'] = max(n.dist_to_root for n in cut_t.leafs)
     res['y'] = t.y 
     res['links'] = [(l.source.name, l.target.name) for l in cut_t.links]
-    res['leafs'] = [n.name for n in cut_t.leafs]
+    res['leafs'] = [c for c, g in map_list]
     node_dict[t.name] = res
     if t.children:
         for c in t.children:
@@ -144,7 +144,7 @@ def cut_tree(t, k):
     leafs_list = sorted([n.name for n in leafs])
     map_list = cut_tree_aux(t, { n: i+1 for i, n in enumerate(leafs_list)})
     set_tree(t, prefix=None)
-    return t, map_list
+    return t, map_list 
 
 
 def cut_tree_aux(t, leafs):
