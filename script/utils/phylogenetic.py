@@ -88,10 +88,11 @@ def get_nested_tree_aux(t, k):
     res['dist_to_root'] = t.dist_to_root
     res['parent'] = t.parent.name if t.parent else 'NONE' 
     res['newick'] = to_newick(cut_t) #.write(format=1)
-    res['leaftime'] = max(n.dist_to_root for n in cut_t.leafs)
-    res['y'] = t.y 
-    res['links'] = [(l.source.name, l.target.name) for l in cut_t.links]
-    res['leafs'] = [c for c, g in map_list]
+    if map_list:
+        res['leafs'] = [c for c, g in map_list]
+    else:
+        res['leafs'] = [t.name]
+
     node_dict[t.name] = res
     if t.children:
         for c in t.children:
