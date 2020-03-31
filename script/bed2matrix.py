@@ -21,7 +21,7 @@ import pandas as pd
 import docopt
 
 
-def run_call(bed_fn=None, out_prefix=None, confidence=10,
+def run_call(bed_fn=None, out_prefix=None, confidence=15,
              **args):
 
     breakpoints = {}
@@ -49,7 +49,7 @@ def run_call(bed_fn=None, out_prefix=None, confidence=10,
     matrix = np.full([len(cells), len(regions)], np.nan)
     bed_file = filter(lambda row: row.startswith('#chrom') or not row.startswith('#'), open(bed_fn, 'r'))
     for i, row in enumerate(csv.DictReader(bed_file, delimiter='\t')):
-        if row.get('event_confidence', confidence) < confidence:
+        if int(row.get('event_confidence', confidence)) < confidence:
             continue
         chrom, start, end, cell_id, cn = row['#chrom'], row['start'], row['end'], row['id'], row['copy_number']
         if cn == 'NA':
