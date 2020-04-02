@@ -3,7 +3,7 @@
 """
 
 Usage:
-    scVar.py cnv --cnv_fn=IN_FILE [--meta_fn=IN_FILE] [--k=INT] [--out_prefix=STR] [--ref=STR]
+    scVar.py cnv --cnv_fn=IN_FILE [--meta_fn=IN_FILE] [--nwk_fn=IN_FILE] [--k=INT] [--out_prefix=STR] [--ref=STR]
     scVar.py -h | --help
 
 Options:
@@ -11,8 +11,9 @@ Options:
     --version                   Show version.
     --cnv_fn=IN_FILE            Path of SCYN format cnv file.
     --meta_fn=IN_FILE           Path of SCYN format meta file.
+    --nwk_fn=IN_FILE            Path of build tree, scVar will build one if not supplied.
     --target_gene_fn=IN_FILE    Path of SCYN format meta file.
-    --k=INT                     Number of clusters in the tree at the cut point. [default: 3]
+    --k=INT                     Number of clusters in the tree at the cut point. [default: 10]
     --out_prefix=STR            Path of out file prefix, [default: ./phylo]
     --ref=STR                   Reference version, [default: hg38]
 """
@@ -83,8 +84,7 @@ def process_bin2gene_hits(bin, hits, link=None, shift_type=None,
     link.shift_bins[shift_type][bin]['gene'] = gene_list
 
 
-def run_cnv(cnv_fn=None, meta_fn=None, target_gene_fn=None,
-            k=7, cut_n=5,
+def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None, cut_n=50,
             out_prefix=None, ref='hg38', **args):
     k = int(k)
     cnv_index_name = 'cell_id'
@@ -92,10 +92,13 @@ def run_cnv(cnv_fn=None, meta_fn=None, target_gene_fn=None,
     cell_names = cnv_df.index.to_list()
 
     ##### build hc dendrogram #####
-    newick = phylo.build_hc_tree(cnv_df, cnv_index_name)
-    nwk_fn = out_prefix + '.nwk'
-    with open(nwk_fn, 'w') as f:
-        f.write(newick)
+    if not nwk_fn:
+        newick = phylo.build_hc_tree(cnv_df, cnv_index_name)
+        nwk_fn = out_prefix + '.nwk'
+        with open(nwk_fn, 'w') as f:
+            f.write(newick)
+    else:
+        newick = open(nwk_fn, 'r').read()
     t = phylo.get_tree_from_newick(newick)
 
     ##### cut hc dendrogram #####
