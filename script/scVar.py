@@ -13,7 +13,7 @@ Options:
     --meta_fn=IN_FILE           Path of SCYN format meta file.
     --target_gene_fn=IN_FILE    Path of SCYN format meta file.
     --k=INT                     Number of clusters in the tree at the cut point. [default: 3]
-    --out_prefix=STR            Path of out file prefix, [default: ./phylo] 
+    --out_prefix=STR            Path of out file prefix, [default: ./phylo]
     --ref=STR                   Reference version, [default: hg38]
 """
 import os
@@ -58,7 +58,7 @@ def deal_shift_dict(bins, bin_index, link):
         p_cnv = link.source.cnv[index]
         c_cnv = link.target.cnv[index]
         res[bin] = {'cnv': [p_cnv, c_cnv, c_cnv-p_cnv]}
-    return res 
+    return res
 
 
 def call_bedtool_bin2gene(bin_list, ref, use_db=True, **kwargs):
@@ -74,10 +74,10 @@ def call_bedtool_bin2gene(bin_list, ref, use_db=True, **kwargs):
             process_bin2gene_hits(bin, hits, **kwargs)
             hits = []
         hits.append(hit)
-        prev_bin = bin 
+        prev_bin = bin
 
 
-def process_bin2gene_hits(bin, hits, link=None, shift_type=None, 
+def process_bin2gene_hits(bin, hits, link=None, shift_type=None,
                           **kwargs):
     gene_list = [hit[6].split(',')[0] for hit in hits]
     link.shift_bins[shift_type][bin]['gene'] = gene_list
@@ -88,24 +88,24 @@ def run_cnv(cnv_fn=None, meta_fn=None, target_gene_fn=None,
             out_prefix=None, ref='hg38', **args):
     k = int(k)
     cnv_index_name = 'cell_id'
-    cnv_df = io.read_cnv_fn(cnv_fn, cnv_index_name) 
+    cnv_df = io.read_cnv_fn(cnv_fn, cnv_index_name)
     cell_names = cnv_df.index.to_list()
 
-    ##### build hc dendrogram ##### 
+    ##### build hc dendrogram #####
     newick = phylo.build_hc_tree(cnv_df, cnv_index_name)
     nwk_fn = out_prefix + '.nwk'
     with open(nwk_fn, 'w') as f:
         f.write(newick)
     t = phylo.get_tree_from_newick(newick)
 
-    ##### cut hc dendrogram ##### 
+    ##### cut hc dendrogram #####
     cut_t, map_list = phylo.cut_tree(t, k)
     m_df = pd.DataFrame(map_list)
     m_df.columns = [cnv_index_name, 'hcluster']
     m_df.index = m_df[cnv_index_name]
-    del m_df[cnv_index_name] 
+    del m_df[cnv_index_name]
 
-    ##### build nested tree ##### 
+    ##### build nested tree #####
     res = phylo.get_nested_tree_json(t, cut_n)
     json_fn = out_prefix + '_cut{}.json'.format(cut_n)
     with open(json_fn, 'w') as f:
@@ -121,18 +121,18 @@ def run_cnv(cnv_fn=None, meta_fn=None, target_gene_fn=None,
     # PCA
     df = embedding.get_pca(cnv_df, cell_names, cnv_index_name)
     meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
-    # TSNE 
+    # TSNE
     df = embedding.get_tsne(cnv_df, cell_names, cnv_index_name)
     meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
-    # UMAP 
+    # UMAP
     df = embedding.get_umap(cnv_df, cell_names, cnv_index_name)
     meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
 
-    meta_fn = out_prefix + '_meta_scvar.csv' 
+    meta_fn = out_prefix + '_meta_scvar.csv'
     meta_df.to_csv(meta_fn)
 
     ##### build tree by meta category label #####
-    evo_trees = {} 
+    evo_trees = {}
     evo_dict = {}
     for col in meta_df.columns:
         if col.startswith('e_') or col.startswith('c_'):
@@ -143,12 +143,12 @@ def run_cnv(cnv_fn=None, meta_fn=None, target_gene_fn=None,
         tumor_df = df[~df.index.isin([normal])]
         newick = phylo.build_hc_tree(tumor_df, col)
         t = phylo.get_tree_from_newick(newick, root=normal)
-        # evo_dict[col] = phylo.get_evo_tree_dict(t, meta_df[col]) 
+        # evo_dict[col] = phylo.get_evo_tree_dict(t, meta_df[col])
         # t = phylo.reroot_normal(t, df)
         t = phylo.reroot_tree(t, df)
         evo_trees[col] = t
         annotate_shifts(t, cnv_df, target_gene_fn=target_gene_fn, ref=ref)
-        evo_dict[col+'_rerooted'] = phylo.get_evo_tree_dict(t, meta_df[col], cnv_df.columns.tolist()) 
+        evo_dict[col+'_rerooted'] = phylo.get_evo_tree_dict(t, meta_df[col], cnv_df.columns.tolist())
     res = json.dumps(evo_dict, indent=4)
     json_fn = out_prefix + '_evo{}.json'.format(k)
     with open(json_fn, 'w') as f:
@@ -168,16 +168,16 @@ def get_tree_link_tsv(label, t):
         for bin, bin_dict in link.shift_bins['amp'].items():
             p, c ,s = bin_dict['cnv'][0], bin_dict['cnv'][1], bin_dict['cnv'][2]
             if 'gene' not in bin_dict:
-                continue 
+                continue
             gene_str = ','.join(bin_dict.get('gene', []))
-            r = [label, link.source.name, link.target.name, 'amp', bin, p, c, s, gene_str] 
+            r = [label, link.source.name, link.target.name, 'amp', bin, p, c, s, gene_str]
             res += '\t'.join(map(str, r)) + '\n'
         for bin, bin_dict in link.shift_bins['loss'].items():
             p, c ,s = bin_dict['cnv'][0], bin_dict['cnv'][1], bin_dict['cnv'][2]
             if 'gene' not in bin_dict:
-                continue 
+                continue
             gene_str = ','.join(bin_dict.get('gene', []))
-            r = [label, link.source.name, link.target.name, 'loss', bin, p, c, s, gene_str] 
+            r = [label, link.source.name, link.target.name, 'loss', bin, p, c, s, gene_str]
             res += '\t'.join(map(str, r)) + '\n'
     return res
 
