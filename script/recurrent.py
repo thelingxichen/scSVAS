@@ -3,18 +3,16 @@
 """
 
 Usage:
-    scVar.py cnv --cnv_fn=IN_FILE [--meta_fn=IN_FILE] [--nwk_fn=IN_FILE] [--target_gene_fn=IN_FILE] [--k=INT] [--out_prefix=STR] [--ref=STR]
-    scVar.py -h | --help
+    recurrent_region.py cnv --cnv_fns=IN_FILES --samples=STR [--target_gene_fn=IN_FILE] [--out_prefix=STR] [--ref=STR]
+    recurrent_region.py -h | --help
 
 Options:
     -h --help                   Show this screen.
     --version                   Show version.
-    --cnv_fn=IN_FILE            Path of SCYN format cnv file.
-    --meta_fn=IN_FILE           Path of SCYN format meta file.
-    --nwk_fn=IN_FILE            Path of build tree, scVar will build one if not supplied.
+    --cnv_fns=IN_FILES          List of SCYN format cnv file path, seperated by comma ','
+    --samples=STR               List of sample names, seperated by comma ','
     --target_gene_fn=IN_FILE    Path of SCYN format meta file.
-    --k=INT                     Number of clusters in the tree at the cut point. [default: 7]
-    --out_prefix=STR            Path of out file prefix, [default: ./phylo]
+    --out_prefix=STR            Path of out file prefix, [default: ./recurrent]
     --ref=STR                   Reference version, [default: hg38]
 """
 import os
@@ -84,93 +82,17 @@ def process_bin2gene_hits(bin, hits, link=None, shift_type=None,
     link.shift_bins[shift_type][bin]['gene'] = gene_list
 
 
-def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None, cut_n=50,
-            out_prefix=None, ref='hg38', **args):
-    k = int(k)
+def run_cnv(cnv_fns=None, samples=None, target_gene_fn=None, out_prefix=None, ref='hg38', **args):
     cnv_index_name = 'cell_id'
-    cnv_df = io.read_cnv_fn(cnv_fn, cnv_index_name)
-    cell_names = cnv_df.index.to_list()
+    samples = samples.split(',')
 
-    ##### build hc dendrogram #####
-    if not nwk_fn:
-        newick = phylo.build_hc_tree(cnv_df, cnv_index_name)
-        nwk_fn = out_prefix + '.nwk'
-        with open(nwk_fn, 'w') as f:
-            f.write(newick)
-    else:
-        newick = open(nwk_fn, 'r').read()
-    t = phylo.get_tree_from_newick(newick)
+    cnv_df_list = []
+    for sample, cnv_fn in zip(samples, cnv_fns.split(',')):
+        cnv_df = io.read_cnv_fn(cnv_fn, cnv_index_name)
+        cnv_df.set_index(sample + '_' + cnv_df.index.astype(str))
+        cnv_df_list.append(cnv_df)
 
-    ##### cut hc dendrogram #####
-    cut_t, map_list = phylo.cut_tree(t, k)
-    m_df = pd.DataFrame(map_list)
-    m_df.columns = [cnv_index_name, 'hcluster']
-    m_df.index = m_df[cnv_index_name]
-    del m_df[cnv_index_name]
-
-    ##### build nested tree #####
-    res = phylo.get_nested_tree_json(t, cut_n)
-    json_fn = out_prefix + '_cut{}.json'.format(cut_n)
-    with open(json_fn, 'w') as f:
-        f.write(res)
-
-    ##### append meta info #####
-    if meta_fn:
-        meta_df = io.read_meta_fn(meta_fn, cnv_index_name)
-        meta_df = pd.merge(meta_df, m_df, how='outer', on=cnv_index_name)
-    else:
-        meta_df = m_df
-
-    # PCA
-    df = embedding.get_pca(cnv_df, cell_names, cnv_index_name)
-    meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
-    # TSNE
-    df = embedding.get_tsne(cnv_df, cell_names, cnv_index_name)
-    meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
-    # UMAP
-    df = embedding.get_umap(cnv_df, cell_names, cnv_index_name)
-    meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
-
-    meta_fn = out_prefix + '_meta_scvar.csv'
-    meta_df.to_csv(meta_fn)
-
-    ##### build tree by meta category label #####
-    evo_trees = {}
-    evo_dict = {}
-    for col in meta_df.columns:
-        if col.startswith('e_') or col.startswith('c_'):
-            continue
-        df = pd.merge(meta_df[col].apply(str), cnv_df, how='outer', on=cnv_index_name)
-        df = df.groupby(col).mean()
-        col_fn = out_prefix + '_{}_cnv.csv'.format(col)
-        df.to_csv(col_fn)
-
-        t = phylo.build_tree(df)
-        ''' # pick, normal, build hc tree
-        normal, _ = phylo.choose_normal(df)
-        tumor_df = df[~df.index.isin([normal])]
-        newick = phylo.build_hc_tree(tumor_df, col)
-        t = phylo.get_tree_from_newick(newick, root=normal)
-        # evo_dict[col] = phylo.get_evo_tree_dict(t, meta_df[col])
-        # t = phylo.reroot_normal(t, df)
-        t = phylo.reroot_tree(t, df)
-        '''
-        evo_trees[col] = t
-        annotate_shifts(t, cnv_df, target_gene_fn=target_gene_fn, ref=ref)
-        evo_dict[col] = phylo.get_evo_tree_dict(t, meta_df[col], cnv_df.columns.tolist())
-
-    res = json.dumps(evo_dict, indent=4)
-    json_fn = out_prefix + '_evo{}.json'.format(k)
-    with open(json_fn, 'w') as f:
-        f.write(res)
-
-    ###### output evo bin shifts ########
-    evo_fn = out_prefix + '_evo{}.tsv'.format(k)
-    with open(evo_fn, 'w') as f:
-        f.write('\t'.join(['category_label', 'parent', 'child', 'amp/loss', 'region', 'parent_cnv', 'child_cnv', 'shift', 'gene'])+'\n')
-        for label, t in evo_trees.items():
-            f.write(get_tree_link_tsv(label, t))
-
+    df = pd.concat(cnv_df_list)
 
 def get_tree_link_tsv(label, t):
     res = ''

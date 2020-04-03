@@ -40,14 +40,17 @@ def get_cnv_bed(cnv_fn):
     return cnv_df, cnv_bed 
 
 
-def get_gene_bed(ref, use_db=True):
+def get_gene_bed(ref, use_db=True, target_gene_fn=None):
     current_dir, _ = os.path.split(os.path.realpath(__file__))
     fn = os.path.join(current_dir, 'db', 'ens_gene.pickle')
     gene_dict = pickle.load(open(fn, 'rb')).get(ref + '_gene', {})
 
+    gene_list = []
     if use_db:
         gene_dir = os.path.join(current_dir, 'db', 'gene_list')
-        gene_list = genetool.read_gene_list_from_dir(gene_dir)
+        gene_list += genetool.read_gene_list_from_dir(gene_dir)
+    if target_gene_fn:
+        gene_list += genetool.read_gene_list(target_gene_fn)
 
     bed_str = ''
     for i, item in enumerate(gene_dict.items()):

@@ -3,11 +3,14 @@
 import copy
 from scipy.cluster import hierarchy
 import numpy as np
+import pandas as pd
 from ete3 import Tree
 import json
 import sys
 import collections
 from sklearn.metrics import pairwise_distances
+from sklearn.metrics import silhouette_score 
+from sklearn import metrics 
 
 sys.setrecursionlimit(100000)
 
@@ -70,6 +73,23 @@ def build_hc_tree(df, index_name):
     '''
     return newick
 
+'''
+def auto_cut_tree(t, max_k, cnv_df):
+    cnv_index_name = cnv_df.index.name
+    col = 'hcluster'
+
+    for k in range(2, max_k+1):
+        cut_t, map_list = cut_tree(t, k)
+        m_df = pd.DataFrame(map_list)
+        m_df.columns = [cnv_index_name, col]
+        m_df.index = m_df[cnv_index_name]
+        del m_df[cnv_index_name]
+        df = pd.merge(m_df[col].apply(str), cnv_df, how='outer', on=cnv_index_name)
+        df = df.groupby(col).mean()
+        sil = silhouette_score(cnv_df, m_df[col])
+        print(k, sil, metrics.calinski_harabasz_score(cnv_df, m_df[col]), metrics.davies_bouldin_score(cnv_df, m_df[col]))
+'''
+
 
 def get_nested_tree_json(t, k):
     set_tree_coords(t)
@@ -111,14 +131,10 @@ def get_evo_tree_dict(t, df, bins):
     res['links'] = [(l.source.name, l.target.name, l.shift_bins) for l in t.links]
     nodes_dict = {}
 
-    print('before')
     set_tree_coords(t, df)
-    print('after')
     node_list = sorted(t.nodes, key=lambda n: n.dist_to_root)
     for n in node_list:
-        print(n)
         c = n.closest_child.name if n.closest_child else 'NONE'
-        print('node', n.name)
         nodes_dict[n.name] = [n.x, n.y, n.start_y, n.end_y, c,
                               {'cnv': dict(zip(bins, n.cnv))}]
     res['node_list'] = list(nodes_dict.keys())
