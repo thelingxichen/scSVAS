@@ -7,6 +7,7 @@ from ete3 import Tree
 import json
 import sys
 import collections
+from sklearn.metrics import pairwise_distances
 
 sys.setrecursionlimit(100000)
 
@@ -110,10 +111,14 @@ def get_evo_tree_dict(t, df, bins):
     res['links'] = [(l.source.name, l.target.name, l.shift_bins) for l in t.links]
     nodes_dict = {}
 
+    print('before')
     set_tree_coords(t, df)
+    print('after')
     node_list = sorted(t.nodes, key=lambda n: n.dist_to_root)
     for n in node_list:
+        print(n)
         c = n.closest_child.name if n.closest_child else 'NONE'
+        print('node', n.name)
         nodes_dict[n.name] = [n.x, n.y, n.start_y, n.end_y, c,
                               {'cnv': dict(zip(bins, n.cnv))}]
     res['node_list'] = list(nodes_dict.keys())
@@ -235,9 +240,9 @@ def set_tree_coords_aux(t):
     for c in t.children:
         set_tree_coords_aux(c)
     t.y = (t.children[0].y + t.children[-1].y)/2
-    if t.name.startswith('n'):
-        t.start_y = t.children[0].start_y
-        t.end_y = t.children[-1].end_y
+    # if t.name.startswith('n'):
+    t.start_y = t.children[0].start_y
+    t.end_y = t.children[-1].end_y
     return
 
 
@@ -258,8 +263,9 @@ def choose_normal(df):
     # choose group close to normal as root
     m = np.matrix(df.values)
     norms = np.sum(np.multiply(m, m) + 4 - 4*m, axis=1)
-    normal = str(df.index[np.argmin(norms)])
-    return normal
+    i = np.argmin(norms)
+    normal = str(df.index[i])
+    return normal, i 
 
 
 def reroot_normal(t, root):
@@ -370,3 +376,73 @@ def choose_ancestor_cnv(xs):
             cnv = freqs[0][0]
 
     return cnv
+
+'''
+# build tree
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set()
+# similarity
+'''
+def build_tree(df):
+
+    D = np.log(np.log(pairwise_distances(df)))
+    # plot = sns.heatmap(D)
+    # plot.get_figure().savefig("test.png")
+
+    normal, normal_i = choose_normal(df)
+    group_names = df.index
+    normal_n = Tree()
+    normal_n.name = normal 
+    normal_n.cnv = df.loc[normal].tolist()
+    leftouts = list(range(len(group_names)))
+    del leftouts[normal_i]
+    node_dict = {normal: normal_n}
+    build_tree_aux([normal_i], node_dict, D, leftouts, group_names, df)
+    t = node_dict[normal]
+    t.parent = None
+    set_tree(t, prefix=None)
+    return t
+
+
+def build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, df):
+    
+    print('parent_cands', parent_candidates)
+    print(nodes_dict)
+    print('leftouts', leftouts)
+     
+    if not leftouts:
+        return
+
+    queues = { p: [] for p in parent_candidates}
+    for leftout in leftouts:
+        i = np.argmin(D[leftout, parent_candidates])
+        parent_candidate = parent_candidates[i]
+        queues[parent_candidate].append((D[leftout,parent_candidate], leftout))
+    
+    print(queues)
+
+    # sort queues
+    for p, cs in queues.items():
+        p_name = group_names[p]
+        if not cs:
+            continue
+        cs = sorted(cs)
+        for i, tmp in enumerate(cs):
+            if i > 1:
+                break
+            dist, c = tmp
+            c_node = Tree()
+            c_name = group_names[c]
+            c_node.name = c_name
+            c_node.cnv = df.loc[c_name].tolist()
+            nodes_dict[c_name] = c_node
+            nodes_dict[p_name].dist = dist
+            nodes_dict[p_name].children.append(c_node)
+            leftouts.remove(c)
+            parent_candidates.append(c)
+    
+        parent_candidates.remove(p)
+
+    build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, df)

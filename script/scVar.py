@@ -13,7 +13,7 @@ Options:
     --meta_fn=IN_FILE           Path of SCYN format meta file.
     --nwk_fn=IN_FILE            Path of build tree, scVar will build one if not supplied.
     --target_gene_fn=IN_FILE    Path of SCYN format meta file.
-    --k=INT                     Number of clusters in the tree at the cut point. [default: 10]
+    --k=INT                     Number of clusters in the tree at the cut point. [default: 7]
     --out_prefix=STR            Path of out file prefix, [default: ./phylo]
     --ref=STR                   Reference version, [default: hg38]
 """
@@ -108,11 +108,13 @@ def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None,
     m_df.index = m_df[cnv_index_name]
     del m_df[cnv_index_name]
 
+    '''
     ##### build nested tree #####
     res = phylo.get_nested_tree_json(t, cut_n)
     json_fn = out_prefix + '_cut{}.json'.format(cut_n)
     with open(json_fn, 'w') as f:
         f.write(res)
+    '''
 
     ##### append meta info #####
     if meta_fn:
@@ -120,7 +122,7 @@ def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None,
         meta_df = pd.merge(meta_df, m_df, how='outer', on=cnv_index_name)
     else:
         meta_df = m_df
-
+    '''
     # PCA
     df = embedding.get_pca(cnv_df, cell_names, cnv_index_name)
     meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
@@ -133,25 +135,32 @@ def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None,
 
     meta_fn = out_prefix + '_meta_scvar.csv'
     meta_df.to_csv(meta_fn)
+    '''
 
     ##### build tree by meta category label #####
     evo_trees = {}
     evo_dict = {}
     for col in meta_df.columns:
+        if col != 'hcluster':
+            continue
         if col.startswith('e_') or col.startswith('c_'):
             continue
         df = pd.merge(meta_df[col].apply(str), cnv_df, how='outer', on=cnv_index_name)
         df = df.groupby(col).mean()
-        normal = phylo.choose_normal(df)
+        t = phylo.build_tree(df)
+        ''' # pick, normal, build hc tree
+        normal, _ = phylo.choose_normal(df)
         tumor_df = df[~df.index.isin([normal])]
         newick = phylo.build_hc_tree(tumor_df, col)
         t = phylo.get_tree_from_newick(newick, root=normal)
         # evo_dict[col] = phylo.get_evo_tree_dict(t, meta_df[col])
         # t = phylo.reroot_normal(t, df)
         t = phylo.reroot_tree(t, df)
+        '''
         evo_trees[col] = t
         annotate_shifts(t, cnv_df, target_gene_fn=target_gene_fn, ref=ref)
         evo_dict[col+'_rerooted'] = phylo.get_evo_tree_dict(t, meta_df[col], cnv_df.columns.tolist())
+
     res = json.dumps(evo_dict, indent=4)
     json_fn = out_prefix + '_evo{}.json'.format(k)
     with open(json_fn, 'w') as f:
