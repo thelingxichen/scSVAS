@@ -42,12 +42,13 @@ def get_cnv_df(h5_data, bins, bin_size, assembly, cell_names):
     chrom2size = genome.read_chrom_size(assembly)
     m_list = []
     regions_list = []
-    for chrom in list(map(str, range(1, 23))) + ['X', 'Y']:
-        chrom_size = chrom2size['chr' + chrom]
+    for chrom in list(h5_data['cnvs'].keys()): 
+        chrom_str = chrom if chrom.startswith('chr') else 'chr'+chrom
+        chrom_size = chrom2size[chrom_str]
         tmp = get_single_chrom_cnv(h5_data['cnvs'][chrom], bins)
         pos = np.array(range(tmp.shape[1]))*bins*bin_size
-        regions = ['chr{}:{}-{}'.format(chrom, s+1, e) for s, e in zip(pos[:-1], pos[1:])]
-        regions.append('chr{}:{}-{}'.format(chrom, pos[-1]+1, chrom_size))
+        regions = ['{}:{}-{}'.format(chrom_str, s+1, e) for s, e in zip(pos[:-1], pos[1:])]
+        regions.append('{}:{}-{}'.format(chrom_str, pos[-1]+1, chrom_size))
         regions_list += regions
         m_list.append(tmp)
     m = np.concatenate(m_list, axis=1)
