@@ -69,10 +69,9 @@ def call_bedtool_bin2gene(bin_list, ref, use_db=True, target_gene_fn=None, **kwa
     prev_bin = None
     hits = []
     for i, hit in enumerate(bin_bed.window(gene_bed).overlap(cols=[2, 3, 5, 6])):
-        if i > 5: break
         bin = '{}:{}-{}'.format(hit[0], hit[1], hit[2])
         if prev_bin != bin and hits:
-            process_bin2gene_hits(bin, hits, **kwargs)
+            process_bin2gene_hits(prev_bin, hits, **kwargs)
             hits = []
         hits.append(hit)
         prev_bin = bin
@@ -82,6 +81,10 @@ def process_bin2gene_hits(bin, hits, link=None, shift_type=None,
                           **kwargs):
     gene_list = [hit[6].split(',')[0] for hit in hits]
     link.shift_bins[shift_type][bin]['gene'] = gene_list
+    if 'NOTCH2' in gene_list:
+        print(bin)
+        print(hits)
+        print(gene_list)
 
 
 def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None, cut_n=50,
