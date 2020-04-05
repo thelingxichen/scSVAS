@@ -24,14 +24,18 @@ import numpy as np
 import pandas as pd
 import json
 
+from biotool import genome
+
 from utils import phylogenetic as phylo
 from utils import io
 from utils import embedding
 from utils import annotation as anno
 
+
 ######## annotate bin changes ############
 
 def annotate_shifts(t, cnv_df, shift=0.5, target_gene_fn=None, ref='hg38'):
+    cytoband_dict = genome.read_cytoband(ref)
 
     for link in t.links:
         p_cnv = link.source.cnv
@@ -49,8 +53,8 @@ def annotate_shifts(t, cnv_df, shift=0.5, target_gene_fn=None, ref='hg38'):
         link.meta = '{} amp, {} loss'.format(len(amp_bins), len(loss_bins))
         # bin: {gene:[], cnv:[p, c, shift]}
         link.shift_bins = {'amp': amp_bins_dict, 'loss': loss_bins_dict}
-        call_bedtool_bin2gene(amp_bins, ref, link=link, shift_type='amp', target_gene_fn=target_gene_fn)
-        call_bedtool_bin2gene(loss_bins, ref, link=link, shift_type='loss', target_gene_fn=target_gene_fn)
+        call_bedtool_bin2gene(amp_bins, ref, link=link, shift_type='amp', target_gene_fn=target_gene_fn, cytoband_dict=cytoband_dict)
+        call_bedtool_bin2gene(loss_bins, ref, link=link, shift_type='loss', target_gene_fn=target_gene_fn, cytoband_dict=cytoband_dict)
 
 
 def deal_shift_dict(bins, bin_index, link):
@@ -77,14 +81,13 @@ def call_bedtool_bin2gene(bin_list, ref, use_db=True, target_gene_fn=None, **kwa
         prev_bin = bin
 
 
-def process_bin2gene_hits(bin, hits, link=None, shift_type=None,
+def process_bin2gene_hits(bin, hits, link=None, shift_type=None, cytoband_dict=None,
                           **kwargs):
     gene_list = [hit[6].split(',')[0] for hit in hits]
     link.shift_bins[shift_type][bin]['gene'] = gene_list
-    if 'NOTCH2' in gene_list:
-        print(bin)
-        print(hits)
-        print(gene_list)
+
+    cytoband = genome.get_cytoband_from_bin_str(cytoband_dict, bin)
+    link.shift_bins[shift_type][bin]['cytoband'] = cytoband 
 
 
 def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None, cut_n=50,
