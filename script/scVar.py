@@ -73,6 +73,8 @@ def call_bedtool_bin2gene(bin_list, ref, use_db=True, target_gene_fn=None, **kwa
     prev_bin = None
     hits = []
     for i, hit in enumerate(bin_bed.window(gene_bed).overlap(cols=[2, 3, 5, 6])):
+        if i > 0:
+            break
         bin = '{}:{}-{}'.format(hit[0], hit[1], hit[2])
         if prev_bin != bin and hits:
             process_bin2gene_hits(prev_bin, hits, **kwargs)
@@ -114,12 +116,6 @@ def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None,
     m_df.index = m_df[cnv_index_name]
     del m_df[cnv_index_name]
 
-    ##### build nested tree #####
-    res = phylo.get_nested_tree_json(t, cut_n)
-    json_fn = out_prefix + '_cut{}.json'.format(cut_n)
-    with open(json_fn, 'w') as f:
-        f.write(res)
-
     ##### append meta info #####
     if meta_fn:
         meta_df = io.read_meta_fn(meta_fn, cnv_index_name)
@@ -137,8 +133,13 @@ def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None,
     df = embedding.get_umap(cnv_df, cell_names, cnv_index_name)
     meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
 
-    meta_fn = out_prefix + '_meta_scvar.csv'
-    meta_df.to_csv(meta_fn)
+
+
+    ##### build nested tree #####
+    res = phylo.get_nested_tree_json(t, cut_n)
+    json_fn = out_prefix + '_cut{}.json'.format(cut_n)
+    with open(json_fn, 'w') as f:
+        f.write(res)
 
     ##### build tree by meta category label #####
     evo_trees = {}
@@ -151,7 +152,11 @@ def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None,
         col_fn = out_prefix + '_{}_cnv.csv'.format(col)
         df.to_csv(col_fn)
 
-        t = phylo.build_tree(df)
+        if col == 'hcluster':
+            t = phylo.build_tree(df)
+        else:
+            t = phylo.build_tree(df)
+
         ''' # pick, normal, build hc tree
         normal, _ = phylo.choose_normal(df)
         tumor_df = df[~df.index.isin([normal])]
@@ -176,6 +181,10 @@ def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None,
         f.write('\t'.join(['category_label', 'parent', 'child', 'amp/loss', 'region', 'parent_cnv', 'child_cnv', 'shift', 'gene'])+'\n')
         for label, t in evo_trees.items():
             f.write(get_tree_link_tsv(label, t))
+
+    meta_fn = out_prefix + '_meta_scvar.csv'
+    meta_df.to_csv(meta_fn)
+
 
 
 def get_tree_link_tsv(label, t):

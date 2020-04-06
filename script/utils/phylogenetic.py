@@ -133,10 +133,14 @@ def get_evo_tree_dict(t, df, bins):
 
     set_tree_coords(t, df)
     node_list = sorted(t.nodes, key=lambda n: n.dist_to_root)
+    map_dict = df.apply(str).value_counts().to_dict()
     for n in node_list:
         c = n.closest_child.name if n.closest_child else 'NONE'
+
+        n.freq = map_dict.get(n.name, 0)/df.shape[0]
         nodes_dict[n.name] = [n.x, n.y, n.start_y, n.end_y, c,
-                              {'cnv': dict(zip(bins, n.cnv))}]
+                              {'cnv': dict(zip(bins, n.cnv))},
+                              {'freq': n.freq}]
     res['node_list'] = list(nodes_dict.keys())
     res['nodes'] = nodes_dict
     # res['clonal_freqs'] = clonal_freqs
@@ -229,6 +233,7 @@ def set_tree_coords(t, df=None):
     if df is not None:
         map_dict = df.apply(str).value_counts().to_dict()
         count = map_dict.get(t.name, 0)/2
+        print(map_dict)
     else:
         count = 0.5
 
@@ -240,6 +245,7 @@ def set_tree_coords(t, df=None):
             count += 1
         n.end_y = count
         n.y = i + 0.5
+
 
     if df is not None and t.name in map_dict:
         t.start_y = 0
@@ -462,3 +468,6 @@ def build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, df):
         parent_candidates.remove(p)
 
     build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, df)
+
+def prune_tree():
+    pass
