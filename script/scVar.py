@@ -147,15 +147,24 @@ def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None,
     for col in meta_df.columns:
         if col.startswith('e_') or col.startswith('c_'):
             continue
-        df = pd.merge(meta_df[col].apply(str), cnv_df, how='outer', on=cnv_index_name)
-        df = df.groupby(col).mean()
-        col_fn = out_prefix + '_{}_cnv.csv'.format(col)
-        df.to_csv(col_fn)
 
+        group2cell = {}
+        for cell_id, group in meta_df[col].to_dict().items():
+            group = str(group)
+            if group in group2cell:
+                group2cell[group].append(cell_id)
+            else:
+                group2cell[group] = [cell_id]
+
+        df = pd.merge(meta_df[col].apply(str), cnv_df, how='outer', on=cnv_index_name)
+        mean_df = df.groupby(col).mean()
+
+        t = phylo.build_tree(mean_df, group2cell)
         if col == 'hcluster':
-            t = phylo.build_tree(df)
-        else:
-            t = phylo.build_tree(df)
+            mean_df, meta_df = name_map = phylo.pruning_leafs(t, cnv_df, meta_df, meta_col=col)
+
+        col_fn = out_prefix + '_{}_cnv.csv'.format(col)
+        mean_df.to_csv(col_fn)
 
         ''' # pick, normal, build hc tree
         normal, _ = phylo.choose_normal(df)
@@ -171,12 +180,12 @@ def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None,
         evo_dict[col] = phylo.get_evo_tree_dict(t, meta_df[col], cnv_df.columns.tolist())
 
     res = json.dumps(evo_dict, indent=4)
-    json_fn = out_prefix + '_evo{}.json'.format(k)
+    json_fn = out_prefix + '_evo.json'
     with open(json_fn, 'w') as f:
         f.write(res)
 
     ###### output evo bin shifts ########
-    evo_fn = out_prefix + '_evo{}.tsv'.format(k)
+    evo_fn = out_prefix + '_evo.tsv'
     with open(evo_fn, 'w') as f:
         f.write('\t'.join(['category_label', 'parent', 'child', 'amp/loss', 'region', 'parent_cnv', 'child_cnv', 'shift', 'gene'])+'\n')
         for label, t in evo_trees.items():

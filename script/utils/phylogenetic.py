@@ -136,14 +136,14 @@ def get_evo_tree_dict(t, df, bins):
     map_dict = df.apply(str).value_counts().to_dict()
     for n in node_list:
         c = n.closest_child.name if n.closest_child else 'NONE'
-
         n.freq = map_dict.get(n.name, 0)/df.shape[0]
         nodes_dict[n.name] = [n.x, n.y, n.start_y, n.end_y, c,
                               {'cnv': dict(zip(bins, n.cnv))},
-                              {'freq': n.freq}]
+                              {'freq': n.freq},
+                              {'num_cells': len(n.cells)}]
+
     res['node_list'] = list(nodes_dict.keys())
     res['nodes'] = nodes_dict
-    # res['clonal_freqs'] = clonal_freqs
     return res
 
 
@@ -233,7 +233,6 @@ def set_tree_coords(t, df=None):
     if df is not None:
         map_dict = df.apply(str).value_counts().to_dict()
         count = map_dict.get(t.name, 0)/2
-        print(map_dict)
     else:
         count = 0.5
 
@@ -407,7 +406,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()
 # similarity
 '''
-def build_tree(df):
+def build_tree(df, group2cell):
 
     D = np.log(np.log(pairwise_distances(df)))
     # plot = sns.heatmap(D)
@@ -418,21 +417,22 @@ def build_tree(df):
     normal_n = Tree()
     normal_n.name = normal 
     normal_n.cnv = df.loc[normal].tolist()
+    normal_n.cells = group2cell.get(normal, [])
     leftouts = list(range(len(group_names)))
     del leftouts[normal_i]
     node_dict = {normal: normal_n}
-    build_tree_aux([normal_i], node_dict, D, leftouts, group_names, df)
+    build_tree_aux([normal_i], node_dict, D, leftouts, group_names, df, group2cell)
     t = node_dict[normal]
     t.parent = None
     set_tree(t, prefix=None)
     return t
 
 
-def build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, df):
+def build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, df, group2cell):
     
-    print('parent_cands', parent_candidates)
-    print(nodes_dict)
-    print('leftouts', leftouts)
+    #print('parent_cands', parent_candidates)
+    #print(nodes_dict)
+    #print('leftouts', leftouts)
      
     if not leftouts:
         return
@@ -443,7 +443,7 @@ def build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, df):
         parent_candidate = parent_candidates[i]
         queues[parent_candidate].append((D[leftout,parent_candidate], leftout))
     
-    print(queues)
+    #print(queues)
 
     # sort queues
     for p, cs in queues.items():
@@ -452,22 +452,67 @@ def build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, df):
             continue
         cs = sorted(cs)
         for i, tmp in enumerate(cs):
-            if i > 1:
+            if i > 0:
                 break
             dist, c = tmp
             c_node = Tree()
             c_name = group_names[c]
             c_node.name = c_name
             c_node.cnv = df.loc[c_name].tolist()
+            c_node.cells = group2cell.get(c_name, [])
             nodes_dict[c_name] = c_node
             nodes_dict[p_name].dist = dist
             nodes_dict[p_name].children.append(c_node)
             leftouts.remove(c)
             parent_candidates.append(c)
-    
-        parent_candidates.remove(p)
+   
+        if len(nodes_dict[p_name].children) == 2:
+            parent_candidates.remove(p)
 
-    build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, df)
+    build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, df, group2cell)
 
-def prune_tree():
-    pass
+
+def pruning_leafs(t, cnv_df, meta_df, meta_col='hcluster', minimal_num_cells=10):
+    pruning_leafs_aux(t, minimal_num_cells )
+    set_tree(t)
+
+    mean_df_list = []
+    for i, n in enumerate(t.nodes):
+        name = 'c{}'.format(i+1)
+        meta_df.loc[n.cells, meta_col] = name
+        n.name = name
+        df = cnv_df.loc[n.cells].mean()
+        n.cnv = df.tolist()
+
+        df = df.to_frame()
+        df.columns = [name]
+        mean_df_list.append(df.T)
+    mean_df = pd.concat(mean_df_list)
+    return mean_df, meta_df 
+
+
+def pruning_leafs_aux(t, minimal_num_cells=10):
+    for n in t.children:
+        pruning_leafs_aux(n, minimal_num_cells)
+        childs = []
+        for c in n.children:
+            if not c.children and len(c.cells) < minimal_num_cells:
+                n.cells += c.cells
+            else:
+                childs.append(c)
+        n.children = childs                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
