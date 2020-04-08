@@ -13,7 +13,7 @@ Options:
     --meta_fn=IN_FILE           Path of SCYN format meta file.
     --nwk_fn=IN_FILE            Path of build tree, scVar will build one if not supplied.
     --target_gene_fn=IN_FILE    Path of SCYN format meta file.
-    --k=INT                     Number of clusters in the tree at the cut point. [default: 7]
+    --k=INT                     Number of clusters in the tree at the cut point. [default: 10]
     --out_prefix=STR            Path of out file prefix, [default: ./phylo]
     --ref=STR                   Reference version, [default: hg38]
 """
@@ -73,8 +73,6 @@ def call_bedtool_bin2gene(bin_list, ref, use_db=True, target_gene_fn=None, **kwa
     prev_bin = None
     hits = []
     for i, hit in enumerate(bin_bed.window(gene_bed).overlap(cols=[2, 3, 5, 6])):
-        if i > 0:
-            break
         bin = '{}:{}-{}'.format(hit[0], hit[1], hit[2])
         if prev_bin != bin and hits:
             process_bin2gene_hits(prev_bin, hits, **kwargs)
@@ -92,7 +90,7 @@ def process_bin2gene_hits(bin, hits, link=None, shift_type=None, cytoband_dict=N
     link.shift_bins[shift_type][bin]['cytoband'] = cytoband 
 
 
-def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None, cut_n=50,
+def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None, cut_n=64,
             out_prefix=None, ref='hg38', **args):
     k = int(k)
     cnv_index_name = 'cell_id'
