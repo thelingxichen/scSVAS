@@ -185,7 +185,7 @@ def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None,
     ###### output evo bin shifts ########
     evo_fn = out_prefix + '_evo.tsv'
     with open(evo_fn, 'w') as f:
-        f.write('\t'.join(['category_label', 'parent', 'child', 'amp/loss', 'region', 'parent_cnv', 'child_cnv', 'shift', 'gene'])+'\n')
+        f.write('\t'.join(['category_label', 'parent', 'child', 'amp/del', 'region', 'cytoband', 'parent_cnv', 'child_cnv', 'shift', 'gene'])+'\n')
         for label, t in evo_trees.items():
             f.write(get_tree_link_tsv(label, t))
 
@@ -202,14 +202,16 @@ def get_tree_link_tsv(label, t):
             if 'gene' not in bin_dict:
                 continue
             gene_str = ','.join(bin_dict.get('gene', []))
-            r = [label, link.source.name, link.target.name, 'amp', bin, p, c, s, gene_str]
+            cytoband = bin_dict.get('cytoband', '')
+            r = [label, link.source.name, link.target.name, 'amp', bin, cytoband, p, c, s, gene_str]
             res += '\t'.join(map(str, r)) + '\n'
         for bin, bin_dict in link.shift_bins['loss'].items():
             p, c ,s = bin_dict['cnv'][0], bin_dict['cnv'][1], bin_dict['cnv'][2]
             if 'gene' not in bin_dict:
                 continue
             gene_str = ','.join(bin_dict.get('gene', []))
-            r = [label, link.source.name, link.target.name, 'loss', bin, p, c, s, gene_str]
+            cytoband = bin_dict.get('cytoband', '')
+            r = [label, link.source.name, link.target.name, 'loss', bin, cytoband, p, c, s, gene_str]
             res += '\t'.join(map(str, r)) + '\n'
     return res
 
