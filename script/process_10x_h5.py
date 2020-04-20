@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 import docopt
 import h5py
+import os
 
 from biotool import genome
 from utils import phylogenetic as phylo
@@ -79,6 +80,10 @@ def run_call(h5_fn=None, out_prefix=None, bins=None, assembly=None, raw=None,
 
     cell_names = [x.decode('utf-8') for x in h5_data['cell_barcodes']]
 
+    out_dir, _ = os.path.split(out_prefix)
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+
     newick = get_tree_newick(h5_data, cell_names)
     nwk_fn = out_prefix + '.nwk'
     with open(nwk_fn, 'w') as f:
@@ -88,7 +93,7 @@ def run_call(h5_fn=None, out_prefix=None, bins=None, assembly=None, raw=None,
     out_fn = out_prefix + '_cnv.csv'
     df.to_csv(out_fn, float_format='%.2f')
 
-    if raw:
+    if raw == 'True':
         df = get_cnv_df(h5_data, 'raw_counts', bins, bin_size, assembly, cell_names)
         out_fn = out_prefix + '_raw_counts.csv'
         df.to_csv(out_fn, float_format='%.2f')
