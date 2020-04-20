@@ -4,7 +4,7 @@
 # transfer bed file to matrix csv file
 
 Usage:
-    process_10x_h5.py call --h5_fn=IN_FILE [--out_prefix=STR] [--bins=INT] [--assembly=STR]
+    process_10x_h5.py call --h5_fn=IN_FILE [--out_prefix=STR] [--bins=INT] [--assembly=STR] [--raw=STR]
     process_10x_h5.py -h | --help
 
 Options:
@@ -14,6 +14,7 @@ Options:
     --bins=INT          Number of bins to average.[default: 256]
     --out_prefix=STR    Path of out file prefix. [default: ./10x]
     --assembly=STR      The assembly version of the sequence included as part of the reference. [default: hg38]
+    --raw=STR           If "True", output the raw and normazlied read count matrices. [default: False]
 """
 import numpy as np
 import pandas as pd
@@ -38,14 +39,14 @@ def get_single_chrom_cnv(cnv_h5, bins):
     return mean
 
 
-def get_cnv_df(h5_data, bins, bin_size, assembly, cell_names):
+def get_cnv_df(h5_data, key, bins, bin_size, assembly, cell_names):
     chrom2size = genome.read_chrom_size(assembly)
     m_list = []
     regions_list = []
-    for chrom in list(h5_data['cnvs'].keys()): 
+    for chrom in list(h5_data[key].keys()):
         chrom_str = chrom if chrom.startswith('chr') else 'chr'+chrom
         chrom_size = chrom2size[chrom_str]
-        tmp = get_single_chrom_cnv(h5_data['cnvs'][chrom], bins)
+        tmp = get_single_chrom_cnv(h5_data[key][chrom], bins)
         pos = np.array(range(tmp.shape[1]))*bins*bin_size
         regions = ['{}:{}-{}'.format(chrom_str, s+1, e) for s, e in zip(pos[:-1], pos[1:])]
         regions.append('{}:{}-{}'.format(chrom_str, pos[-1]+1, chrom_size))
@@ -69,7 +70,7 @@ def get_tree_newick(h5_data, cell_names):
     return newick
 
 
-def run_call(h5_fn=None, out_prefix=None, bins=None, assembly=None,
+def run_call(h5_fn=None, out_prefix=None, bins=None, assembly=None, raw=None,
              **args):
     bins = int(bins)
 
@@ -83,9 +84,18 @@ def run_call(h5_fn=None, out_prefix=None, bins=None, assembly=None,
     with open(nwk_fn, 'w') as f:
         f.write(newick)
 
-    df = get_cnv_df(h5_data, bins, bin_size, assembly, cell_names)
+    df = get_cnv_df(h5_data, 'cnvs', bins, bin_size, assembly, cell_names)
     out_fn = out_prefix + '_cnv.csv'
     df.to_csv(out_fn, float_format='%.2f')
+
+    if raw:
+        df = get_cnv_df(h5_data, 'raw_counts', bins, bin_size, assembly, cell_names)
+        out_fn = out_prefix + '_raw_counts.csv'
+        df.to_csv(out_fn, float_format='%.2f')
+
+        df = get_cnv_df(h5_data, 'normalized_counts', bins, bin_size, assembly, cell_names)
+        out_fn = out_prefix + '_normalized_counts.csv'
+        df.to_csv(out_fn, float_format='%.2f')
 
 
 def run(call=None, **args):
