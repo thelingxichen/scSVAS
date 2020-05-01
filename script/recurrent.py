@@ -41,7 +41,7 @@ def call_bedtool_bin2gene(amp_bins, del_bins, ref, use_db=True, target_gene_fn=N
     for i, hit in enumerate(bin_bed.window(gene_bed).overlap(cols=[2, 3, 5, 6])):
         bin = '{}:{}-{}'.format(hit[0], hit[1], hit[2])
         if prev_bin != bin and hits:
-            process_bin2gene_hits(bin, hits, amp_bins, del_bins, **kwargs)
+            process_bin2gene_hits(prev_bin, hits, amp_bins, del_bins, **kwargs)
             hits = []
         hits.append(hit)
         prev_bin = bin
@@ -53,10 +53,10 @@ def process_bin2gene_hits(bin, hits, amp_bins, del_bins, cytoband_dict=None,
     cytoband = genome.get_cytoband_from_bin_str(cytoband_dict, bin)
     if bin in amp_bins:
         amp_bins[bin]['gene'] = gene_list
-        amp_bins[bin]['cytoband'] = cytoband 
+        amp_bins[bin]['cytoband'] = cytoband
     if bin in del_bins:
         del_bins[bin]['gene'] = gene_list
-        del_bins[bin]['cytoband'] = cytoband 
+        del_bins[bin]['cytoband'] = cytoband
 
 
 def run_cnv(cnv_fns=None, samples=None, target_gene_fn=None, out_prefix=None, ref='hg38', **args):
@@ -77,8 +77,8 @@ def run_cnv(cnv_fns=None, samples=None, target_gene_fn=None, out_prefix=None, re
     ## annotate
     cytoband_dict = genome.read_cytoband(ref)
     call_bedtool_bin2gene(amp_bins, del_bins, ref, target_gene_fn=target_gene_fn, cytoband_dict=cytoband_dict)
-    res_dict = {'amp_anno': amp_bins,
-           'del_anno': del_bins,
+    res_dict = {'amp': amp_bins,
+           'loss': del_bins,
            'samples': res}
 
     res = json.dumps(res_dict, indent=4)
@@ -92,27 +92,26 @@ def run_cnv(cnv_fns=None, samples=None, target_gene_fn=None, out_prefix=None, re
     res += get_recurrent_tsv(res_dict)
     df = pd.read_csv(StringIO(res), sep='\t')
     df = df.sort_values(['region', 'amp/del'])
-    print(df)
     df.to_csv(evo_fn, sep='\t', index=False)
 
 def get_recurrent_tsv(res_dict):
     res = ''
     for sample, v in res_dict['samples'].items():
         for bin, bin_dict in v['bin'] ['amp'].items():
-            if bin not in res_dict['amp_anno']: 
+            if bin not in res_dict['amp']:
                 continue
             p, c ,s = bin_dict['cnv'][0], bin_dict['cnv'][1], bin_dict['cnv'][2]
-            gene_str = ','.join(res_dict['amp_anno'][bin].get('gene', []))
-            cytoband = res_dict['amp_anno'][bin].get('cytoband', '')
+            gene_str = ','.join(res_dict['amp'][bin].get('gene', []))
+            cytoband = res_dict['amp'][bin].get('cytoband', '')
             r = [sample, 'amp', bin, cytoband, c, s, gene_str]
             res += '\t'.join(map(str, r)) + '\n'
         for bin, bin_dict in v['bin'] ['loss'].items():
-            if bin not in res_dict['del_anno']: 
+            if bin not in res_dict['loss']:
                 continue
             p, c ,s = bin_dict['cnv'][0], bin_dict['cnv'][1], bin_dict['cnv'][2]
-            gene_str = ','.join(res_dict['del_anno'][bin].get('gene', []))
-            cytoband = res_dict['del_anno'][bin].get('cytoband', '')
-            r = [sample, 'del', bin, cytoband, c, s, gene_str]
+            gene_str = ','.join(res_dict['loss'][bin].get('gene', []))
+            cytoband = res_dict['loss'][bin].get('cytoband', '')
+            r = [sample, 'loss', bin, cytoband, c, s, gene_str]
             res += '\t'.join(map(str, r)) + '\n'
     return res
 
@@ -122,22 +121,21 @@ def detect_recurrent(df):
     df['sample'] = df.index.str.split('_').str[0]
     df['cluster'] = df.index.str.split('_').str[1]
     res = { key:{'bin':{'amp':{}, 'loss':{}}, 'cnv':df.loc[key, bins].to_dict()}  for key in df.index }
-    amp_bins = {} 
-    del_bins = {} 
+    amp_bins = {}
+    del_bins = {}
     for i, bin in enumerate(bins):
-        if i > 100: break
         bin_df = df[['sample', 'cluster', bin]]
-        bin_df['amp'] = bin_df[bin] > 3 
-        bin_df['del'] = bin_df[bin] < 1 
+        bin_df['amp'] = bin_df[bin] > 2.5
+        bin_df['loss'] = bin_df[bin] < 0.5
         count_df = bin_df.groupby('sample').sum()
         num_samples = count_df.shape[0]
         if (count_df['amp'] == 0).sum() < num_samples - 1:
             tmp = bin_df[bin_df['amp'] == True]
             update_bin_dict(tmp, bin, 'amp', res)
-            amp_bins[bin] = {} 
+            amp_bins[bin] = {}
 
-        if (count_df['del'] == 0).sum() < num_samples - 1:
-            tmp = bin_df[bin_df['del'] == True]
+        if (count_df['loss'] == 0).sum() < num_samples - 1:
+            tmp = bin_df[bin_df['loss'] == True]
             update_bin_dict(tmp, bin, 'loss', res)
             del_bins[bin] = {}
     return res, amp_bins, del_bins

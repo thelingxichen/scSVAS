@@ -21,7 +21,7 @@ from pybedtools import BedTool
 import gzip
 import os
 
-from biotool import gene as genetool 
+from biotool import gene as genetool
 
 from utils import io
 
@@ -37,7 +37,7 @@ def get_cnv_bed(cnv_fn):
     index_name = 'cell_id'
     cnv_df = io.read_cnv_fn(cnv_fn, index_name)
     cnv_bed = get_bin_bed(cnv_df.columns)
-    return cnv_df, cnv_bed 
+    return cnv_df, cnv_bed
 
 
 def get_gene_bed(ref, use_db=True, target_gene_fn=None):
