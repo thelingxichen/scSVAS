@@ -13,7 +13,7 @@ Options:
     --meta_fn=IN_FILE           Path of SCYN format meta file.
     --nwk_fn=IN_FILE            Path of build tree, scVar will build one if not supplied.
     --target_gene_fn=IN_FILE    Path of SCYN format meta file.
-    --k=INT                     Number of clusters in the tree at the cut point. [default: 10]
+    --k=INT                     Number of clusters in the tree at the cut point. [default: 50]
     --out_prefix=STR            Path of out file prefix, [default: ./phylo]
     --ref=STR                   Reference version, [default: hg38]
 """
@@ -30,6 +30,7 @@ from utils import phylogenetic as phylo
 from utils import io
 from utils import embedding
 from utils import annotation as anno
+from utils import clustering
 
 
 ######## annotate bin changes ############
@@ -108,11 +109,13 @@ def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None,
     t = phylo.get_tree_from_newick(newick)
 
     ##### cut hc dendrogram #####
-    cut_t, map_list = phylo.cut_tree(t, k)
+    _, map_list = phylo.cut_tree(t, k)
     m_df = pd.DataFrame(map_list)
     m_df.columns = [cnv_index_name, 'hcluster']
     m_df.index = m_df[cnv_index_name]
     del m_df[cnv_index_name]
+
+    #m_df['spectral_cluster'] = clustering.spectral_clustering(cnv_df, k)
 
     ##### append meta info #####
     if meta_fn:
@@ -157,8 +160,8 @@ def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None,
         df = pd.merge(meta_df[col].apply(str), cnv_df, how='outer', on=cnv_index_name)
         mean_df = df.groupby(col).mean()
 
-        t = phylo.build_tree(mean_df, group2cell)
-        if col == 'hcluster':
+        t, mean_df, meta_df = phylo.build_tree(cnv_df, mean_df, meta_df, group2cell, col)
+        if col in ['hcluster', 'spectral_cluster']:
             mean_df, meta_df = name_map = phylo.pruning_leafs(t, cnv_df, meta_df, meta_col=col)
 
         col_fn = out_prefix + '_{}_cnv.csv'.format(col)
