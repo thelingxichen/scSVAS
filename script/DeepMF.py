@@ -239,8 +239,8 @@ class DeepMF(object):
             u_loss = torch.sum(torch.pow(self.get_distance(U, 'row') - Du, 2))/(self.M*self.M)*0.01
             v_loss = torch.sum(torch.pow(self.get_distance(V, 'col') - Dv, 2))/(self.N*self.N)*0.01
         elif self.neighbor_proximity == 'KL':
-            u_loss = self._kl_loss(self.get_affinity(Du), 1/(1+self.get_distance(U, 'row')))
-            v_loss = self._kl_loss(self.get_affinity(Dv), 1/(1+self.get_distance(V, 'col')))
+            u_loss = self._kl_loss(self.get_affinity(Du), self.get_affinity(self.get_distance(U, 'row')))
+            v_loss = self._kl_loss(self.get_affinity(Dv), self.get_affinity(self.get_distance(V, 'col')))
         else:
             u_loss = 0
             v_loss = 0
