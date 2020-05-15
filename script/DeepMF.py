@@ -75,7 +75,7 @@ class DeepMF(object):
     def get_affinity(self, D, method='guassian_knn'):
         if method == 'guassian_knn':
             knn = D.topk(self.neighbor_k, largest=False)
-            sigma = knn.values[:, -1].repeat(1, D.shape[0], 1)
+            sigma = knn[0][:, -1].repeat(1, D.shape[0], 1)
             S = torch.exp(-D/(2*sigma*sigma))
             S[D > sigma] = 0
         else:
