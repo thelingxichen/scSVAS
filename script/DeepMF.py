@@ -73,6 +73,7 @@ class DeepMF(object):
         logging.basicConfig(filename=self.log_fn, level=logging.INFO)
 
     def get_affinity(self, D, method='guassian_knn'):
+        D = D + 1e-8  # sigma cannot be zero
         if method == 'guassian_knn':
             knn = D.topk(self.neighbor_k, largest=False)
             sigma = knn[0][:, -1].repeat(1, D.shape[0], 1)
@@ -89,6 +90,7 @@ class DeepMF(object):
         else:
             D = self.get_distance(data, row_or_col)
         S = self.get_affinity(D, method='guassian_knn')
+        ''' mask far away similarity to zero
         N, _ = D.shape
         if not n:
             n = int(N / self.K)
@@ -101,6 +103,7 @@ class DeepMF(object):
         # sigma = D.std()/2
         # S = torch.exp(-D/(2*sigma*sigma))
         S = Indicator * S
+        '''
         return S, D
 
     def get_distance(self, data, row_or_col):
@@ -183,8 +186,6 @@ class DeepMF(object):
                 if len(local_x) == 0:
                     continue
 
-                # local_x = local_x.to_dense()
-
                 y_pred = self.model(local_x)
                 y_pred, local_y = self.clean_y(y_pred, local_y)
                 loss = self.loss_fun(y_pred, local_y)
@@ -239,8 +240,8 @@ class DeepMF(object):
             u_loss = torch.sum(torch.pow(self.get_distance(U, 'row') - Du, 2))/(self.M*self.M)*0.01
             v_loss = torch.sum(torch.pow(self.get_distance(V, 'col') - Dv, 2))/(self.N*self.N)*0.01
         elif self.neighbor_proximity == 'KL':
-            u_loss = self._kl_loss(self.get_affinity(Du), self.get_affinity(self.get_distance(U, 'row')))
-            v_loss = self._kl_loss(self.get_affinity(Dv), self.get_affinity(self.get_distance(V, 'col')))
+            u_loss = self._kl_loss(self.get_affinity(Du), self.get_affinity(self.get_distance(U, 'row'), method='normal'))
+            v_loss = self._kl_loss(self.get_affinity(Dv), self.get_affinity(self.get_distance(V, 'col'), method='normal'))
         else:
             u_loss = 0
             v_loss = 0
@@ -305,3 +306,24 @@ class DeepMF(object):
             X = torch.sparse.FloatTensor(Xi, Xv, torch.Size([len(idx), M])).to_dense()
             Y = m[idx, :]
             yield X, Y
+
+
+def run_DeepMF(data, prefix, L=1, K=2, epoches=10000, alpha=0.01, device='cpu', neighbor_k=5,
+               learning_rate=1e-3, neighbor_proximity='KL'):
+    M, N = data.shape
+    device = torch.device(device)
+    n_batch = 10000
+
+    model = DeepMF(M, N, K=K, L=L,
+                   learning_rate=learning_rate,
+                   epoches=epoches,
+                   neighbor_proximity=neighbor_proximity,
+                   neighbor_k=neighbor_k,
+                   device=device, problem='regression', data_type='impute', prefix=prefix)
+
+    model.fit(data, n_batch, alpha=alpha)
+
+    y_pred = model.predict(data)
+    U, V = model.save_U_V()
+
+    return U, V, y_pred
