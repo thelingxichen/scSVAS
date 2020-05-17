@@ -120,49 +120,49 @@ def main():
     L2, non-linear interaction
     '''
 
-    run_pair(M, N, 'swiss_roll', 'swiss_roll', 'dot', 1, 2, epoches, 0.1)
+    run_pair(M, N, 'swiss_roll', 'swiss_roll', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'swiss_roll', 'swiss_roll', 'L2', 1, 2, epoches, 0.01)
 
-    run_pair(M, N, 'swiss_roll', 'circles', 'dot', 1, 2, epoches, 0.1)
+    run_pair(M, N, 'swiss_roll', 'circles', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'swiss_roll', 'circles', 'L2', 1, 2, epoches, 0.01)
 
-    # run_pair(M, N, 'swiss_roll', 'moons', 'dot', 1, 2, epoches, 0.01)
+    run_pair(M, N, 'swiss_roll', 'moons', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'swiss_roll', 'moons', 'L2', 1, 2, epoches, 0.01)
 
     # run_pair(M, N, 'swiss_roll', 'aniso', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'swiss_roll', 'aniso', 'L2', 1, 2, epoches, 0.01)
 
-    # run_pair(M, N, 'swiss_roll', 's_curve', 'dot', 1, 2, epoches, 0.01)
+    run_pair(M, N, 'swiss_roll', 's_curve', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'swiss_roll', 's_curve', 'L2', 1, 2, epoches, 0.01)
 
-    run_pair(M, N, 'swiss_roll', 'blobs', 'dot', 1, 2, epoches, 0.1)
+    run_pair(M, N, 'swiss_roll', 'blobs', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'swiss_roll', 'blobs', 'L2', 1, 2, epoches, 0.01)
 
-    # run_pair(M, N, 'circles', 'circles', 'dot', 1, 2, epoches, 0.01)
+    run_pair(M, N, 'circles', 'circles', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'circles', 'circles', 'L2', 1, 2, epoches, 0.01)
 
-    # run_pair(M, N, 'circles', 'moons', 'dot', 1, 2, epoches, 0.01)
+    run_pair(M, N, 'circles', 'moons', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'circles', 'moons', 'L2', 1, 2, epoches, 0.01)
 
     # run_pair(M, N, 'circles', 'aniso', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'circles', 'aniso', 'L2', 1, 2, epoches, 0.01)
 
-    # run_pair(M, N, 'circles', 's_curve', 'dot', 1, 2, epoches, 0.01)
+    run_pair(M, N, 'circles', 's_curve', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'circles', 's_curve', 'L2', 1, 2, epoches, 0.01)
 
-    run_pair(M, N, 'circles', 'blobs', 'dot', 1, 2, epoches, 0.1)
+    run_pair(M, N, 'circles', 'blobs', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'circles', 'blobs', 'L2', 1, 2, epoches, 0.01)
 
-    # run_pair(M, N, 'moons', 'moons', 'dot', 1, 2, epoches, 0.01)
+    run_pair(M, N, 'moons', 'moons', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'moons', 'moons', 'L2', 1, 2, epoches, 0.01)
 
     # run_pair(M, N, 'moons', 'aniso', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'moons', 'aniso', 'L2', 1, 2, epoches, 0.01)
 
-    # run_pair(M, N, 'moons', 's_curve', 'dot', 1, 2, epoches, 0.01)
+    run_pair(M, N, 'moons', 's_curve', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'moons', 's_curve', 'L2', 1, 2, epoches, 0.01)
 
-    run_pair(M, N, 'moons', 'blobs', 'dot', 1, 2, epoches, 0.1)
+    run_pair(M, N, 'moons', 'blobs', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'moons', 'blobs', 'L2', 1, 2, epoches, 0.01)
 
     # run_pair(M, N, 'aniso', 'aniso', 'dot', 1, 2, epoches, 0.01)
@@ -174,13 +174,13 @@ def main():
     # run_pair(M, N, 'aniso', 'blobs', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'aniso', 'blobs', 'L2', 1, 2, epoches, 0.01)
 
-    # run_pair(M, N, 's_curve', 's_curve', 'dot', 1, 2, epoches, 0.01)
+    run_pair(M, N, 's_curve', 's_curve', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 's_curve', 's_curve', 'L2', 1, 2, epoches, 0.01)
 
-    run_pair(M, N, 's_curve', 'blobs', 'dot', 1, 2, epoches, 0.1)
+    run_pair(M, N, 's_curve', 'blobs', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 's_curve', 'blobs', 'L2', 1, 2, epoches, 0.01)
 
-    run_pair(M, N, 'blobs', 'blobs', 'dot', 1, 2, epoches, 0.1)
+    run_pair(M, N, 'blobs', 'blobs', 'dot', 1, 2, epoches, 0.01)
     # run_pair(M, N, 'blobs', 'blobs', 'L2', 1, 2, epoches, 0.01)
 
 
