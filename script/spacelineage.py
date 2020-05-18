@@ -38,7 +38,7 @@ def build_tree(node, tree_df, parent_t):
         t.children = []
     t.nodes = [t] + sum([c.nodes for c in t.children], [])
     return t
-    
+
 
 
 
