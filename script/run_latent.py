@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-# import seaborn as sns
+import seaborn as sns
 import numpy as np
 import scprep
 import phate
@@ -26,11 +26,8 @@ def run_embedding(df, index, index_name):
 
 def run(data, color, prefix, L, K, epoches, alpha, device, neighbor_k, learning_rate):
 
-    f, axes = plt.subplots(2, 3, figsize=(9, 6))
+    f, axes = plt.subplots(3, 3, figsize=(9, 9))
     axs = axes.ravel()
-
-    # plotting data
-    # sns.heatmap(data, cmap="rainbow", xticklabels=False, yticklabels=False, ax=axs[0]).set(title='Y')
 
     U, V, y_pred = DeepMF.run_DeepMF(data, prefix+'.DeepMF', L, K, epoches, alpha, device, neighbor_k, learning_rate)
     V = V.T
@@ -58,6 +55,9 @@ def run(data, color, prefix, L, K, epoches, alpha, device, neighbor_k, learning_
 
     # plotting U
     scprep.plot.scatter2d(U, c=color, cmap='rainbow', title="DeepMF U", legend=False, ax=axs[5])
+
+    # plotting data
+    sns.heatmap(data, cmap="rainbow", xticklabels=False, yticklabels=False, ax=axs[6]).set(title='Y')
 
     plt.tight_layout()
     _, title = os.path.split(prefix)
