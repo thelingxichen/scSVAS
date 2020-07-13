@@ -1,0 +1,119 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+
+Usage:
+    svLAI.py call --tree_fn=IN_FILE --sv_fn=IN_FILE --group_meta_fn=IN_FILE --barcode_group_fn=IN_FILE [--out_prefix=STR] [--target_gene_fn=STR] 
+    svLAI.py -h | --help
+
+Options:
+    -h --help                   Show this screen.
+    --version                   Show version.
+    --tree_fn=IN_FILE           Path of tree file.
+    --group_meta_fn=IN_FILE     Path of group meta file.
+    --barcode_group_fn=IN_FILE  Path of barcode group file.
+    --out_prefix=STR            Path of out file prefix, [default: ./phylo]
+    --ref=STR                   Reference version, [default: hg38]
+"""
+import docopt
+import numpy as np
+import json
+import pandas as pd
+
+from biotool import genome
+
+from utils import phylogenetic as phylo
+from utils import io
+from utils import annotation as anno
+import spacelineage
+
+from SVAS import sv
+
+
+def get_barcode_clone(group_meta_fn, barcode_group_fn):
+    group_meta_df = pd.read_csv(group_meta_fn).set_index('group')
+    barcode_group_df = pd.read_csv(barcode_group_fn)
+    df = pd.merge(barcode_group_df, group_meta_df, on='group').set_index('barcode')
+    print(df)
+
+
+def run_call(tree_fn=None, group_meta_fn=None, barcode_group_fn=None, out_prefix=None, 
+             sv_fn=None,
+             ref='hg38', target_gene_fn=None, **args):
+    get_barcode_clone(group_meta_fn, barcode_group_fn)
+    t, _, _ = spacelineage.process_tree(tree_fn)
+    print(sv_fn)
+    print(t)
+
+    '''
+    group_meta_df, cnv_df, group2cell = io.read_cnv_fn_from_loupe(cnv_fn, group_meta_fn, region_meta_fn, confidence)
+    # build tree by meta category label #####
+    evo_trees = {}
+    evo_dict = {}
+    col = 'label'
+    if tree_fn:
+        phylo.set_tree(t, prefix=None)
+        for n in t.nodes:
+            if n.name in cnv_df.index:
+                n.cnv = cnv_df.loc[n.name].tolist()
+            else:
+                tmp = t.nodes[1]
+                n.cnv = [c if np.isnan(c) else 2 for c in cnv_df.loc[tmp.name].tolist()]
+            n.cells = group2cell.get(n.name, [])
+    else:
+        t = phylo.build_tree(cnv_df, group2cell, merge=False)
+    evo_trees[col] = t
+
+    col_fn = out_prefix + '_{}_cnv.csv'.format(col)
+    cnv_df.to_csv(col_fn)
+
+    # annotate_shifts(t, cnv_df, target_gene_fn=target_gene_fn, ref=ref)
+    evo_dict[col] = phylo.get_evo_tree_dict(t, group_meta_df[col], cnv_df.columns.tolist())
+
+    res = json.dumps(evo_dict, indent=4)
+    json_fn = out_prefix + '_evo.json'
+    with open(json_fn, 'w') as f:
+        f.write(res)
+
+    # output evo bin shifts ########
+    evo_fn = out_prefix + '_evo.tsv'
+    with open(evo_fn, 'w') as f:
+        f.write('\t'.join(['category_label', 'parent', 'child', 'amp/del', 'region', 'cytoband', 'parent_cnv', 'child_cnv', 'shift', 'gene'])+'\n')
+        for label, t in evo_trees.items():
+            f.write(get_tree_link_tsv(label, t))
+    '''
+
+
+def get_tree_link_tsv(label, t):
+    res = ''
+    for link in t.links:
+        for bin, bin_dict in link.shift_bins['amp'].items():
+            p, c, s = bin_dict['cnv'][0], bin_dict['cnv'][1], bin_dict['cnv'][2]
+            if 'gene' not in bin_dict:
+                continue
+            gene_str = ','.join(bin_dict.get('gene', []))
+            cytoband = bin_dict.get('cytoband', '')
+            r = [label, link.source.name, link.target.name, 'amp', bin, cytoband, p, c, s, gene_str]
+            res += '\t'.join(map(str, r)) + '\n'
+        for bin, bin_dict in link.shift_bins['loss'].items():
+            p, c, s = bin_dict['cnv'][0], bin_dict['cnv'][1], bin_dict['cnv'][2]
+            if 'gene' not in bin_dict:
+                continue
+            gene_str = ','.join(bin_dict.get('gene', []))
+            cytoband = bin_dict.get('cytoband', '')
+            r = [label, link.source.name, link.target.name, 'loss', bin, cytoband, p, c, s, gene_str]
+            res += '\t'.join(map(str, r)) + '\n'
+    return res
+
+
+def run(call=None, **args):
+    if call:
+        run_call(**args)
+
+
+if __name__ == "__main__":
+    args = docopt.docopt(__doc__)
+    new_args = {}
+    for k, v in args.items():
+        new_args[k.replace('--', '')] = v
+    run(**new_args)
