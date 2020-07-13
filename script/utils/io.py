@@ -1,5 +1,6 @@
 import csv
 import pandas as pd
+import numpy as np
 
 
 def read_cnv_fn(cnv_fn, index_name):
@@ -9,6 +10,27 @@ def read_cnv_fn(cnv_fn, index_name):
     df = df.fillna(2)
     df.index.name = index_name
     return df
+
+
+def read_cnv_fn_from_loupe(cnv_fn, group_meta_fn, region_meta_fn, confidence):
+    group_meta_df = pd.read_csv(group_meta_fn).set_index('group')
+
+    region_meta_df = pd.read_csv(region_meta_fn).set_index('labels').T
+    low_regions = region_meta_df[region_meta_df.confidence < confidence].index
+
+    cnv_df = pd.read_csv(cnv_fn)
+    cnv_df = cnv_df.set_index('node_id').drop(columns=['num_cells', 'num_noisy'])
+    cnv_df.index.name = 'group'
+    cnv_df = cnv_df.loc[group_meta_df.index]
+    cnv_df = pd.merge(group_meta_df, cnv_df, on='group').drop(columns='num_cells')
+    group2cell = cnv_df.groupby('label')['barcodes'].apply(lambda x: ';'.join(x)).to_dict()
+    group2cell = {group: cell_str.split(';') for group, cell_str in group2cell.items()}
+
+    cnv_df = cnv_df.groupby('label').mean()
+
+    cnv_df[low_regions] = np.nan
+    cnv_df.columns = [c.replace(',', '') for c in cnv_df.columns]
+    return group_meta_df, cnv_df, group2cell
 
 
 def read_meta_fn(meta_fn, index_name='cell_id'):

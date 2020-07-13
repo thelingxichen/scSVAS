@@ -3,37 +3,35 @@
 """
 
 Usage:
-    LAI.py cnv --cnv_fn=IN_FILE [--meta_fn=IN_FILE] [--nwk_fn=IN_FILE] [--target_gene_fn=IN_FILE] [--k=INT] [--out_prefix=STR] [--ref=STR]
+    LAI.py loupe --cnv_fn=IN_FILE --group_meta_fn=IN_FILE --region_meta_fn=IN_FILE [--ref=STR] [--confidence=INT] [--out_prefix=STR] [--target_gene_fn=STR] [--tree_fn=IN_FILE]
     LAI.py -h | --help
 
 Options:
     -h --help                   Show this screen.
     --version                   Show version.
-    --cnv_fn=IN_FILE            Path of SCYN format cnv file.
-    --meta_fn=IN_FILE           Path of SCYN format meta file.
-    --nwk_fn=IN_FILE            Path of build tree, scVar will build one if not supplied.
-    --target_gene_fn=IN_FILE    Path of SCYN format meta file.
-    --k=INT                     Number of clusters in the tree at the cut point. [default: 50]
+    --cnv_fn=IN_FILE            Path of cnv file.
+    --group_meta_fn=IN_FILE     Path of group meta file.
+    --region_meta_fn=IN_FILE    Path of region meta file.
     --out_prefix=STR            Path of out file prefix, [default: ./phylo]
+    --confidence=INT            CNV event confidence, [default: 5]
     --ref=STR                   Reference version, [default: hg38]
 """
-import os
 import docopt
-from scipy.cluster import hierarchy
 import numpy as np
-import pandas as pd
 import json
 
 from biotool import genome
 
 from utils import phylogenetic as phylo
 from utils import io
-from utils import embedding
 from utils import annotation as anno
-from utils import clustering
+import spacelineage
 
 
-######## annotate bin changes ############
+''''
+annotate bin changes ############
+'''
+
 
 def annotate_shifts(t, cnv_df, shift=0.5, target_gene_fn=None, ref='hg38'):
     cytoband_dict = genome.read_cytoband(ref)
@@ -43,10 +41,10 @@ def annotate_shifts(t, cnv_df, shift=0.5, target_gene_fn=None, ref='hg38'):
         c_cnv = link.target.cnv
 
         shifts = np.array(c_cnv) - np.array(p_cnv)
-        amp_index = sum(np.argwhere(shifts > shift).tolist(),[])
-        loss_index = sum(np.argwhere(shifts < -shift).tolist(),[])
-        amp_bins = cnv_df.iloc[:,amp_index].columns.tolist()
-        loss_bins = cnv_df.iloc[:,loss_index].columns.tolist()
+        amp_index = sum(np.argwhere(shifts > shift).tolist(), [])
+        loss_index = sum(np.argwhere(shifts < -shift).tolist(), [])
+        amp_bins = cnv_df.iloc[:, amp_index].columns.tolist()
+        loss_bins = cnv_df.iloc[:, loss_index].columns.tolist()
 
         amp_bins_dict = deal_shift_dict(amp_bins, amp_index, link)
         loss_bins_dict = deal_shift_dict(loss_bins, loss_index, link)
@@ -88,120 +86,59 @@ def process_bin2gene_hits(bin, hits, link=None, shift_type=None, cytoband_dict=N
     link.shift_bins[shift_type][bin]['gene'] = gene_list
 
     cytoband = genome.get_cytoband_from_bin_str(cytoband_dict, bin)
-    link.shift_bins[shift_type][bin]['cytoband'] = cytoband 
+    link.shift_bins[shift_type][bin]['cytoband'] = cytoband
 
 
-def run_cnv(cnv_fn=None, meta_fn=None, nwk_fn=None, target_gene_fn=None, k=None, cut_n=64,
-            out_prefix=None, ref='hg38', **args):
-    k = int(k)
-    cnv_index_name = 'cell_id'
-    cnv_df = io.read_cnv_fn(cnv_fn, cnv_index_name)
-    cell_names = cnv_df.index.to_list()
-
-    ##### build hc dendrogram #####
-    if not nwk_fn:
-        newick = phylo.build_hc_tree(cnv_df, cnv_index_name)
-        nwk_fn = out_prefix + '.nwk'
-        with open(nwk_fn, 'w') as f:
-            f.write(newick)
-    else:
-        newick = open(nwk_fn, 'r').read()
-    t = phylo.get_tree_from_newick(newick)
-
-    ##### cut hc dendrogram #####
-    _, map_list = phylo.cut_tree(t, k)
-    m_df = pd.DataFrame(map_list)
-    m_df.columns = [cnv_index_name, 'hcluster']
-    m_df.index = m_df[cnv_index_name]
-    del m_df[cnv_index_name]
-
-    #m_df['spectral_cluster'] = clustering.spectral_clustering(cnv_df, k)
-
-    ##### append meta info #####
-    if meta_fn:
-        meta_df = io.read_meta_fn(meta_fn, cnv_index_name)
-        meta_df = pd.merge(meta_df, m_df, how='outer', on=cnv_index_name)
-    else:
-        meta_df = m_df
-
-    # PCA
-    df = embedding.get_pca(cnv_df, cell_names, cnv_index_name)
-    meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
-    # TSNE
-    df = embedding.get_tsne(cnv_df, cell_names, cnv_index_name)
-    meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
-    # UMAP
-    df = embedding.get_umap(cnv_df, cell_names, cnv_index_name)
-    meta_df = pd.merge(meta_df, df, how='outer', on=cnv_index_name)
-
-
-
-    ##### build nested tree #####
-    res = phylo.get_nested_tree_json(t, cut_n)
-    json_fn = out_prefix + '_cut{}.json'.format(cut_n)
-    with open(json_fn, 'w') as f:
-        f.write(res)
-
-    ##### build tree by meta category label #####
+def run_loupe(cnv_fn=None, group_meta_fn=None, region_meta_fn=None, out_prefix=None, confidence=None,
+              tree_fn=None,
+              ref='hg38', target_gene_fn=None, **args):
+    confidence = int(confidence)
+    confidence = 5
+    group_meta_df, cnv_df, group2cell = io.read_cnv_fn_from_loupe(cnv_fn, group_meta_fn, region_meta_fn, confidence)
+    # build tree by meta category label #####
     evo_trees = {}
     evo_dict = {}
-    for col in meta_df.columns:
-        if col.startswith('e_') or col.startswith('c_'):
-            continue
-
-        group2cell = {}
-        for cell_id, group in meta_df[col].to_dict().items():
-            group = str(group)
-            if group in group2cell:
-                group2cell[group].append(cell_id)
+    col = 'label'
+    if tree_fn:
+        t, _, _ = spacelineage.process_tree(tree_fn)
+        phylo.set_tree(t, prefix=None)
+        for n in t.nodes:
+            if n.name in cnv_df.index:
+                n.cnv = cnv_df.loc[n.name].tolist()
             else:
-                group2cell[group] = [cell_id]
+                tmp = t.nodes[1]
+                n.cnv = [c if np.isnan(c) else 2 for c in cnv_df.loc[tmp.name].tolist()]
+            n.cells = group2cell.get(n.name, [])
+    else:
+        t = phylo.build_tree(cnv_df, group2cell, merge=False)
+    evo_trees[col] = t
 
-        df = pd.merge(meta_df[col].apply(str), cnv_df, how='outer', on=cnv_index_name)
-        mean_df = df.groupby(col).mean()
+    col_fn = out_prefix + '_{}_cnv.csv'.format(col)
+    cnv_df.to_csv(col_fn)
 
-        t, mean_df, meta_df = phylo.build_tree(cnv_df, mean_df, meta_df, group2cell, col)
-        if col in ['hcluster', 'spectral_cluster']:
-            mean_df, meta_df = name_map = phylo.pruning_leafs(t, cnv_df, meta_df, meta_col=col)
-
-        col_fn = out_prefix + '_{}_cnv.csv'.format(col)
-        mean_df.to_csv(col_fn)
-
-        ''' # pick, normal, build hc tree
-        normal, _ = phylo.choose_normal(df)
-        tumor_df = df[~df.index.isin([normal])]
-        newick = phylo.build_hc_tree(tumor_df, col)
-        t = phylo.get_tree_from_newick(newick, root=normal)
-        # evo_dict[col] = phylo.get_evo_tree_dict(t, meta_df[col])
-        # t = phylo.reroot_normal(t, df)
-        t = phylo.reroot_tree(t, df)
-        '''
-        evo_trees[col] = t
-        annotate_shifts(t, cnv_df, target_gene_fn=target_gene_fn, ref=ref)
-        evo_dict[col] = phylo.get_evo_tree_dict(t, meta_df[col], cnv_df.columns.tolist())
+    # annotate_shifts(t, cnv_df, target_gene_fn=target_gene_fn, ref=ref)
+    evo_dict[col] = phylo.get_evo_tree_dict(t, group_meta_df[col], cnv_df.columns.tolist())
 
     res = json.dumps(evo_dict, indent=4)
     json_fn = out_prefix + '_evo.json'
     with open(json_fn, 'w') as f:
         f.write(res)
 
-    ###### output evo bin shifts ########
+    '''
+    # output evo bin shifts ########
     evo_fn = out_prefix + '_evo.tsv'
     with open(evo_fn, 'w') as f:
         f.write('\t'.join(['category_label', 'parent', 'child', 'amp/del', 'region', 'cytoband', 'parent_cnv', 'child_cnv', 'shift', 'gene'])+'\n')
         for label, t in evo_trees.items():
             f.write(get_tree_link_tsv(label, t))
-
-    meta_fn = out_prefix + '_meta_scvar.csv'
-    meta_df.to_csv(meta_fn)
-
+    '''
 
 
 def get_tree_link_tsv(label, t):
     res = ''
     for link in t.links:
         for bin, bin_dict in link.shift_bins['amp'].items():
-            p, c ,s = bin_dict['cnv'][0], bin_dict['cnv'][1], bin_dict['cnv'][2]
+            p, c, s = bin_dict['cnv'][0], bin_dict['cnv'][1], bin_dict['cnv'][2]
             if 'gene' not in bin_dict:
                 continue
             gene_str = ','.join(bin_dict.get('gene', []))
@@ -209,7 +146,7 @@ def get_tree_link_tsv(label, t):
             r = [label, link.source.name, link.target.name, 'amp', bin, cytoband, p, c, s, gene_str]
             res += '\t'.join(map(str, r)) + '\n'
         for bin, bin_dict in link.shift_bins['loss'].items():
-            p, c ,s = bin_dict['cnv'][0], bin_dict['cnv'][1], bin_dict['cnv'][2]
+            p, c, s = bin_dict['cnv'][0], bin_dict['cnv'][1], bin_dict['cnv'][2]
             if 'gene' not in bin_dict:
                 continue
             gene_str = ','.join(bin_dict.get('gene', []))
@@ -219,10 +156,9 @@ def get_tree_link_tsv(label, t):
     return res
 
 
-
-def run(cnv=None, **args):
-    if cnv:
-        run_cnv(**args)
+def run(loupe=None, **args):
+    if loupe:
+        run_loupe(**args)
 
 
 if __name__ == "__main__":

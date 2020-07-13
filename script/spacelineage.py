@@ -40,6 +40,7 @@ def build_tree(node, tree_df, parent_t):
     t.nodes = [t] + sum([c.nodes for c in t.children], [])
     return t
 
+
 def get_linkage_matrix(t, nodes_dict, node_name_list):
     N = len(t.nodes)
     m = np.zeros((N, N))
@@ -50,6 +51,7 @@ def get_linkage_matrix(t, nodes_dict, node_name_list):
         j = node_name_list.index(n.name)
         m[i, j] = 1
     return m
+
 
 def get_prev_df(prev_fn, node_name_list, low_prev_thresh=0.01):
     df = pd.read_csv(prev_fn)
@@ -98,6 +100,7 @@ def predict_sample_dist_df(prev_df, clone_dist_df):
 
 
 def get_minimal_spanning_tree(dist_df):
+
     root = dist_df.index[0]
 
     from scipy.sparse import csr_matrix
@@ -149,9 +152,11 @@ def plot(prev_df, clone_dist_df, pred_sample_dist_df, sample_dist_df):
     plt.savefig('space_lineage.png')
 
 
+'''
 prev_fn = '../demo_data/A21_clonal_prev.csv'
 clone_tree_fn = '../demo_data/A21_tree.csv'
 sample_tree_fn = '../demo_data/A21_space_tree.csv'
 
 
 run(prev_fn, clone_tree_fn, sample_tree_fn)
+'''

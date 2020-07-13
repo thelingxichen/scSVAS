@@ -9,8 +9,6 @@ import json
 import sys
 import collections
 from sklearn.metrics import pairwise_distances
-from sklearn.metrics import silhouette_score 
-from sklearn import metrics 
 
 sys.setrecursionlimit(100000)
 
@@ -73,6 +71,7 @@ def build_hc_tree(df, index_name):
     '''
     return newick
 
+
 '''
 def auto_cut_tree(t, max_k, cnv_df):
     cnv_index_name = cnv_df.index.name
@@ -128,8 +127,8 @@ def get_evo_tree_dict(t, df, bins):
     res['dist_to_root'] = t.dist_to_root
     res['num_cells'] = len(df)
     res['leafs'] = [n.name for n in t.leafs]
-    res['links'] = [{'source': l.source.name, 
-                     'target':l.target.name, 
+    res['links'] = [{'source': l.source.name,
+                     'target': l.target.name,
                      'distance': l.dist,
                      'shift_bins': l.shift_bins} for l in t.links]
     nodes_dict = {}
@@ -138,18 +137,30 @@ def get_evo_tree_dict(t, df, bins):
     node_list = sorted(t.nodes, key=lambda n: n.dist_to_root)
     map_dict = df.apply(str).value_counts().to_dict()
     for n in node_list:
-        c = n.closest_child.name if n.closest_child else 'NONE'
+        # c = n.closest_child.name if n.closest_child else 'NONE'
         n.freq = map_dict.get(n.name, 0)/df.shape[0]
-        nodes_dict[n.name] = {'x': n.x, 
-                              'y': n.y, 
-                              'cnv': dict(zip(bins, n.cnv)),
+        cnv = ['' if np.isnan(c) else c for c in n.cnv]
+        nodes_dict[n.name] = {'x': n.x,
+                              'y': n.y,
+                              'cnv': dict(zip(bins, cnv)),
                               'freq': n.freq,
                               'num_cells': len(n.cells)}
 
-    res['node_list'] = list(nodes_dict.keys())
+    res['node_list'] = get_node_by_DFS(t) 
     res['nodes'] = nodes_dict
     return res
 
+def get_node_by_DFS(t):
+    visited = []
+    get_node_by_DFS_aux(t, visited)
+    return visited 
+
+def get_node_by_DFS_aux(t, visited):
+    if t.name not in visited:
+        visited.append(t.name)
+    for c in t.children:
+        get_node_by_DFS_aux(c, visited)
+                  
 
 def cut_tree(t, k):
     t = copy.deepcopy(t)
@@ -249,7 +260,6 @@ def set_tree_coords(t, df=None):
         n.end_y = count
         n.y = i + 0.5
 
-
     if df is not None and t.name in map_dict:
         t.start_y = 0
         count += map_dict[t.name]/2
@@ -290,7 +300,7 @@ def choose_normal(df):
     norms = np.sum(np.multiply(m, m) + 4 - 4*m, axis=1)
     i = np.argmin(norms)
     normal = str(df.index[i])
-    return normal, i 
+    return normal, i
 
 
 def reroot_normal(t, root):
@@ -402,6 +412,7 @@ def choose_ancestor_cnv(xs):
 
     return cnv
 
+
 '''
 # build tree
 import matplotlib
@@ -410,26 +421,31 @@ import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()
 # similarity
 '''
-def build_tree(cnv_df, df, meta_df, group2cell, meta_col):
 
-    D = np.log(np.log(pairwise_distances(df)))
+
+def build_tree(df, group2cell, meta_df=None, meta_col=None, merge=True, cnv_df=None):
+    df = copy.deepcopy(df)
+    df[pd.isna(df)] = 2
+    D = np.log(pairwise_distances(df))
     # plot = sns.heatmap(D)
     # plot.get_figure().savefig("test.png")
 
     normal, normal_i = choose_normal(df)
     group_names = df.index
     normal_n = Tree()
-    normal_n.name = normal 
+    normal_n.name = normal
     normal_n.cnv = df.loc[normal].tolist()
     normal_n.cells = group2cell.get(normal, [])
     leftouts = list(range(len(group_names)))
     del leftouts[normal_i]
     node_dict = {normal: normal_n}
-    build_tree_aux([normal_i], node_dict, D, leftouts, group_names, cnv_df, df, group2cell)
+    build_tree_aux([normal_i], node_dict, D, leftouts, group_names, df, group2cell, merge, cnv_df)
     t = node_dict[normal]
     t.parent = None
     set_tree(t, prefix=None)
 
+    if not meta_df:
+        return t
     mean_df_list = []
     for i, n in enumerate(t.nodes):
         name = 'c{}'.format(i+1)
@@ -444,26 +460,25 @@ def build_tree(cnv_df, df, meta_df, group2cell, meta_col):
         mean_df_list.append(df.T)
     mean_df = pd.concat(mean_df_list)
 
-    return t, mean_df, meta_df 
+    return t, mean_df, meta_df
 
 
-def build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, cnv_df, df, group2cell):
-    
+def build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, df, group2cell, merge=True, cnv_df=None):
+
     # print('parent_cands', parent_candidates)
     # print(nodes_dict)
     # print('leftouts', leftouts)
-     
+
     if not leftouts:
         return
 
-    queues = { p: [] for p in parent_candidates}
+    queues = {p: [] for p in parent_candidates}
     for leftout in leftouts:
         i = np.argmin(D[leftout, parent_candidates])
         parent_candidate = parent_candidates[i]
-        queues[parent_candidate].append((D[leftout,parent_candidate], leftout))
-    
-    #print(queues)
+        queues[parent_candidate].append((D[leftout, parent_candidate], leftout))
 
+    # print(queues)
     # sort queues
     for p, cs in queues.items():
         p_name = group_names[p]
@@ -480,7 +495,7 @@ def build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, cnv_
             c_cells = group2cell.get(c_name, [])
             diff = abs(np.mean(np.array(p_node.cnv) - np.array(c_cnv)))
             # print(p_name, c_name, diff, len(p_node.cells), len(c_cells))
-            if diff < 0.05 or len(p_node.cells) <= 5:
+            if merge and (diff < 0.05 or len(p_node.cells)) <= 5:
                 p_node.cells += c_cells
                 p_node.cnv = cnv_df.loc[p_node.cells].mean().to_list()
                 leftouts.remove(c)
@@ -489,21 +504,21 @@ def build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, cnv_
             c_node = Tree()
             c_node.name = c_name
             c_node.cnv = c_cnv
-            c_node.cells = c_cells 
+            c_node.cells = c_cells
             nodes_dict[c_name] = c_node
             nodes_dict[p_name].dist = dist
             nodes_dict[p_name].children.append(c_node)
             leftouts.remove(c)
             parent_candidates.append(c)
-   
+
         if len(nodes_dict[p_name].children) == 2:
             parent_candidates.remove(p)
 
-    build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, cnv_df, df, group2cell)
+    build_tree_aux(parent_candidates, nodes_dict, D, leftouts, group_names, df, group2cell, merge, cnv_df)
 
 
 def pruning_leafs(t, cnv_df, meta_df, meta_col='hcluster', minimal_num_cells=5):
-    pruning_leafs_aux(t, minimal_num_cells )
+    pruning_leafs_aux(t, minimal_num_cells)
     set_tree(t)
 
     mean_df_list = []
@@ -518,7 +533,7 @@ def pruning_leafs(t, cnv_df, meta_df, meta_col='hcluster', minimal_num_cells=5):
         df.columns = [name]
         mean_df_list.append(df.T)
     mean_df = pd.concat(mean_df_list)
-    return mean_df, meta_df 
+    return mean_df, meta_df
 
 
 def pruning_leafs_aux(t, minimal_num_cells=5):
@@ -530,19 +545,4 @@ def pruning_leafs_aux(t, minimal_num_cells=5):
                 n.cells += c.cells
             else:
                 childs.append(c)
-        n.children = childs                
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        n.children = childs
