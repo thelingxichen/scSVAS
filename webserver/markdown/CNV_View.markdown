@@ -1,13 +1,26 @@
-##### Download [cnv profile](https://raw.githubusercontent.com/paprikachan/Oviz-SingleCell-demo/master/CNV/demo_data/SCYN/T10_cnv.csv) and [meta information](https://github.com/paprikachan/Oviz-SingleCell-demo/blob/master/CNV/demo_data/SCYN/T10_meta.csv) the `official demo input file`.
-
-Additional demo files are provided in the [GitHub](https://github.com/paprikachan/Oviz-SingleCell-demo/tree/master/CNV/demo_data/SCYN) project.
+##### Please try the demo files in the sidebar (`Demo File Sets`).
 
 # Introduction
 
-Xxx. 
+Over the past two decades, CNV heatmap has often been adopted to visualize the CNV profiles of a batch of samples or single cells in various sequencing protocols. e.g. bulk SNP array, whole genome/exon sequencing, single cell RNA sequencing. For single cell DNA sequencing, CNV heatmap aids the landscape view of single cell copy number in several pieces of literature. In addition, Smith *et. al.* developed a visualization tool CellScape for single cell CNV heatmap.
+
+Nevertheless, with the stride of 10x Genomics high throughput sequencing, the scale of sequenced cells escalates exponentially, aka, thousands of cells at a time. Efficient visualization of the heatmap with a large (e.g. 1k x 5k) size is critical for scientific interpretation. Plotting using R or Python packages, or existing heatmap visualization tools like CellScape are incredibly time-consuming and memory-intensive when it reaches thousands of cells and thousands of genomic regions. 
+
+It is essential to reduce the size of heatmap while retaining the heterogeneity among single cells. 10x CNV official visualization tool Loupe solves this issue by building a single cell dendrogram in advance, splitting single cells into less than 100 subgroups by cutting the dendrogram, and collapsing single cells inside the cluster into one row in the heatmap. Cluster zoom-in operation is achieved by clicking the node in the dendrogram.  
+
+In the scSVAS platform, cooperating scSVAS pipeline, we build web interface ''CNV View''  for interactive and real-time visualization of CNV landscape of scDNA-seq data with zoomable dendrogram. Compared with Loupe, ''CNV View'' also visualizes the aggregate subgroup CNV heatmap and stairstep, which is commonly adopted in reputable publications.
+
+''CNV View'' enables users to create the landscape of single cell CNV profiles in two straightforward steps as follow:
+
+  + Open (https://sc.deepomics.org/demo-project/analyses/view) in Google browser, and upload cnv profile file `*_cnv.csv`, predefined meta file `*_meta.csv`.
+  + *Optional* With cnv profile file `*_cnv.csv`, predefined meta file `*_meta.csv` as inputs, users can run `scSVAS` to get the cutted dendrogram of single cells, and upload it to compress the heatmap plot.
+
+Users can get a single cell CNV landscape view of scDNA-seq data. With single cells as rows and genomic regions as columns, the cell CNV heatmap exhibits the copy number of a specific single cell across the entire genome. The cell meta heat map will be displayed on the left if users provide single cell meta information.
+In addition, the aggregate subgroup CNV heat map and stairstep will also be listed in the bottom layers. The user can select the subgroups to be aggregated in the "Editor General Settings". If users offer the cut dendrogram file, a zoomable cut dendrogram will be displayed on the left.
+If the mouse hovers over cell CNV/meta heatmap, cutted dendrogram, and stairstep, an interactive tooltip carried its vital information will appear. 
 
 # Input File Format
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the [GitHub](https://github.com/paprikachan/Oviz-SingleCell-demo/tree/master/CNV/demo_data) project. Please check the general accepted [input file format](https://github.com/paprikachan/Oviz-SingleCell-demo/blob/master/CNV/markdown/CNV_input_format.markdown).
+The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the [GitHub](https://github.com/paprikachan/scSVAS/tree/master/demo_data) project. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/CNV_input_format.markdown).
 
 # Display Interactions
 
@@ -81,20 +94,20 @@ Puram, S. V., Tirosh, I., Parikh, A. S., Patel, A. P., Yizhak, K., Gillespie, S.
 
 # Version
 
-v1.0.0 (2020-01-03)
+v1.0.0 (2020-12-16)
 
 # Developer
 
 Mr. Yuhao Qing ([GitHub](https://github.com/Q-Y-H))
 
-Mr. Ruikang Li ([GitHub](xxx))
+Mr. Ruikang Li ([GitHub](https://github.com/RKLho))
 
 # Designer
 
-Miss. Lingxi Chen ([GitHub](https://github.com/paprikachan))
+Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 
 ## Updates
 
 ### v1.0.0
 
-   - initial functions implemented.
+   - full functionalities implemented.
