@@ -62,23 +62,23 @@ The editor offers various options to fine-tune the visualization. Users can adju
      + Select categorical meta label, Layout Settings </br>
            Select categorical meta label, Layout Settings are the same with "CNV View'' visualization.
    + Search (Available in "Bed Region" and "Search Bed'' mode)
-        + Search local genome region </br>
+      + Search local genome region </br>
         Users can enter a local genome region to display, e.g. chr17:5,565,097-9,590,863. This functionality is only effective when search bed mode is activated.
-        + Bed region </br>
+      + Bed region </br>
         Users can select the local genome region in uploaded bed file to display. This functionality is only effective when bed region mode is activated.
    + Genome Browser (Available in "Bed Region" and "Search Bed'' mode)
-        + Annotation Panel 
-           + Display strand </br>
-              Users can choose to display postive, negative, or both strands on gene track.
-           + Show repeat track </br>
+      + Annotation Panel 
+        + Display strand </br>
+           Users can choose to display postive, negative, or both strands on gene track.
+        + Show repeat track </br>
               Users can choose to display the repeat track or not.
-           + Merge gene tracks </br>
+        + Merge gene tracks </br>
               Users can choose to merge gene track to get condensed displaying.
-           + Display gene name </br>
+        + Display gene name </br>
               Users can choose to display the gene name or transcript name in gene track.
-           + Display all genes </br>
+        + Display all genes </br>
               Users can choose to display all genes on the gene track. 
-        + Genes </br>
+      + Genes </br>
         This section lists all genes in current local region, users can decide to display which transcript of one gene.
    + Color palettes </br>
            Users can customize color palettes for available categorical meta labels and continuous meta labels.
