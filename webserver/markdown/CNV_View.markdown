@@ -27,23 +27,23 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
 # Interactions
 
 
-  + Download 
+  + Download </br>
     An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
-  + Tooltips and Highlightsm
+  + Tooltips and Highlights </br>
     When your cursor hovers over an component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are several major types of component in the "CNV View'' application and their tooltipping and highlighting interactions are as follows:
-    - Unit Component on the Cell CNV Heatmap
+    - Unit Component on the Cell CNV Heatmap </br>
           The tooltip will display the genome position and copy number of a unit. The name of the corresponding leaf node in the cutted dendrogram will also be shown. Further, the genome position, the leaf node, and the range of the leaf node will be highlighted.
-    - Unit Component on the Cell Meta Heatmap 
+    - Unit Component on the Cell Meta Heatmap </br>
           The tooltip will display the cell ID and meta label of a unit.
-    - Cutted Dendrogram Node 
+    - Cutted Dendrogram Node </br>
           The tooltip will display the name of the current node, the number of cells in it, the parent node of it, and the distance between it and the root node. Further, the subtree and the covered cell range of the current node will be highlighted.
-    - Cutted Dendrogram Branch 
+    - Cutted Dendrogram Branch </br>
           The tooltip will display the names of the associated parent and child nodes and their branch distance. The branch, the parent node, and the child node ill be highlighted.
-    - Unit Component on the Aggregate Subgroup CNV Heatmap 
+    - Unit Component on the Aggregate Subgroup CNV Heatmap </br>
           The tooltip will display the genome position, the copy number, and the subgroup name.
-    - Component on the Aggregate Subgroup CNV Stairstep 
+    - Component on the Aggregate Subgroup CNV Stairstep </br>
           The tooltip will display the genome position and the average copy number of cells for all subgroups.
-    - Dendrogram Zooming 
+    - Dendrogram Zooming </br>
       When users click a node in the cutted dendrogram, the selected node will be regarded as the temporary tree root, and a new sub-cutted dendrogram will be rendered. The cell CNV heatmap and meta panel will also be updated to fit the current cell range. When you click the "Back to Root'' button, the whole CNV view will return to its initial status. You may also utilize the "left arrow'' and "right arrow'' buttons to un-do and re-do zooming operations.
 
 
@@ -52,88 +52,82 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
 
 The editor offers various options to fine-tune the visualization. Users can adjust the editor width and font size in "Editor Settings''.
 
-  + Demo File Sets 
+  + Demo File Sets </br>
     Users can select a demo file set for an instant preview. 
 
   + Files
 
-    + Upload 
+    + Upload </br>
       Users can upload and manage the input files. Note that the repeated file name will be warned and given a random postfix.
-
-    + Choose 
+    + Choose </br>
       Users can choose files uploaded previously. 
-
-    + File sets 
+    + File sets </br>
       Users can save multiple files together as a file set, then decide to display one file set previously stored.
-
-      
 
   + General Settings 
 
-    - Auto load heatmap 
+    - Auto load heatmap </br>
       Checkbox for user to decide whether the cell CNV heatmap will automatically be loaded. 
-    - NA cases (separated by comma ,) 
+    - NA cases (separated by comma ,) </br>
       User can define the NA cases in CNV csv file, the default `N/A,NA` means empty space `""`, string `N/A`, and string `NA` will be considered NA cases by file parser.
-    - Reorder cells by 
+    - Reorder cells by </br>
       Users can reorder cells in cell CNV/meta heatmap by meta labels in ascending or descending order. The default order is the cell ordered in uploaded CNV csv file. Please note this functionality is effective only when on cutted dendrogram JSON file supplied.
-    - Aggregate subgroup 
+    - Aggregate subgroup </br>
       Users can select categorical meta label to display in aggregate subgroup CNV heatmap and stairstep. The average copy number value in subgroup will be displayed.
 
-  + Select categorical meta label 
+  + Select categorical meta label </br>
     Users can choose which categorical meta label to show in the heatmap. Please note this functionality is effective only when on cutted dendrogram JSON file supplied.
 
   + Layout Settings 
 
     - Basic 
 
-      + Figure margin - left 
+      + Figure margin - left </br>
         User can adjust the left margin of the figure.
 
-      - Figure margin - top 
+      - Figure margin - top </br>
         User can adjust the top margin of the figure.
-      - Genome zoom slider - height 
+      - Genome zoom slider - height </br>
         User can adjust the height of genome zoom slider.
-      - Margin between CNV heatmap and genome zoom slider. 
+      - Margin between CNV heatmap and genome zoom slider </br>
         User can adjust the margin between CNV heatmap and genome zoom slider.
-      - Margin betwenn cutted dendrogram and meta heatmap. 
+      - Margin betwenn cutted dendrogram and meta heatmap </br>
         User can adjust the margin between cutted dendrogram and meta heatmap.
 
     - CNV Heatmap
 
-      - Unit height of CNV heatmap, unit width of CNV heatmap (integer recommended) 
+      - Unit height of CNV heatmap, unit width of CNV heatmap (integer recommended) </br>
         User can adjust the unit height and unit width of CNV heatmap. Unit refers to the smallest rendered SVG object in heatmap. Please note that the heatmap unit height and unit width are recommend to set as integer, floating point will make heatmap transparent owing to subpixel rendering.
-      - Chromosomes - height 
+      - Chromosomes - height </br>
         Users can adjust the height of chromosomes.
-      - Show vertical line between chromosomes 
+      - Show vertical line between chromosomes </br>
         User can decide whether to show vertical line between chromosomes.
-      - Desired width of CNV heatmap. 
+      - Desired width of CNV heatmap </br>
         Users can adjust the width of CNV heatmap, default is 1000.
-      - Left highlight - width 
+      - Left highlight - width </br>
         User can adjust the width of left highlight.
-      - Top highlight - height 
+      - Top highlight - height </br>
         User can adjust the height of right highlight.
 
     - Meta Heatmap
 
-      - Unit width of meta heatmap 
-
+      - Unit width of meta heatmap </br>
         User can adjust the unit width of meta heatmap. 
-
-      - Meta heatmap legend - width 
+      - Meta heatmap legend - width </br>
         User can adjust the width of meta heatmap legend.
-
-      - Margin between different meta heatmap legends 
+      - Margin between different meta heatmap legends </br>
         User can adjust the margin between different meta heatmap legends.
 
     - Cutted Dendrogram
 
-      - Dendrogram - width 
+      - Dendrogram - width </br>
         User can adjust the width of cutted dendrogram.
 
-  + Color palettes 
+  + Color palettes </br>
     Users can customize color palettes for available categorical meta labels and continuous meta labels.
 
 
+<!--
 
 # Reference
 
@@ -165,7 +159,7 @@ Puram, S. V., Tirosh, I., Parikh, A. S., Patel, A. P., Yizhak, K., Gillespie, S.
 *Cell*, 171(7), 1611-1624.
 (PMID: [29198524](https://www.ncbi.nlm.nih.gov/pubmed/29198524), See [Figure 1](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5878932/figure/F1/))
 
-
+-->
 
 
 
@@ -188,4 +182,3 @@ Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 ### v1.0.0
 
    - full functionalities implemented.
-
