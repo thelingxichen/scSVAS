@@ -8,7 +8,7 @@ In scSVAS platform, we build a readily available web interface "CNV Cell Phyloge
 "CNV Cell Phylogeny'' enables users to create the cell phylogeny plot in one straightforward step as follow:
 
  + With cnv profile file `*_cnv.csv`, predefined meta file `*_meta.csv` and targeted gene list as inputs, run `scSVAS` to get the single cells cutted dendrogram `*_cut.json`, the subclone and embedding results `*_meta_scsvas.csv`, and targeted gene cnv profiles `*_gene_cnv.csv}`.
- + Open https://sc.deepomics.org/demo-project/analyses/cell_phylogeny in Google browser, and upload files `*_cut.json`, optional files `*_meta_scsvas.csv` and `*_gene_cnv.csv`.
+ + Open https://sc.deepomics.org/demo-project/analyses/cell\_phylogeny in Google browser, and upload files `*_cut.json`, optional files `*_meta_scsvas.csv` and `*_gene_cnv.csv`.
 
 Then, you may get a cutted dendrogram of single cells. Users can switch the tree between "Topdown'' and "Circular'' modes. If the optional file `*_meta.csv` and `*_gene_cnv.csv` are uploaded, the cell meta and CNV heatmap will be shown. Users can decide to display or hide these meta labels in "Editor-Select categorical meta label''. If the mouse hovers over a dendrogram or heatmap, an interactive tooltip carried its vital information will appear.
 
