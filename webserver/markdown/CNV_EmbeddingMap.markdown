@@ -1,37 +1,67 @@
-##### [Download](https://raw.githubusercontent.com/Nobel-Justin/Oviz-Bio-demo/master/CNV_EmbeddingMap/demo_data/10x.txt) the `official demo input file`.
-
-Additional demo files are provided in the [GitHub](https://github.com/Nobel-Justin/Oviz-Bio-demo/tree/master/SV_Heatmap/demo_data) project.
+##### Please try the demo files in the sidebar (`Demo File Sets`).
 
 # Introduction
-Xxx. 
+High-dimensional data could be challenging to visualize. Reducing data into two dimensions is essential for representing the inherent structure of the data. Several supervised and unsupervised embedding methods have been proposed and widely applied to multiple disciplines in the past two decades. For example, linear dimension reduction tools like Principal Component Analysis (PCA), Independent Component Analysis (ICA), Non-negative Matrix Factorization (NMF) specify distinct rubrics to conduct linear projection of data. Furthermore, to tackle non-linear data structure, t-distributed Stochastic Neighbor Embedding (t-SNE), Uniform Manifold Approximation and Projection (UMAP), and Potential of Heat-diffusion for Affinity-based Trajectory Embedding (PHATE) are developed. We also build a Matrix Factorization based Deep neural network (DeepMF), which is compatible with both linear and non-linear embedding.
+
+In scSVAS platform, we build a readily available web interface "CNV Embedding Map''  for interactive and real-time visualization of scDNA-seq data."
+
+With the advance of sing-cell DNA sequencing techniques, the CNV data of tens of thousands of cells could be profiled at the same time. In terms of large-scale data, conventional 2D scatter plots may disguise essential information. "CNV Embedding Map" defeats this overplotting obstacle utilizing hexagonal binning, which also has benefits on time and memory complexity.
+
+
+"CNV Embedding Map'' enables users to create the 2D embedding plot in two straightforward steps as follow:
+
+
+
+ + With cnv profile file `*_cnv.csv`, predefined meta file `*_meta.csv` and targeted gene list as inputs, run `scSVAS` to get the 2D embedding (PCA, ICA, TSNE, UMAP, PHATE, and DeepMF) results `*_meta_scsvas.csv` and targeted gene cnv profiles `*_gene_cnv.csv`.
+ + Open https://sc.deepomics.org/demo-project/analyses/embedding\_map in Google browser, and upload files `*_meta_scsvas.csv` and `*_gene_cnv.csv`.
+   
+   
+
+Then, you may get a matrix of 2D representations of scDNA-seq data. The column will list all embedding techniques available in uploaded file `*_meta_scsvas.csv` by default. Users can decide to display or hide these embedding methods in "Editor-General Settings''. The rows display different strategies to color the single cell data point. If the "hexagon mode'' is activated, the embedded cells colored with density will be displayed. If the optional file `*_gene_cnv.csv` is uploaded, the embedded cells colored with gene CNV profiles will be shown. Users can specify the gene for coloring in "Editor-General Settings''. Moreover, all categorical meta labels available in uploaded file `*_meta_scsvas.csv` will be used as color schemes by default. Users can decide to display or hide these meta labels in "Editor-Select categorical meta label''. If the mouse hovers over one scatter point or hexagon bin, an interactive tooltip carried its vital information will appear. 
 
 # Input File Format
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the [GitHub](https://github.com/Nobel-Justin/Oviz-Bio-demo/tree/master/SV_Heatmap/demo_data) project. Please check the general accepted [input file format](xxx).
 
-# Display Interactions
-There are two types of interactions: *Tooltips* and *Download*.
+The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/CNV_input_format.markdown).
 
-- **Tooltips**
-  Tooltips will show necessary information of the cell point or hexagon bin that the mouse points to.
-  + __*Coordinate*__: The embedding coordinate of the cell point or hexagon bin.
-  + __*Annotation Value*__: The choosen annotation (Density or other meta info) value of the cell point or hexagon bin.
-  + __*Cell ID/IDs*__: The choosen cell id or a list of cell ids in the choosen hexagon bin.
-  + __*Cell Number*__: The number of cells in the choosen hexagon bin
-   
-- **Download**
-  One SVG file will be generated when the '**Download**' button is clicked. Two themes are supplied: the default theme with dark background and the light theme with white backgroud. To use the light theme, please click the '**Light Theme**' button.
 
-# Sidebar Functions
-The sidebar provides diverse options to fine-tune the display, such as manage files, reannotate color, turn off **Hexagon Mode**, and so on.
+# Interactions
 
-- **Files**
-  + __*Upload*__: upload embedding input `.csv` file, and manage uploaded files. Note that duplicated file name will be alerted and given a random postfix.
-  + __*Choose*__: choose files uploaded previously. Note that this function is ONLY available to registered user (each account has certain storage).
-  + __*File Sets*__: NOT available to this page.
-- **General**
-  + __*Annotate cells by*__: choose the annotation schema of data, from *density* and other meta informations (*Cluster*, *Region Ploidy*).
-  + __*Hexagon Mode*__: turn on or off "Hexagon Mode" (rescale cell point with hexagon bin).
-  + __*Set width of hexagon*__: set the size of each hexagon (only available under Hexagon Mode).
+   + Download </br>
+     An SVG file will be generated when you click the ''Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the ''Light Theme'' button.
+   + Tooltips and Highlights </br>
+     When your cursor hovers over an component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are two major types of component in the ''CNV Embedding Map'' application and their tooltipping and highlighting interactions are as follows:
+     + Hexagon bins on the 2D-Embedding hexagon plot </br>
+       The tooltip will display the x and y coordinates,  the coloring value, the number of cells in the bin, and the list of cell IDs.
+     + Scatter point on the 2D-Embedding scatter plot </br>
+       The tooltip will display the x and y coordinates, the coloring value, and the cell ID.
+
+# Editor Functionalities
+
+The editor offers various options to fine-tune the visualization. Users can adjust the editor width and font size in ''Editor Settings''.
+
+   + Demo File Sets, Files </br>
+     Demo file sets and files Functionalities are the same with ''CNV View'' visualization.
+   + General Settings </br>
+     + Select embedding methods </br>
+       User can select to display available embedding methods.
+     + Hexagon Mode </br>
+       User can choose ''hexagon mode'' or ''scatter mode''.
+     + Width of hexagon bin </br>
+       User can adjust the width of hexagon bin.
+     + Hexagon bin averaging scheme </br>
+       User can choose ''mean'' or ''median'' as hexagon bin averaging scheme.
+     + Radius of scatter point </br>
+       User can adjust the radius of scatter point.
+     + Search for gene </br>
+       User can search or select a gene, and color the embedding plot with its copy number.
+     + Embedding plot height </br>
+       User can adjust the height of each embedding plot.
+     + Embedding plot width </br>
+       User can adjust the width of each embedding plot.
+   + Select categorical meta label </br>
+      Users can choose which categorical meta label to use for coloring the embedded plot. 
+   + Color Palettes </br>
+      Users can customize color palettes for ''Density'' and available categorical labels.
 
 # Reference
 
@@ -42,7 +72,7 @@ Freytag, S., & Lister, R. (2019).
 
 # Version
 
-v1.0.1 (2020-02-17)
+v1.0.1 (2020-12-16)
 
 # Developer
 
@@ -50,7 +80,7 @@ Mr. Chaohui Li ([GitHub](https://github.com/Eric0627))
 
 # Designer
 
-Miss. Lingxi Chen ([GitHub](https://github.com/paprikachan))
+Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 
 ## Updates
 
