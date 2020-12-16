@@ -8,6 +8,7 @@ In cancer datasets, the copy number of different regions may encounter dramatic 
 To address this concern, in scSVAS platform, we develop a readily available web interface "CNV Ploidy Distribution''  for interactive and real-time visualization of ploidy density plot for scDNA-seq data.
 
 "CNV Ploidy Distribution'' enables users to create the ploidy density plot just in one simple step as follow:
+
   + Open https://sc.deepomics.org/demo-project/analyses/ploidy\_distribution in Google browser, and upload cnv profile file `*_cnv.csv` and predefined meta file `*_meta.csv`.
   + *Optional* With cnv profile file `*_cnv.csv` and predefined meta file `*_meta.csv` as inputs, users may also run `scSVAS` to get the subclone cluster result in `*_meta_scsvas.csv` first.
 
