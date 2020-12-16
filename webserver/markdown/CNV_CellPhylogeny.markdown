@@ -70,6 +70,7 @@ v1.0.0 (2020-12-16)
 # Developer
 
 Mr. Yuhao Qing ([GitHub](https://github.com/Q-Y-H))
+
 Mr. Lirui Kang  ([GitHub](https://github.com/RKLho))
 
 # Designer
