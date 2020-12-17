@@ -1,5 +1,5 @@
-# scSVAS, Oviz-SingleCell
+# scSVAS
 
-scSVAS (scDNA-seq Somatic Variant Analysis Suite), a pipeline for single cell DNA somatic variant analysis.
-
-[Oviz-SingleCell](sc.deepomics.org), a web server for single cell DNA visualization.
+scSVAS (scDNA-seq Somatic Variant Analysis Suite):
+  + a pipeline for single cell DNA somatic variant analysis.
+  + [sc.deepomics.org](sc.deepomics.org), an online platform for single cell DNA visualization.
