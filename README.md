@@ -2,7 +2,7 @@
 
 scSVAS (scDNA-seq Somatic Variant Analysis Suite) is:
   + a pipeline for single cell DNA somatic variant analysis.
-  + an online platform for single cell DNA visualization[sc.deepomics.org](sc.deepomics.org).
+  + an online platform for single cell DNA visualization [sc.deepomics.org](sc.deepomics.org).
  
 The recent advance of single-cell copy number variation analysis plays an essential role in addressing intratumor heterogeneity, identifying tumor subgroups, and restoring tumor evolving trajectories at single-cell resolution. Pleasant visualization of copy number analysis results boosts productive scientific exploration, validation, and sharing. Several appealing single-cell copy number figures have been demonstrated in published articles and software. However, those pictures almost lack real-time interaction, and it's hard for researchers to prepare codes to reproduce them from scratch. Moreover, existing single-cell visualization tools are incredibly time-consuming and memory-intensive when it reaches today's large-scale single-cell throughput. 
 
