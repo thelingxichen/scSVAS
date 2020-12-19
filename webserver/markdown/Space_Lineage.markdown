@@ -65,6 +65,9 @@ Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 
 Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 
+# Acknowledgement
+The anatomy images are designed by [Freepik](https://www.freepik.com/) and [macrovector / Freepik] (https://www.freepik.com/), we acknowledge for the free license. 
+
 ## Updates
 
 ### v1.0.0
