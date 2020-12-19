@@ -1,8 +1,6 @@
 # scSVAS
 
-scSVAS (scDNA-seq Somatic Variant Analysis Suite) is:
-  + a pipeline for single cell DNA somatic variant analysis.
-  + an online platform for single cell DNA visualization [sc.deepomics.org](sc.deepomics.org).
+scSVAS an online platform for single cell DNA visualization [sc.deepomics.org](sc.deepomics.org).
  
 ### Introduction 
  
@@ -17,7 +15,7 @@ We present an online platform scSVAS (https://sc.deepomics.org) for aestheticall
 ![Workflow of scSVAS](https://github.com/paprikachan/scSVAS/blob/master/webserver/fig/Figure2.png)
 *Figure2: Workflow of scSVAS*
  
-Figure 2 demonstrates the platform workflow. It currently has two parts, off-line and online. The off-line part is the scSVAS suite. With single-cell DNA bam files or 10x cellranger results as input, scSVAS can generate all files needed for online visualization applications. 
+Figure 2 demonstrates the input files required for each scSVAS application. The demo files are available at “Editor” on each application page. The input format are specified in [here](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown). The auxiliary scripts are available at [`./scripts`](https://github.com/paprikachan/scSVAS/blob/master/scripts).
 
 In short, scSVAS provides versatile utilities for managing, investigating, sharing, and publishing single-cell copy number variation profiles. All visualization are publicly hosted at https://sc.deepomics.org. Offline analysis pipeline are available at https://github.com/paprikachan/scSVAS.
 
