@@ -2,7 +2,7 @@
 
 # Introduction
 
-In Oviz-SingleCell platform, we develop a readily available web interface "Space Prevalence"  for interactive and real-time visualization of clonal dynamics across multiple samples.
+In scSVAS platform, we develop a readily available web interface "Space Prevalence"  for interactive and real-time visualization of clonal dynamics across multiple samples.
 
 "Space Prevalence'' enables users to create the recurrent event visualization just in following steps:
 
@@ -44,19 +44,13 @@ The editor offers various options to fine-tune the visualization. Users can adju
      Demo file sets and files Functionalities are the same with "CNV View'' visualization.
   + General Settings 
     + Lineage Tree
-
       + Show subclone name </br>
-        Users can decide show clone name or not.
-        
+        Users can decide show clone name or not.       
       + Type of lineage tree </br>
          Users can change the type of lineage tree.
-
       + Show low prevelance clone </br>
-
          Users can decide whether to show low prevalence clone or not.
-
       + Low prevalence threshold </br>
-
          Users can change the value of low prevalence threshold, default it 0.01.
 
 
