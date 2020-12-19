@@ -5,9 +5,9 @@ Over the past decade, the single cell DNA CNV calling algorithms usually model t
 
 In cancer datasets, the copy number of different regions may encounter dramatic gain or loss. For single-cell DNA cancer data,  ploidy distribution can intuitively display the tumor intra-heterogeneity.
 
-To address this concern, in scSVAS platform, we develop a readily available web interface "CNV Ploidy Distribution''  for interactive and real-time visualization of ploidy density plot for scDNA-seq data.
+To address this concern, in scSVAS platform, we develop a readily available web interface "Ploidy Distribution''  for interactive and real-time visualization of ploidy density plot for scDNA-seq data.
 
-"CNV Ploidy Distribution'' enables users to create the ploidy density plot just in one simple step as follow:
+"Ploidy Distribution'' enables users to create the ploidy density plot just in one simple step as follow:
 
   + Open https://sc.deepomics.org/demo-project/analyses/ploidy\_distribution in Google browser, and upload cnv profile file `*_cnv.csv` and predefined meta file `*_meta.csv`.
   + *Optional* With cnv profile file `*_cnv.csv` and predefined meta file `*_meta.csv` as inputs, users may also run `scSVAS` to get the subclone cluster result in `*_meta_scsvas.csv` first.
@@ -20,7 +20,7 @@ If the mouse hovers over the density plot, an interactive tooltip carried its vi
 
 # Input File Format
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/CNV_input_format.markdown).
+The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
 
 
 
@@ -29,7 +29,7 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
   + Download </br>
     An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
   + Tooltips and Highlights </br>
-    When your cursor hovers over an Oviz component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are two major types of Oviz component in the "CNV Ploidy Distribution'' application and their tooltipping and highlighting interactions are as follows:
+    When your cursor hovers over a component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are two major types of component in the "Ploidy Distribution'' application and their tooltipping and highlighting interactions are as follows:
       + Distribution plot </br>
          The tooltip will display the current ploidy value and the density of that ploidy.
       + Aggregate subgroup distribution plot </br>

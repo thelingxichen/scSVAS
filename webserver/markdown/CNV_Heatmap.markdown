@@ -9,7 +9,7 @@ The web interface "CNV Heatmap'' is extension version of "CNV View'', by support
 + Open https://sc.deepomics.org/demo-project/analyses/heatmap in Google browser, and upload cnv profile file `*_cnv.csv`, predefined meta file `*_meta.csv`.
 +  *Optional* With cnv profile file `*_cnv.csv`, predefined meta file `*_meta.csv` as inputs, users can run `scSVAS` to get the cutted dendrogram of single cells, and upload it to compress the heatmap plot.
 +  *Optional* Users can also upload a customized bed file to check the CNV heatmap in local region.
-  
+
   
 
 Users can get a single cell CNV landscape view of scDNA-seq data. With single cells as rows and genomic regions as columns, the cell CNV heatmap exhibits the copy number of a specific single-cell across the entire genome. The cell meta heat map will be displayed on the left if users provide single-cell meta information. In addition, there is a genome zoom slider located at the bottom of CNV heatmap. Users can drag the slider to zoom in and out on the genome region. Users can also search for a local genome region in "Editor General Settings". If the local genome region is less than 5M, an annotation layer including "Repeat track'' and "Gene track'' will be displayed. If the mouse hovers over cell CNV/meta heatmap, repeats, and genes, an interactive tooltip carried its vital information will appear. 
@@ -18,7 +18,7 @@ Users can get a single cell CNV landscape view of scDNA-seq data. With single ce
 
 # Input File Format
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/CNV_input_format.markdown).
+The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
 
 # Interactions
 
@@ -26,7 +26,7 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
    + Download </br>
      An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
    + Tooltips and Highlights </br>
-     When your cursor hovers over an Oviz component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are serveral major Oviz components in the "CNV Heatmap'' application and their tooltipping and highlighting interactions are as follows:
+     When your cursor hovers over a component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are serveral major components in the "CNV Heatmap'' application and their tooltipping and highlighting interactions are as follows:
      + Cell CNV Heatmap, Cell Meta Heatmap, Cutted Dendrogram Node, Cutted Dendrogram Branch </br>
        Tooltipping and highlighting interactions are the same with "CNV View'' visualization.
      + Gene Track </br>

@@ -3,12 +3,12 @@
 # Introduction
 High-dimensional data could be challenging to visualize. Reducing data into two dimensions is essential for representing the inherent structure of the data. Several supervised and unsupervised embedding methods have been proposed and widely applied to multiple disciplines in the past two decades. For example, linear dimension reduction tools like Principal Component Analysis (PCA), Independent Component Analysis (ICA), Non-negative Matrix Factorization (NMF) specify distinct rubrics to conduct linear projection of data. Furthermore, to tackle non-linear data structure, t-distributed Stochastic Neighbor Embedding (t-SNE), Uniform Manifold Approximation and Projection (UMAP), and Potential of Heat-diffusion for Affinity-based Trajectory Embedding (PHATE) are developed. We also build a Matrix Factorization based Deep neural network (DeepMF), which is compatible with both linear and non-linear embedding.
 
-In scSVAS platform, we build a readily available web interface "CNV Embedding Map''  for interactive and real-time visualization of scDNA-seq data."
+In scSVAS platform, we build a readily available web interface "Embedding Map''  for interactive and real-time visualization of scDNA-seq data."
 
-With the advance of sing-cell DNA sequencing techniques, the CNV data of tens of thousands of cells could be profiled at the same time. In terms of large-scale data, conventional 2D scatter plots may disguise essential information. "CNV Embedding Map" defeats this overplotting obstacle utilizing hexagonal binning, which also has benefits on time and memory complexity.
+With the advance of sing-cell DNA sequencing techniques, the CNV data of tens of thousands of cells could be profiled at the same time. In terms of large-scale data, conventional 2D scatter plots may disguise essential information. "Embedding Map" defeats this overplotting obstacle utilizing hexagonal binning, which also has benefits on time and memory complexity.
 
 
-"CNV Embedding Map'' enables users to create the 2D embedding plot in two straightforward steps as follow:
+"Embedding Map'' enables users to create the 2D embedding plot in two straightforward steps as follow:
 
 
 
@@ -21,7 +21,7 @@ Then, you may get a matrix of 2D representations of scDNA-seq data. The column w
 
 # Input File Format
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/CNV_input_format.markdown).
+The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
 
 
 # Interactions
@@ -29,7 +29,7 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
    + Download </br>
      An SVG file will be generated when you click the ''Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the ''Light Theme'' button.
    + Tooltips and Highlights </br>
-     When your cursor hovers over an component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are two major types of component in the ''CNV Embedding Map'' application and their tooltipping and highlighting interactions are as follows:
+     When your cursor hovers over a component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are two major types of component in the ''Embedding Map'' application and their tooltipping and highlighting interactions are as follows:
      + Hexagon bins on the 2D-Embedding hexagon plot </br>
        The tooltip will display the x and y coordinates,  the coloring value, the number of cells in the bin, and the list of cell IDs.
      + Scatter point on the 2D-Embedding scatter plot </br>
@@ -86,6 +86,6 @@ Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 
 ### v1.0.1
    - Add hexagon mode.
-   
+
 ### v1.0.0
    - Initial functions implemented.

@@ -4,15 +4,15 @@
 
 Many studies have observed that intra-tumor heterogeneity (ITH) is one of the principal causes of cancer therapy-resistant, tumor recurrence, and deaths. An accurate understanding of the subclone structure and evolutionary history benefits precise treatments for individual patients. Over the past decades tools utilize SNV, CNV information, or combine these two phenotype markers to infer the phylogeny tree. There are tools customized for different sequencing protocols, including multi-region, single-cell.
 
-Unlike the traditional phylogenetic trees as visualized in ''CNV Cell Phylogeny'', we focus on the clonal lineage tree, which more accurately reflects the process of tumor evolution. In a clonal lineage tree, ancestors and offspring tumor cells/subpopulations can coexist at the same time point; therefore, the internal node can be the single cell/subpopulation we observed. The tumor accumulates mutations over evolution time, and child tumor cell/subpopulation carries parental and newly-acquired aberrations. The tree linkage between parent and child node is more about asymmetric subset connections than symmetric distance. 
+Unlike the traditional phylogenetic trees as visualized in ''Cell Phylogeny'', we focus on the clonal lineage tree, which more accurately reflects the process of tumor evolution. In a clonal lineage tree, ancestors and offspring tumor cells/subpopulations can coexist at the same time point; therefore, the internal node can be the single cell/subpopulation we observed. The tumor accumulates mutations over evolution time, and child tumor cell/subpopulation carries parental and newly-acquired aberrations. The tree linkage between parent and child node is more about asymmetric subset connections than symmetric distance. 
 
 There are several tools to visualize the clonal lineage tree with subclones as tree nodes. For example, fishplot presents clonal dynamics over time; sphere of cells present clonal subpopulations of a sample, and annotated node-based and branch-based trees present clonal relationships and seeding patterns between samples. Nevertheless, there is no good tool to display the acquired mutations along time.
 
 
-To address this concern, in scSVAS platform, we develop a readily available web interface ''CNV Clonal Lineage''  for interactive and real-time visualization of clonal lineage and associated CNV across time for scDNA-seq data.
+To address this concern, in scSVAS platform, we develop a readily available web interface ''Clonal Lineage''  for interactive and real-time visualization of clonal lineage and associated CNV across time for scDNA-seq data.
 
 
-''CNV Clonal Lineage'' enables users to create the clonal lineage visualization just in following steps:
+''Clonal Lineage'' enables users to create the clonal lineage visualization just in following steps:
 
 + With cnv profile file `*_cnv.csv`, predefined meta file `*_meta.csv` and targeted gene list as inputs, run `scSVAS` to get the build clonal lineage results `*_evo.json`.
 +  Open https://sc.deepomics.org/demo-project/analyses/clonal\_lineage in Google browser, and upload the customized clonal tree file `*_evo.json`.
@@ -22,7 +22,7 @@ To address this concern, in scSVAS platform, we develop a readily available web 
 
 # Input File Format
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/CNV_input_format.markdown).
+The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
 
 # Interactions
 
@@ -30,9 +30,8 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
    + Download </br>
      An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
    + Tooltips and Highlights </br>
-          When your cursor hovers over an Oviz component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are several major types of Oviz component in the "CNV Clonal Lineage'' application and their tooltipping and highlighting interactions are as follows:
-
-      + Lineage tree node </br>
+          When your cursor hovers over a component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are several major types of component in the "Clonal Lineage'' application and their tooltipping and highlighting interactions are as follows:
++ Lineage tree node </br>
        The tooltip will display the subclone node name, distance to the root node, clonal frequency, the number of cells in the subclone. The corresponding node in aggregate subclone CNV heatmap, lineage tree branch will be highlighted.
       + Lineage tree branch </br>
        The tooltip will display the parent node name, child node name, and the distance of branch. The corresponding branch will be highlighted.
@@ -45,14 +44,14 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
       + Subclone branch </br>
        The corresponding branch will be highlighted in lineage tree or fishplot.
       + CNV shift Stairstep </br>
-       The tooltipping and highlighting interactions are the same with stairstep in "CNV Ploidy Stairstep'' application. 
+       The tooltipping and highlighting interactions are the same with stairstep in "Ploidy Stairstep'' application. 
       + Gene box </br>
        The corresponding gene box, cytoband, genomic position on stairstep will be highlighted.
       + MsigDB Pathway </br>
        The tooltip will display the name of selected MsigDB pathway. The corresponding gene box, cytoband, genomic position on stairstep will be highlighted.
       + Self-defined gene set. </br>
        The tooltip will display the name of self-defined gene set. The corresponding gene box, cytoband, genomic position on stairstep will be highlighted.
-
+      
    + Subclone branch </br>
            Users can display the CNV shifts of a particular subclone branch by clicking it.
    + Packed gene box </br>

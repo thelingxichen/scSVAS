@@ -4,9 +4,9 @@
 As previously mentioned, for single-cell DNA cancer data, the ploidy distribution can intuitively show tumor heterogeneity. The ploidy line plot along the chromosomes can also visually show the heterogeneity between tumor subclones by combining genomic coordinates.
 By collapsing the single cells in the same tumor subclones into one observation, we can infer the pseudo-bulk ploidy of each subclone. Since cancer CNV ploidy line alters along chromosomes, we call it the "stairstep plot''.
 
-In scSVAS platform, we develop a readily available web interface "CNV Ploidy Stairstep''  for interactive and real-time visualization of ploidy stairstep plot for scDNA-seq data.
+In scSVAS platform, we develop a readily available web interface "Ploidy Stairstep''  for interactive and real-time visualization of ploidy stairstep plot for scDNA-seq data.
 
-"CNV Ploidy Stairstep'' enables users to create the ploidy stairstep plot just in one simple step as follow:
+"Ploidy Stairstep'' enables users to create the ploidy stairstep plot just in one simple step as follow:
 
 + Open https://sc.deepomics.org/demo-project/analyses/ploidy\_stairstep in Google browser, and upload cnv profile file `*_cnv.csv` and predefined meta file `*_meta.csv`.
 + *Optional* With cnv profile file `*_cnv.csv` and predefined meta file `*_meta.csv` as inputs, users may also run `scSVAS` to get the subclone cluster result in `*_meta_scsvas.csv` first.
@@ -17,14 +17,14 @@ If the mouse hovers over the stairstep plot, an interactive tooltip carried its 
 
 # Input File Format
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/CNV_input_format.markdown).
+The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
 
 # Interactions
 
   + Download </br>
      An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
   + Tooltips and Highlights </br>
-    When your cursor hovers over an Oviz component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are two major types of Oviz component in the "CNV Ploidy Stairstep'' application and their tooltipping and highlighting interactions are as follows:
+    When your cursor hovers over a component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are two major types of component in the "Ploidy Stairstep'' application and their tooltipping and highlighting interactions are as follows:
     + Stairstep plot </br>
       The tooltip will display the genome position and the average copy number.
     + Aggregate subgroup distribution plot </br>
@@ -69,7 +69,7 @@ Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 ### v1.0.0
 
    - initial functions implemented.
-   
+
 ### v1.1.0
 
    - fix bug of event confidence. 

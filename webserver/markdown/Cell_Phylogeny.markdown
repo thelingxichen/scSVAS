@@ -14,14 +14,14 @@ Then, you may get a cutted dendrogram of single cells. Users can switch the tree
 
 # Input File Format
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/CNV_input_format.markdown).
+The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
 
 # Interactions
 
   + Download </br>
     An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
   + Tooltips and Highlights </br>
-    When your cursor hovers over an Oviz component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are several major types of Oviz component in the "CNV View'' application and their tooltipping and highlighting interactions are as follows:
+    When your cursor hovers over a component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are several major types of component in the "CNV View'' application and their tooltipping and highlighting interactions are as follows:
     + Cutted Dendrogram Node, Cutted Dendrogram Branch, Dendrogram Zooming, Meta CNV Heatmap </br>
       Tooltipping and highlighting interactions are the same with "CNV View'' visualization.
     + Cell CNV Heatmap </br>

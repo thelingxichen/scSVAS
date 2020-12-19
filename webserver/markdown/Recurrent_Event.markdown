@@ -2,20 +2,20 @@
 
 # Introduction
 
-In Oviz-SingleCell platform, we also develop a readily available web interface "CNV Recurrent Event''  for interactive and real-time visualization of CNV profiles across multiple samples for scDNA-seq data.
+In scSVAS platform, we also develop a readily available web interface "Recurrent Event''  for interactive and real-time visualization of CNV profiles across multiple samples for scDNA-seq data.
 
-"CNV Recurrent Event'' enables users to create the recurrent event visualization just in following steps:
+"Recurrent Event'' enables users to create the recurrent event visualization just in following steps:
 
   + With group cnv profile file of multiple samples `*_hcluster_cnv.csv` as input, run `scSVAS recurrent.py` to get the recurrent event results `*_recurrent.json`.
   + Open https://sc.deepomics.org/demo-project/analyses/recurrent\_event in Google browser, and upload the recurrent event results `*_recurrent.json`.
   + *Optional* Users can also upload the predefined gene list `target_anno.tsv` to only display the CNV shift of targeted gene.
 
 
-"CNV: Recurrent Event" displays the CNV stairsteps of all samples. The gene box shows the recurrent genes.  If the mouse hovers over the subclone in stairstep and gene box, an interactive tooltip carried its vital information will appear. %More interaction and Editor functionalities will be detailly described in the Appendix.
+"Recurrent Event" displays the CNV stairsteps of all samples. The gene box shows the recurrent genes.  If the mouse hovers over the subclone in stairstep and gene box, an interactive tooltip carried its vital information will appear. 
 
 # Input File Format
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/CNV_input_format.markdown).
+The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
 
 
 # Interactions
@@ -23,9 +23,9 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
   + Download </br>
     An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
   + Tooltips and Highlights </br>
-    When your cursor hovers over an Oviz component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are several major types of Oviz component in the "CNV Clonal Lineage'' application and their tooltipping and highlighting interactions are as follows:
+    When your cursor hovers over a component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are several major types of component in the "Clonal Lineage'' application and their tooltipping and highlighting interactions are as follows:
     + Stairstep </br>
-        The tooltipping and highlighting interactions are the same with stairstep in "CNV Ploidy Stairstep'' application. </br>
+        The tooltipping and highlighting interactions are the same with stairstep in "Ploidy Stairstep'' application. </br>
     + Gene box </br>
         The corresponding gene box, cytoband, genomic position on stairstep will be highlited.
     + MsigDB gene sets </br>
