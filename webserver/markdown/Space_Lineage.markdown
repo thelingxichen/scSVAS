@@ -2,7 +2,7 @@
 
 # Introduction
 
-In Oviz-SingleCell platform, we develop a readily available web interface "Space Lineage"  for interactive and real-time visualization of clonal dynamics across multiple samples.
+In scSVAS platform, we develop a readily available web interface "Space Lineage"  for interactive and real-time visualization of clonal dynamics across multiple samples.
 
 "Space Lineage'' enables users to create the clonal dynamics visualization just in following steps:
 
@@ -22,7 +22,6 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
 
   + Download </br>
     An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
-    
   + Tooltips and Highlights </br>
     When your cursor hovers over an component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are several major types of component in the "Space Prevalence'' application and their tooltipping and highlighting interactions are as follows:
     + Subclone lineage tree node </br>
@@ -31,9 +30,7 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
       The tooltip will display the lesion node name, distance to the root node, clonal frequency, the number of cells in the subclone. The corresponding lesion in other lineage tree will be highlighted. 
     + Lesion lineage tree branch </br>
       The tooltip will display the parent node name, child node name, and the distance of branch. The corresponding branch and nodes will be highlighted in other lineage tree.
-
-+ Anatomy image pointer </br>
-
+  + Anatomy image pointer </br>
   For each lesion, we provide an image pointer. Users can right click the image pointer to active and deactive it. When the image pointer is activated, user can drag the pointer to anywhere they want in the anatomy image.
 
 # Editor Functionalities
@@ -44,24 +41,16 @@ The editor offers various options to fine-tune the visualization. Users can adju
      Demo file sets and files Functionalities are the same with "CNV View'' visualization.
   + General Settings 
     + Lineage Tree
-
       + Show subclone name </br>
-        Users can decide show clone name or not.
-        
+        Users can decide show clone name or not.        
       + Type of lineage tree </br>
          Users can change the type of lineage tree.
-
       + Show low prevelance clone </br>
-
          Users can decide whether to show low prevalence clone or not.
-
       + Low prevalence threshold </br>
-
          Users can change the value of low prevalence threshold, default it 0.01.
-    
-    + Antomy type </br>
-    
-      Users can select different antomy images.
+  + Antomy type </br>
+  Users can select different antomy images.
 
 # Version
 
