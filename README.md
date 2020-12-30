@@ -17,5 +17,5 @@ We present an online platform scSVAS (https://sc.deepomics.org) for aestheticall
  
 Figure 2 demonstrates the input files required for each scSVAS application. The demo files are available at “Editor” on each application page. The input format are specified in [here](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown). The auxiliary scripts are available at [`./scripts`](https://github.com/paprikachan/scSVAS/blob/master/scripts).
 
-In short, scSVAS provides versatile utilities for managing, investigating, sharing, and publishing single-cell copy number variation profiles. All visualization are publicly hosted at https://sc.deepomics.org. Offline analysis pipeline are available at https://github.com/paprikachan/scSVAS.
+In short, scSVAS provides versatile utilities for managing, investigating, sharing, and publishing single-cell copy number variation profiles. All visualization are publicly hosted at https://sc.deepomics.org. Offline auxiliary scripts are available at https://github.com/paprikachan/scSVAS.
 
