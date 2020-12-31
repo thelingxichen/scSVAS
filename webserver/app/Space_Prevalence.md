@@ -1,23 +1,24 @@
-##### Please try the demo files in the sidebar (`Demo File Sets`).
+# Space Prevalence
 
-# Introduction
+## Introduction
 
 In scSVAS platform, we develop a readily available web interface "Space Prevalence"  for interactive and real-time visualization of clonal dynamics across multiple samples.
 
 "Space Prevalence'' enables users to create the recurrent event visualization just in following steps:
 
   + With subclone tree file `clonal_edges.csv` and clonal prevelance file `clonal_prev.csv` as input, run `scSVAS space.py` to get the space tree results `space_edges.csv`.
-  + Open https://sc.deepomics.org/demo-project/analyses/space\_prevalence in Google browser, and upload files `clonal_edges.csv`, `clonal_prev.csv`, and `space_edges.csv`.
+  + Open https://sc.deepomics.org/demo-project/analyses/space_prevalence in Google browser, and upload files `clonal_edges.csv`, `clonal_prev.csv`, and `space_edges.csv`.
 
 
 "Space Prevalence" displays the clonal tree, lesion tree, and the space prevalence across subclones and lesions. If the mouse hovers over the node in lineage tree and sankey diagram, an interactive tooltip carried its vital information will appear. 
 
-# Input File Format
+## Input & Demo File
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
+The uploaded file must match the *required* format, please check the general accepted [input file format](data/input_format). Several demo files descripted in [demo data](data/demo_data) are provided in the "Editor" sidebar. 
 
 
-# Interactions
+
+## Interactions
 
   + Download </br>
     An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
@@ -36,7 +37,7 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
     + Clonal prevalence matrix tile </br>
       The tooltip will display the subclone node name, lesion node name, and the clona prevalence across them. The corresponding branch and nodes will be highlighted in lineage tree and sankey plot.
 
-# Editor Functionalities
+## Editor Functionalities
 
 The editor offers various options to fine-tune the visualization. Users can adjust the editor width and font size in "Editor Settings''.
 
@@ -54,16 +55,16 @@ The editor offers various options to fine-tune the visualization. Users can adju
          Users can change the value of low prevalence threshold, default it 0.01.
 
 
-# Version
+## Version
 
 v1.0.0 (2020-12-19)
 
-# Developer
+## Developer
 
 
 Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 
-# Designer
+## Designer
 
 Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 

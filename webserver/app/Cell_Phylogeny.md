@@ -1,6 +1,6 @@
-##### Please try the demo files in the sidebar (`Demo File Sets`).
+# Cell Phylogeny
 
-# Introduction
+## Introduction
 
 
 In scSVAS platform, we build a readily available web interface "CNV Cell Phylogeny''  for interactive and real-time visualization of scDNA-seq data.
@@ -8,15 +8,16 @@ In scSVAS platform, we build a readily available web interface "CNV Cell Phyloge
 "CNV Cell Phylogeny'' enables users to create the cell phylogeny plot in one straightforward step as follow:
 
  + With cnv profile file `*_cnv.csv`, predefined meta file `*_meta.csv` and targeted gene list as inputs, run `scSVAS` to get the single cells cutted dendrogram `*_cut.json`, the subclone and embedding results `*_meta_scsvas.csv`, and targeted gene cnv profiles `*_gene_cnv.csv}`.
- + Open https://sc.deepomics.org/demo-project/analyses/cell\_phylogeny in Google browser, and upload files `*_cut.json`, optional files `*_meta_scsvas.csv` and `*_gene_cnv.csv`.
+ + Open https://sc.deepomics.org/demo-project/analyses/cell_phylogeny in Google browser, and upload files `*_cut.json`, optional files `*_meta_scsvas.csv` and `*_gene_cnv.csv`.
 
 Then, you may get a cutted dendrogram of single cells. Users can switch the tree between "Topdown'' and "Circular'' modes. If the optional file `*_meta.csv` and `*_gene_cnv.csv` are uploaded, the cell meta and CNV heatmap will be shown. Users can decide to display or hide these meta labels in "Editor-Select categorical meta label''. If the mouse hovers over a dendrogram or heatmap, an interactive tooltip carried its vital information will appear.
 
-# Input File Format
+## Input & Demo File
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
+The uploaded file must match the *required* format, please check the general accepted [input file format](data/input_format). Several demo files descripted in [demo data](data/demo_data) are provided in the "Editor" sidebar. 
 
-# Interactions
+
+## Interactions
 
   + Download </br>
     An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
@@ -30,7 +31,7 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
     Users can click this button to switch the cutted dendrogram between "TopDown'' and "Circular'' modes.
              
              
-# Editor Functionalities
+## Editor Functionalities
 The editor offers various options to fine-tune the visualization. Users can adjust the editor width and font size in "Editor Settings''.
 
   + Demo File Sets, Files </br>
@@ -60,20 +61,20 @@ The editor offers various options to fine-tune the visualization. Users can adju
        + Unit width of CNV heatmap (integer recommended) </br>
          Users can adjust the unit width of CNV and meta heatmap. Unit refers to the smallest rendered SVGobject in heatmap. Please note that the heatmap unit width are recommend to set as integer, floating point will make heatmap transparent owing to subpixel rendering.
   + Color Palettes </br>
-         Users can customize color palettes for available categorical meta labels and continuous meta labels.
+    Users can customize color palettes for available categorical meta labels and continuous meta labels.
 
 
-# Version
+## Version
 
 v1.0.0 (2020-12-16)
 
-# Developer
+## Developer
 
 Mr. Yuhao Qing ([GitHub](https://github.com/Q-Y-H))
 
 Mr. Lirui Kang  ([GitHub](https://github.com/RKLho))
 
-# Designer
+## Designer
 
 Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 

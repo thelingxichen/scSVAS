@@ -1,7 +1,6 @@
-# scSVAS File format interpretation
+# Input File Format Interpretation
 
 ## scSVAS input files
-
 
 
 scSVAS CNV analysis accepts the output of [`SCYN`](https://github.com/xikanfeng2/SCYN) or [`cellranger-dna`](xxx).

@@ -1,6 +1,6 @@
-##### Please try the demo files in the sidebar (`Demo File Sets`).
+# Time Lineage
 
-# Introduction
+## Introduction
 
 As previously mentioned, many studies have observed that intra-tumor heterogeneity (ITH) is one of the principal causes of cancer therapy-resistant, tumor recurrence, and deaths. Over the past decades, researchers are interested in studying the clonal dynamics from multiple timepoint. For example, the time lineage between subclones before and after therapeutic intervention. 
 
@@ -8,17 +8,18 @@ Herein, in scSVAS platform, we develop a readily available web interface "Time L
 
 "Time Lineage'' enables users to create the time lineage visualization just in following steps:
 
-   + Open https://sc.deepomics.org/demo-project/analyses/time\_lineage in Google browser, and upload the customized clonal tree file `clonal_edges.csv` and clonal prevalence file `clonal_prev.csv`.
+   + Open https://sc.deepomics.org/demo-project/analyses/time_lineage in Google browser, and upload the customized clonal tree file `clonal_edges.csv` and clonal prevalence file `clonal_prev.csv`.
      
 
 "Time Lineage" is composed of fishplot, lineage tree, and cellular ensemble. As previously mentioned, the lineage tree exhibits the evolutionary relationship between tumor subclones. Users can choose different tree shapes from "topdown normal", "circular normal", and "circular acute". Fishplot conceptually manifests the proportion of tumor subclones at different tumorigenesis stages along time. We use the bezier curve to fit the trend of subclones over time. Two distinct head shapes ("bullet'' and "onion'') are offered. The cellular ensemble is an abstract aesthetic presenting the tumor's cellular prevalence at a certain point in time. If the mouse hovers over the subclone in fishplot, lineage tree, and cellular ensemble, an interactive tooltip carried its vital information will appear. 
 
-# Input File Format
+## Input & Demo File
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
+The uploaded file must match the *required* format, please check the general accepted [input file format](data/input_format). Several demo files descripted in [demo data](data/demo_data) are provided in the "Editor" sidebar. 
 
 
-# Interactions
+
+## Interactions
 
   + Download </br>
     An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
@@ -33,7 +34,7 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
     + Cellular ensemble </br>
       The tooltip will display the name and prevalence of the clone. The corresponding clones will be highlighted in lineage tree and fishplot.
 
-# Editor Functionalities
+## Editor Functionalities
 
 The editor offers various options to fine-tune the visualization. Users can adjust the editor width and font size in "Editor Settings''.
 
@@ -69,16 +70,16 @@ The editor offers various options to fine-tune the visualization. Users can adju
     Users can customize color palettes for subclones .
 
 
-# Version
+## Version
 
 v1.0.0 (2020-12-16)
 
-# Developer
+## Developer
 
 
 Mr. Chaohui Li ([GitHub](https://github.com/Eric0627))
 
-# Designer
+## Designer
 
 Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 

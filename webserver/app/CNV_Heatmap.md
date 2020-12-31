@@ -1,6 +1,6 @@
-##### Please try the demo files in the sidebar (`Demo File Sets`).
+# CNV Heatmap
 
-# Introduction
+## Introduction
 
 The web interface "CNV Heatmap'' is extension version of "CNV View'', by supporting extra functionalities including genome region zooming, local region search, and local region annotation.  
 
@@ -16,11 +16,12 @@ Users can get a single cell CNV landscape view of scDNA-seq data. With single ce
 
 
 
-# Input File Format
+## Input & Demo File
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
+The uploaded file must match the *required* format, please check the general accepted [input file format](data/input_format). Several demo files descripted in [demo data](data/demo_data) are provided in the "Editor" sidebar. 
 
-# Interactions
+
+## Interactions
 
 
    + Download </br>
@@ -48,51 +49,51 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
    + Dendrogram Zooming </br>
        Dendrogram zooming is the same with "CNV View'' visualization.
 
-# Editor Functionalities
+## Editor Functionalities
 
 The editor offers various options to fine-tune the visualization. Users can adjust the editor width and font size in "Editor Settings''.
 
-   + Demo File Sets, Files </br>
-     Demo file sets and files Functionalities are the same with "CNV Heatmap'' visualization.
-   + General Settings
-     + Auto load heatmap, NA cases, Reorder cells by </br>
-       Auto load heatmap, NA cases, Reorder cells by functionalities are the same with "CNV View'' visualization.
-     + Mode </br>
-       Users can switch from "Zoom Slider'', "Bed Region'', or "Search Bed'' modes.
-     + Select categorical meta label, Layout Settings </br>
-           Select categorical meta label, Layout Settings are the same with "CNV View'' visualization.
-   + Search (Available in "Bed Region" and "Search Bed'' mode)
-      + Search local genome region </br>
-        Users can enter a local genome region to display, e.g. chr17:5,565,097-9,590,863. This functionality is only effective when search bed mode is activated.
-      + Bed region </br>
-        Users can select the local genome region in uploaded bed file to display. This functionality is only effective when bed region mode is activated.
-   + Genome Browser (Available in "Bed Region" and "Search Bed'' mode)
-      + Annotation Panel 
-        + Display strand </br>
-           Users can choose to display postive, negative, or both strands on gene track.
-        + Show repeat track </br>
-              Users can choose to display the repeat track or not.
-        + Merge gene tracks </br>
-              Users can choose to merge gene track to get condensed displaying.
-        + Display gene name </br>
-              Users can choose to display the gene name or transcript name in gene track.
-        + Display all genes </br>
-              Users can choose to display all genes on the gene track. 
-      + Genes </br>
-        This section lists all genes in current local region, users can decide to display which transcript of one gene.
-   + Color palettes </br>
-           Users can customize color palettes for available categorical meta labels and continuous meta labels.
+  + Demo File Sets, Files </br>
+    Demo file sets and files Functionalities are the same with "CNV Heatmap'' visualization.
+  + General Settings
+    + Auto load heatmap, NA cases, Reorder cells by </br>
+      Auto load heatmap, NA cases, Reorder cells by functionalities are the same with "CNV View'' visualization.
+    + Mode </br>
+      Users can switch from "Zoom Slider'', "Bed Region'', or "Search Bed'' modes.
+    + Select categorical meta label, Layout Settings </br>
+      Select categorical meta label, Layout Settings are the same with "CNV View'' visualization.
+  + Search (Available in "Bed Region" and "Search Bed'' mode)
+    + Search local genome region </br>
+      Users can enter a local genome region to display, e.g. chr17:5,565,097-9,590,863. This functionality is only effective when search bed mode is activated.
+    + Bed region </br>
+      Users can select the local genome region in uploaded bed file to display. This functionality is only effective when bed region mode is activated.
+  + Genome Browser (Available in "Bed Region" and "Search Bed'' mode)
+    + Annotation Panel 
+      + Display strand </br>
+        Users can choose to display postive, negative, or both strands on gene track.
+      + Show repeat track </br>
+        Users can choose to display the repeat track or not.
+      + Merge gene tracks </br>
+        Users can choose to merge gene track to get condensed displaying.
+      + Display gene name </br>
+        Users can choose to display the gene name or transcript name in gene track.
+      + Display all genes </br>
+        Users can choose to display all genes on the gene track. 
+    + Genes </br>
+      This section lists all genes in current local region, users can decide to display which transcript of one gene.
+  + Color palettes </br>
+    Users can customize color palettes for available categorical meta labels and continuous meta labels.
 
 
-# Version
+## Version
 
 v1.0.0 (2020-12-16)
 
-# Developer
+## Developer
 
 Mr. Yuhao Qing ([GitHub](https://github.com/Q-Y-H))
 
-# Designer
+## Designer
 
 Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 

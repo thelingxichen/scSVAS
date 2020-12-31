@@ -1,24 +1,25 @@
-##### Please try the demo files in the sidebar (`Demo File Sets`).
+# Space Lineage
 
-# Introduction
+## Introduction
 
 In scSVAS platform, we develop a readily available web interface "Space Lineage"  for interactive and real-time visualization of clonal dynamics across multiple samples.
 
 "Space Lineage'' enables users to create the clonal dynamics visualization just in following steps:
 
-  + Open https://sc.deepomics.org/demo-project/analyses/space\_prevalence in Google browser, and upload filessubclone tree file `clonal_edges.csv`, clonal prevelance file `clonal_prev.csv`.
+  + Open https://sc.deepomics.org/demo-project/analyses/space_prevalence in Google browser, and upload filessubclone tree file `clonal_edges.csv`, clonal prevelance file `clonal_prev.csv`.
   + *Optional* With subclone tree file `clonal_edges.csv` and clonal prevelance file `clonal_prev.csv` as input, run `scSVAS space.py` to get the space tree results `space_edges.csv`, then upload it.
   + *Optional* Users can also upload customized lesion images.
 
 
 "Space Lineage" displays the clonal dynamics across subclones and lesions. If the mouse hovers over the node in lineage tree, an interactive tooltip carried its vital information will appear. 
 
-# Input File Format
+## Input & Demo File
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
+The uploaded file must match the *required* format, please check the general accepted [input file format](data/input_format). Several demo files descripted in [demo data](data/demo_data) are provided in the "Editor" sidebar. 
 
 
-# Interactions
+
+## Interactions
 
   + Download </br>
     An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
@@ -33,7 +34,7 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
   + Anatomy image pointer </br>
   For each lesion, we provide an image pointer. Users can right click the image pointer to active and deactive it. When the image pointer is activated, user can drag the pointer to anywhere they want in the anatomy image.
 
-# Editor Functionalities
+## Editor Functionalities
 
 The editor offers various options to fine-tune the visualization. Users can adjust the editor width and font size in "Editor Settings''.
 
@@ -52,20 +53,20 @@ The editor offers various options to fine-tune the visualization. Users can adju
   + Antomy type </br>
   Users can select different antomy images.
 
-# Version
+## Version
 
 v1.0.0 (2020-12-19)
 
-# Developer
+## Developer
 
 
 Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 
-# Designer
+## Designer
 
 Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 
-# Acknowledgement
+## Acknowledgement
 The anatomy images are designed by [Freepik](https://www.freepik.com/) and [macrovector / Freepik] (https://www.freepik.com/), we acknowledge for the free license. 
 
 ## Updates

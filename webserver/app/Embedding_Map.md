@@ -1,6 +1,6 @@
-##### Please try the demo files in the sidebar (`Demo File Sets`).
+# Embedding Map
 
-# Introduction
+## Introduction
 High-dimensional data could be challenging to visualize. Reducing data into two dimensions is essential for representing the inherent structure of the data. Several supervised and unsupervised embedding methods have been proposed and widely applied to multiple disciplines in the past two decades. For example, linear dimension reduction tools like Principal Component Analysis (PCA), Independent Component Analysis (ICA), Non-negative Matrix Factorization (NMF) specify distinct rubrics to conduct linear projection of data. Furthermore, to tackle non-linear data structure, t-distributed Stochastic Neighbor Embedding (t-SNE), Uniform Manifold Approximation and Projection (UMAP), and Potential of Heat-diffusion for Affinity-based Trajectory Embedding (PHATE) are developed. We also build a Matrix Factorization based Deep neural network (DeepMF), which is compatible with both linear and non-linear embedding.
 
 In scSVAS platform, we build a readily available web interface "Embedding Map''  for interactive and real-time visualization of scDNA-seq data."
@@ -13,18 +13,19 @@ With the advance of sing-cell DNA sequencing techniques, the CNV data of tens of
 
 
  + With cnv profile file `*_cnv.csv`, predefined meta file `*_meta.csv` and targeted gene list as inputs, run `scSVAS` to get the 2D embedding (PCA, ICA, TSNE, UMAP, PHATE, and DeepMF) results `*_meta_scsvas.csv` and targeted gene cnv profiles `*_gene_cnv.csv`.
- + Open https://sc.deepomics.org/demo-project/analyses/embedding\_map in Google browser, and upload files `*_meta_scsvas.csv` and `*_gene_cnv.csv`.
+ + Open https://sc.deepomics.org/demo-project/analyses/embedding_map in Google browser, and upload files `*_meta_scsvas.csv` and `*_gene_cnv.csv`.
    
    
 
 Then, you may get a matrix of 2D representations of scDNA-seq data. The column will list all embedding techniques available in uploaded file `*_meta_scsvas.csv` by default. Users can decide to display or hide these embedding methods in "Editor-General Settings''. The rows display different strategies to color the single cell data point. If the "hexagon mode'' is activated, the embedded cells colored with density will be displayed. If the optional file `*_gene_cnv.csv` is uploaded, the embedded cells colored with gene CNV profiles will be shown. Users can specify the gene for coloring in "Editor-General Settings''. Moreover, all categorical meta labels available in uploaded file `*_meta_scsvas.csv` will be used as color schemes by default. Users can decide to display or hide these meta labels in "Editor-Select categorical meta label''. If the mouse hovers over one scatter point or hexagon bin, an interactive tooltip carried its vital information will appear. 
 
-# Input File Format
+## Input & Demo File
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
+The uploaded file must match the *required* format, please check the general accepted [input file format](data/input_format). Several demo files descripted in [demo data](data/demo_data) are provided in the "Editor" sidebar. 
 
 
-# Interactions
+
+## Interactions
 
    + Download </br>
      An SVG file will be generated when you click the ''Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the ''Light Theme'' button.
@@ -35,7 +36,7 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
      + Scatter point on the 2D-Embedding scatter plot </br>
        The tooltip will display the x and y coordinates, the coloring value, and the cell ID.
 
-# Editor Functionalities
+## Editor Functionalities
 
 The editor offers various options to fine-tune the visualization. Users can adjust the editor width and font size in ''Editor Settings''.
 
@@ -63,22 +64,22 @@ The editor offers various options to fine-tune the visualization. Users can adju
    + Color Palettes </br>
       Users can customize color palettes for ''Density'' and available categorical labels.
 
-# Reference
+## Reference
 
 Freytag, S., & Lister, R. (2019). 
 [schex avoids overplotting for large single-cell RNA-sequencing datasets.](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btz907/5651017)
 *Bioinformatics*.
 (PMID: [31794001](https://www.ncbi.nlm.nih.gov/pubmed/31794001), See [Figure 1](https://academic.oup.com/view-large/figure/190380643/btz907f1.tif))
 
-# Version
+## Version
 
 v1.0.1 (2020-12-16)
 
-# Developer
+## Developer
 
 Mr. Chaohui Li ([GitHub](https://github.com/Eric0627))
 
-# Designer
+## Designer
 
 Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 

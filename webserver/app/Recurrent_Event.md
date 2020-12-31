@@ -1,24 +1,25 @@
-##### Please try the demo files in the sidebar (`Demo File Sets`).
+# Recurrent Event
 
-# Introduction
+## Introduction
 
 In scSVAS platform, we also develop a readily available web interface "Recurrent Event''  for interactive and real-time visualization of CNV profiles across multiple samples for scDNA-seq data.
 
 "Recurrent Event'' enables users to create the recurrent event visualization just in following steps:
 
   + With group cnv profile file of multiple samples `*_hcluster_cnv.csv` as input, run `scSVAS recurrent.py` to get the recurrent event results `*_recurrent.json`.
-  + Open https://sc.deepomics.org/demo-project/analyses/recurrent\_event in Google browser, and upload the recurrent event results `*_recurrent.json`.
+  + Open https://sc.deepomics.org/demo-project/analyses/recurrent_event in Google browser, and upload the recurrent event results `*_recurrent.json`.
   + *Optional* Users can also upload the predefined gene list `target_anno.tsv` to only display the CNV shift of targeted gene.
 
 
 "Recurrent Event" displays the CNV stairsteps of all samples. The gene box shows the recurrent genes.  If the mouse hovers over the subclone in stairstep and gene box, an interactive tooltip carried its vital information will appear. 
 
-# Input File Format
+## Input & Demo File
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
+The uploaded file must match the *required* format, please check the general accepted [input file format](data/input_format). Several demo files descripted in [demo data](data/demo_data) are provided in the "Editor" sidebar. 
 
 
-# Interactions
+
+## Interactions
 
   + Download </br>
     An SVG file will be generated when you click the "Download'' button. We offer two themes, dark and light. To switch to the light theme, please click the "Light Theme'' button.
@@ -35,7 +36,7 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
     + Packed gene box, External link on gene, External link on MsigDB pathway </br>
       The interaction are descripted in "CNV Clonal Lineage'' application.
 
-# Editor Functionalities
+## Editor Functionalities
 The editor offers various options to fine-tune the visualization. Users can adjust the editor width and font size in "Editor Settings''.
 
   + Demo File Sets, Files </br>
@@ -55,17 +56,17 @@ The editor offers various options to fine-tune the visualization. Users can adju
     User can select which sample and subclone to display.
 
 
-# Version
+## Version
 
 v1.0.0 (2020-12-17)
 
-# Developer
+## Developer
 
 Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 
 Mr. Lirui Kang  ([GitHub](https://github.com/RKLho))
 
-# Designer
+## Designer
 
 Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 

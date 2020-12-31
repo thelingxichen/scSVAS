@@ -1,6 +1,6 @@
-##### Please try the demo files in the sidebar (`Demo File Sets`).
+# CNV View    
 
-# Introduction
+## Introduction
 
 Over the past two decades, CNV heatmap has often been adopted to visualize the CNV profiles of a batch of samples or single cells in various sequencing protocols. e.g. bulk SNP array, whole genome/exon sequencing, single cell RNA sequencing. For single cell DNA sequencing, CNV heatmap aids the landscape view of single cell copy number in several pieces of literature. In addition, Smith *et. al.* developed a visualization tool CellScape for single cell CNV heatmap.
 
@@ -19,12 +19,12 @@ Users can get a single cell CNV landscape view of scDNA-seq data. With single ce
 In addition, the aggregate subgroup CNV heat map and stairstep will also be listed in the bottom layers. The user can select the subgroups to be aggregated in the "Editor General Settings". If users offer the cut dendrogram file, a zoomable cut dendrogram will be displayed on the left.
 If the mouse hovers over cell CNV/meta heatmap, cutted dendrogram, and stairstep, an interactive tooltip carried its vital information will appear. 
 
-# Input File Format
+## Input & Demo File
 
-The uploaded **CSV** file must match the *required* format. Several demo files from **References** are provided in the sidebar. Please check the general accepted [input file format](https://github.com/paprikachan/scSVAS/blob/master/webserver/markdown/scSVAS_Input_Format.markdown).
+The uploaded file must match the *required* format, please check the general accepted [input file format](data/input_format). Several demo files descripted in [demo data](data/demo_data) are provided in the "Editor" sidebar. 
 
 
-# Interactions
+## Interactions
 
 
   + Download </br>
@@ -32,23 +32,23 @@ The uploaded **CSV** file must match the *required* format. Several demo files f
   + Tooltips and Highlights </br>
     When your cursor hovers over a component on the visualization panel, essential information about the component will show up in the tooltip, and related components will be highlighted. There are several major types of component in the "CNV View'' application and their tooltipping and highlighting interactions are as follows:
     - Unit Component on the Cell CNV Heatmap </br>
-          The tooltip will display the genome position and copy number of a unit. The name of the corresponding leaf node in the cutted dendrogram will also be shown. Further, the genome position, the leaf node, and the range of the leaf node will be highlighted.
+      The tooltip will display the genome position and copy number of a unit. The name of the corresponding leaf node in the cutted dendrogram will also be shown. Further, the genome position, the leaf node, and the range of the leaf node will be highlighted.
     - Unit Component on the Cell Meta Heatmap </br>
-          The tooltip will display the cell ID and meta label of a unit.
+      The tooltip will display the cell ID and meta label of a unit.
     - Cutted Dendrogram Node </br>
-          The tooltip will display the name of the current node, the number of cells in it, the parent node of it, and the distance between it and the root node. Further, the subtree and the covered cell range of the current node will be highlighted.
+      The tooltip will display the name of the current node, the number of cells in it, the parent node of it, and the distance between it and the root node. Further, the subtree and the covered cell range of the current node will be highlighted.
     - Cutted Dendrogram Branch </br>
-          The tooltip will display the names of the associated parent and child nodes and their branch distance. The branch, the parent node, and the child node ill be highlighted.
+      The tooltip will display the names of the associated parent and child nodes and their branch distance. The branch, the parent node, and the child node ill be highlighted.
     - Unit Component on the Aggregate Subgroup CNV Heatmap </br>
-          The tooltip will display the genome position, the copy number, and the subgroup name.
+      The tooltip will display the genome position, the copy number, and the subgroup name.
     - Component on the Aggregate Subgroup CNV Stairstep </br>
-          The tooltip will display the genome position and the average copy number of cells for all subgroups.
-    - Dendrogram Zooming </br>
-      When users click a node in the cutted dendrogram, the selected node will be regarded as the temporary tree root, and a new sub-cutted dendrogram will be rendered. The cell CNV heatmap and meta panel will also be updated to fit the current cell range. When you click the "Back to Root'' button, the whole CNV view will return to its initial status. You may also utilize the "left arrow'' and "right arrow'' buttons to un-do and re-do zooming operations.
+      The tooltip will display the genome position and the average copy number of cells for all subgroups.
+  + Dendrogram Zooming </br>
+    When users click a node in the cutted dendrogram, the selected node will be regarded as the temporary tree root, and a new sub-cutted dendrogram will be rendered. The cell CNV heatmap and meta panel will also be updated to fit the current cell range. When you click the "Back to Root'' button, the whole CNV view will return to its initial status. You may also utilize the "left arrow'' and "right arrow'' buttons to un-do and re-do zooming operations.
 
 
 
-# Editor Functionality
+## Editor Functionality
 
 The editor offers various options to fine-tune the visualization. Users can adjust the editor width and font size in "Editor Settings''.
 
@@ -163,17 +163,17 @@ Puram, S. V., Tirosh, I., Parikh, A. S., Patel, A. P., Yizhak, K., Gillespie, S.
 
 
 
-# Version
+## Version
 
 v1.0.0 (2020-12-16)
 
-# Developer
+## Developer
 
 Mr. Yuhao Qing ([GitHub](https://github.com/Q-Y-H))
 
 Mr. Ruikang Li ([GitHub](https://github.com/RKLho))
 
-# Designer
+## Designer
 
 Dr. Lingxi Chen ([GitHub](https://github.com/paprikachan))
 
