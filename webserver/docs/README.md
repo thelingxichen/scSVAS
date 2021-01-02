@@ -1,4 +1,4 @@
-# scSVASddd
+# scSVAS
 
 scSVAS is an online platform for single cell DNA visualization. It provides versatile utilities for managing, investigating, sharing, and publishing single-cell copy number variation profiles. All visualization are publicly hosted at [https://sc.deepomics.org](https://sc.deepomics.org). Offline auxiliary scripts are available at [https://github.com/paprikachan/scSVAS](https://github.com/paprikachan/scSVAS).
 

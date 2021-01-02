@@ -14,7 +14,7 @@ Then, you may get a cutted dendrogram of single cells. Users can switch the tree
 
 ## Input & Demo File
 
-The uploaded file must match the *required* format, please check the general accepted [input file format](data/input_format). Several demo files descripted in [demo data](data/demo_data) are provided in the "Editor" sidebar. 
+The uploaded file must match the *required* format, please check the general accepted [input file format](./data/input_format). Several demo files descripted in [demo data](./data/demo_data) are provided in the "Editor" sidebar. 
 
 
 ## Interactions
