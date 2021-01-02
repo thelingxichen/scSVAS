@@ -13,10 +13,7 @@ In scSVAS platform, we develop a readily available web interface "Space Prevalen
 "Space Prevalence" displays the clonal tree, lesion tree, and the space prevalence across subclones and lesions. If the mouse hovers over the node in lineage tree and sankey diagram, an interactive tooltip carried its vital information will appear. 
 
 ## Input & Demo File
-
-The uploaded file must match the *required* format, please check the general accepted [input file format](./data/input_format). Several demo files descripted in [demo data](./data/demo_data) are provided in the "Editor" sidebar. 
-
-
+The uploaded file must match the *required* format, please check the general accepted [input file format](./data/Input_Format.md). Several demo files descripted in [demo data](./data/Demo_Data.md) are provided in the "Editor" sidebar. 
 
 
 ## Interactions

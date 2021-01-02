@@ -20,8 +20,7 @@ If the mouse hovers over the density plot, an interactive tooltip carried its vi
 
 ## Input & Demo File
 
-The uploaded file must match the *required* format, please check the general accepted [input file format](./data/input_format). Several demo files descripted in [demo data](./data/demo_data) are provided in the "Editor" sidebar. 
-
+The uploaded file must match the *required* format, please check the general accepted [input file format](./data/Input_Format.md). Several demo files descripted in [demo data](./data/Demo_Data.md) are provided in the "Editor" sidebar. 
 
 
 ## Interactions
