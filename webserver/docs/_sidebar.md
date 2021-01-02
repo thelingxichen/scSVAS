@@ -1,4 +1,4 @@
-- <a href="https://sc.deepomics.org" class="to-oviz">Back to sc.deepomics.org</a>
+- <a href="https://sc.deepomics.org" class="to-oviz" style="color:rgba(66,185,131,1)">**Back to sc.deepomics.org**</a>
 - [scSVAS Documentation](/)
 ---
 - **Visualization Applications**
