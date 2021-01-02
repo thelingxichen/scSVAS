@@ -1,0 +1,19 @@
+- <a href="https://sc.deepomics.org" class="to-oviz">Back to sc.deepomics.org</a>
+- [scSVAS Documentation](/)
+---
+- **Visualization Applications**
+  - [CNV View](app/CNV_View.md)
+  - [CNV Heatmap](app/CNV_Heatmap.md)
+  - [Cell Phylogeny](app/Cell_Phylogeny.md)
+  - [Ploidy Stairstep](app/Ploidy_Stairstep.md)
+  - [Ploidy Distribution](app/Ploidy_Distribution.md)
+  - [Embedding Map](app/Embedding_Map.md)
+  - [Time Lineage](app/Time_lineage.md)        
+  - [Space Lineage](app/Space_Lineage.md)
+  - [Space Prevalence](app/Space_Prevalence.md)
+  - [Clonal Lineage](app/Clonal_Lineage.md)
+  - [Recurrent Event](app/Recurrent_Event.md)
+---
+- **Data Description**
+  - [Demo Data](data/Demo_data.md)
+  - [Input Format](data/input_format)
