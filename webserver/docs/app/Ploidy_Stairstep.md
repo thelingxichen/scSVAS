@@ -1,4 +1,7 @@
 # Ploidy Stairstep
+> For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_Data).
+
+> The uploaded input file must match the required format, please check the general accepted [input file format](https://docsc.deepomics.org/#/data/Input_Format). 
 
 ## Introduction
 As previously mentioned, for single-cell DNA cancer data, the ploidy distribution can intuitively show tumor heterogeneity. The ploidy line plot along the chromosomes can also visually show the heterogeneity between tumor subclones by combining genomic coordinates.
@@ -14,10 +17,6 @@ In scSVAS platform, we develop a readily available web interface "Ploidy Stairst
 Then, you may get a matrix of the ploidy stairstep plot of scDNA-seq data. The columns will list all categorical meta labels available in uploaded file `*_meta_scsvas.csv` by default. The first row displays the ploidy stairstep of pseudo-bulk profiles. The second line exhibits the ploidy stairstep of all subgroups for specific categorical meta labels in an aggregate form. Then, the following rows will list the ploidy stairstep of all available subsets individually.
 Users can decide to display or hide these meta labels and subsets in "Editor-Select categorical meta label''. 
 If the mouse hovers over the stairstep plot, an interactive tooltip carried its vital information will appear. 
-
-## Input & Demo File
-
-The uploaded file must match the *required* format, please check the general accepted [input file format](./data/Input_Format.md). Several demo files descripted in [demo data](./data/Demo_Data.md) are provided in the "Editor" sidebar. 
 
 ## Interactions
 

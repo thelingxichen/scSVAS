@@ -1,4 +1,7 @@
 # CNV Heatmap
+> For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_Data).
+
+> The uploaded input file must match the required format, please check the general accepted [input file format](https://docsc.deepomics.org/#/data/Input_Format). 
 
 ## Introduction
 
@@ -13,11 +16,6 @@ The web interface "CNV Heatmap'' is extension version of "CNV View'', by support
   
 
 Users can get a single cell CNV landscape view of scDNA-seq data. With single cells as rows and genomic regions as columns, the cell CNV heatmap exhibits the copy number of a specific single-cell across the entire genome. The cell meta heat map will be displayed on the left if users provide single-cell meta information. In addition, there is a genome zoom slider located at the bottom of CNV heatmap. Users can drag the slider to zoom in and out on the genome region. Users can also search for a local genome region in "Editor General Settings". If the local genome region is less than 5M, an annotation layer including "Repeat track'' and "Gene track'' will be displayed. If the mouse hovers over cell CNV/meta heatmap, repeats, and genes, an interactive tooltip carried its vital information will appear. 
-
-
-
-## Input & Demo File
-The uploaded file must match the *required* format, please check the general accepted [input file format](./data/Input_Format.md). Several demo files descripted in [demo data](./data/Demo_Data.md) are provided in the "Editor" sidebar. 
 
 
 ## Interactions

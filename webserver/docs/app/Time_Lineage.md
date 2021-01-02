@@ -1,5 +1,7 @@
 # Time Lineage
+> For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_Data).
 
+> The uploaded input file must match the required format, please check the general accepted [input file format](https://docsc.deepomics.org/#/data/Input_Format). 
 ## Introduction
 
 As previously mentioned, many studies have observed that intra-tumor heterogeneity (ITH) is one of the principal causes of cancer therapy-resistant, tumor recurrence, and deaths. Over the past decades, researchers are interested in studying the clonal dynamics from multiple timepoint. For example, the time lineage between subclones before and after therapeutic intervention. 
@@ -12,12 +14,6 @@ Herein, in scSVAS platform, we develop a readily available web interface "Time L
      
 
 "Time Lineage" is composed of fishplot, lineage tree, and cellular ensemble. As previously mentioned, the lineage tree exhibits the evolutionary relationship between tumor subclones. Users can choose different tree shapes from "topdown normal", "circular normal", and "circular acute". Fishplot conceptually manifests the proportion of tumor subclones at different tumorigenesis stages along time. We use the bezier curve to fit the trend of subclones over time. Two distinct head shapes ("bullet'' and "onion'') are offered. The cellular ensemble is an abstract aesthetic presenting the tumor's cellular prevalence at a certain point in time. If the mouse hovers over the subclone in fishplot, lineage tree, and cellular ensemble, an interactive tooltip carried its vital information will appear. 
-
-## Input & Demo File
-
-The uploaded file must match the *required* format, please check the general accepted [input file format](./data/Input_Format.md). Several demo files descripted in [demo data](./data/Demo_Data.md) are provided in the "Editor" sidebar. 
-
-
 
 
 ## Interactions

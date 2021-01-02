@@ -1,5 +1,9 @@
 # Embedding Map
 
+> For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_Data).
+
+> The uploaded input file must match the required format, please check the general accepted [input file format](https://docsc.deepomics.org/#/data/Input_Format). 
+
 ## Introduction
 High-dimensional data could be challenging to visualize. Reducing data into two dimensions is essential for representing the inherent structure of the data. Several supervised and unsupervised embedding methods have been proposed and widely applied to multiple disciplines in the past two decades. For example, linear dimension reduction tools like Principal Component Analysis (PCA), Independent Component Analysis (ICA), Non-negative Matrix Factorization (NMF) specify distinct rubrics to conduct linear projection of data. Furthermore, to tackle non-linear data structure, t-distributed Stochastic Neighbor Embedding (t-SNE), Uniform Manifold Approximation and Projection (UMAP), and Potential of Heat-diffusion for Affinity-based Trajectory Embedding (PHATE) are developed. We also build a Matrix Factorization based Deep neural network (DeepMF), which is compatible with both linear and non-linear embedding.
 
@@ -18,10 +22,6 @@ With the advance of sing-cell DNA sequencing techniques, the CNV data of tens of
    
 
 Then, you may get a matrix of 2D representations of scDNA-seq data. The column will list all embedding techniques available in uploaded file `*_meta_scsvas.csv` by default. Users can decide to display or hide these embedding methods in "Editor-General Settings''. The rows display different strategies to color the single cell data point. If the "hexagon mode'' is activated, the embedded cells colored with density will be displayed. If the optional file `*_gene_cnv.csv` is uploaded, the embedded cells colored with gene CNV profiles will be shown. Users can specify the gene for coloring in "Editor-General Settings''. Moreover, all categorical meta labels available in uploaded file `*_meta_scsvas.csv` will be used as color schemes by default. Users can decide to display or hide these meta labels in "Editor-Select categorical meta label''. If the mouse hovers over one scatter point or hexagon bin, an interactive tooltip carried its vital information will appear. 
-
-## Input & Demo File
-
-The uploaded file must match the *required* format, please check the general accepted [input file format](./data/Input_Format.md). Several demo files descripted in [demo data](./data/Demo_Data.md) are provided in the "Editor" sidebar. 
 
 
 

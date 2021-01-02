@@ -1,5 +1,9 @@
 # Clonal Lineage
 
+> For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_Data).
+
+> The uploaded input file must match the required format, please check the general accepted [input file format](https://docsc.deepomics.org/#/data/Input_Format). 
+
 ## Introduction
 
 Many studies have observed that intra-tumor heterogeneity (ITH) is one of the principal causes of cancer therapy-resistant, tumor recurrence, and deaths. An accurate understanding of the subclone structure and evolutionary history benefits precise treatments for individual patients. Over the past decades tools utilize SNV, CNV information, or combine these two phenotype markers to infer the phylogeny tree. There are tools customized for different sequencing protocols, including multi-region, single-cell.
@@ -19,10 +23,6 @@ To address this concern, in scSVAS platform, we develop a readily available web 
 + *Optional*  Users can also upload the predefined gene list `target_anno.tsv` to only display the CNV shift of targeted gene.
 
 "CNV: Clonal Lineage" is composed of lineage tree, group CNV heatmap, cellular ensemble, lineage tree branch, stairstep, and gene box. The lineage tree exhibits the evolutionary relationship between tumor subclones. Users can choose different tree shapes from "topdown normal", "circular normal",  "circular acute", and "fishplot". Fishplot conceptually manifests the proportion of tumor subclones at different tumorigenesis stages along time. We use the bezier curve to fit the trend of subclones over time. Two distinct head shapes ("bullet" and "onion") are offered. The cellular ensemble is an abstract aesthetic presenting the tumor's cellular prevalence at a certain point in time. The group CNV heatmap display the averaged copy number profiles of subclones. The lineage tree branch displays the number of gain and loss regions for each tree branch. The stairstep and gene box depicts the detailed CNV shift from the parent node to the child node. Users can click the lineage tree branch to check the different CNV shift. If the mouse hovers over lineage tree, group CNV heatmap, cellular ensemble, lineage tree branch, stairstep, and gene box, an interactive tooltip carried its vital information will appear. 
-
-## Input & Demo File
-
-The uploaded file must match the *required* format, please check the general accepted [input file format](./data/Input_Format.md). Several demo files descripted in [demo data](./data/Demo_Data.md) are provided in the "Editor" sidebar. 
 
 ## Interactions
 

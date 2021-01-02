@@ -1,5 +1,9 @@
 # Ploidy Distribution
 
+> For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_Data).
+
+> The uploaded input file must match the required format, please check the general accepted [input file format](https://docsc.deepomics.org/#/data/Input_Format). 
+
 ## Introduction
 
 Over the past decade, the single cell DNA CNV calling algorithms usually model the relationship between sequenced read count and copy number employing Poisson distribution with mappability, GC content, scale factor as confounding factor. 
@@ -17,10 +21,6 @@ Then, you may get a matrix of the ploidy density plot of scDNA-seq data. The col
 Users can decide to display or hide these meta labels and subsets in "Editor-Select categorical meta label''. 
 Users can choose to set the ploidy unit as cell mean ploidy or bin ploidy in "Editor-Mode''.
 If the mouse hovers over the density plot, an interactive tooltip carried its vital information will appear. 
-
-## Input & Demo File
-
-The uploaded file must match the *required* format, please check the general accepted [input file format](./data/Input_Format.md). Several demo files descripted in [demo data](./data/Demo_Data.md) are provided in the "Editor" sidebar. 
 
 
 ## Interactions

@@ -1,5 +1,9 @@
 # Cell Phylogeny
 
+> For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_Data).
+
+> The uploaded input file must match the required format, please check the general accepted [input file format](https://docsc.deepomics.org/#/data/Input_Format). 
+
 ## Introduction
 
 
@@ -11,10 +15,6 @@ In scSVAS platform, we build a readily available web interface "CNV Cell Phyloge
  + Open https://sc.deepomics.org/demo-project/analyses/cell_phylogeny in Google browser, and upload files `*_cut.json`, optional files `*_meta_scsvas.csv` and `*_gene_cnv.csv`.
 
 Then, you may get a cutted dendrogram of single cells. Users can switch the tree between "Topdown'' and "Circular'' modes. If the optional file `*_meta.csv` and `*_gene_cnv.csv` are uploaded, the cell meta and CNV heatmap will be shown. Users can decide to display or hide these meta labels in "Editor-Select categorical meta label''. If the mouse hovers over a dendrogram or heatmap, an interactive tooltip carried its vital information will appear.
-
-## Input & Demo File
-
-The uploaded file must match the *required* format, please check the general accepted [input file format](./data/Input_Format.md). Several demo files descripted in [demo data](./data/Demo_Data.md) are provided in the "Editor" sidebar. 
 
 ## Interactions
 

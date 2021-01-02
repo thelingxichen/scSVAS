@@ -8,7 +8,7 @@
   - [Ploidy Stairstep](app/Ploidy_Stairstep.md)
   - [Ploidy Distribution](app/Ploidy_Distribution.md)
   - [Embedding Map](app/Embedding_Map.md)
-  - [Time Lineage](app/Time_lineage.md)        
+  - [Time Lineage](app/Time_Lineage.md)        
   - [Space Lineage](app/Space_Lineage.md)
   - [Space Prevalence](app/Space_Prevalence.md)
   - [Clonal Lineage](app/Clonal_Lineage.md)
