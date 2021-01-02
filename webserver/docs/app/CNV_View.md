@@ -1,5 +1,10 @@
 # CNV View    
 
+!> For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_data.md).
+
+!> The uploaded input file must match the required format, please check the general accepted [input file format](https://docsc.deepomics.org/#/data/input_format). 
+
+
 ## Introduction
 
 Over the past two decades, CNV heatmap has often been adopted to visualize the CNV profiles of a batch of samples or single cells in various sequencing protocols. e.g. bulk SNP array, whole genome/exon sequencing, single cell RNA sequencing. For single cell DNA sequencing, CNV heatmap aids the landscape view of single cell copy number in several pieces of literature. In addition, Smith *et. al.* developed a visualization tool CellScape for single cell CNV heatmap.
@@ -18,11 +23,6 @@ In the scSVAS platform, cooperating scSVAS pipeline, we build web interface ''CN
 Users can get a single cell CNV landscape view of scDNA-seq data. With single cells as rows and genomic regions as columns, the cell CNV heatmap exhibits the copy number of a specific single cell across the entire genome. The cell meta heat map will be displayed on the left if users provide single cell meta information.
 In addition, the aggregate subgroup CNV heat map and stairstep will also be listed in the bottom layers. The user can select the subgroups to be aggregated in the "Editor General Settings". If users offer the cut dendrogram file, a zoomable cut dendrogram will be displayed on the left.
 If the mouse hovers over cell CNV/meta heatmap, cutted dendrogram, and stairstep, an interactive tooltip carried its vital information will appear. 
-
-## Input & Demo File
-
-The uploaded file must match the *required* format, please check the general accepted [input file format](./data/Input_Format.md). Several demo files descripted in [demo data](./data/Demo_Data.md) are provided in the "Editor" sidebar. 
-
 
 ## Interactions
 

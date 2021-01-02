@@ -15,5 +15,5 @@
   - [Recurrent Event](app/Recurrent_Event.md)
 ---
 - **Data Description**
-  - [Demo Data](data/Demo_data.md)
-  - [Input Format](data/input_format)
+  - [Demo Data](data/Demo_Data.md)
+  - [Input Format](data/Input_Format.md)
