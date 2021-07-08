@@ -95,6 +95,7 @@ def run_loupe(cnv_fn=None, group_meta_fn=None, region_meta_fn=None, out_prefix=N
     confidence = int(confidence)
     confidence = 5
     group_meta_df, cnv_df, group2cell = io.read_cnv_fn_from_loupe(cnv_fn, group_meta_fn, region_meta_fn, confidence)
+    print('---')
     # build tree by meta category label #####
     evo_trees = {}
     evo_dict = {}
@@ -114,8 +115,10 @@ def run_loupe(cnv_fn=None, group_meta_fn=None, region_meta_fn=None, out_prefix=N
     evo_trees[col] = t
 
     col_fn = out_prefix + '_{}_cnv.csv'.format(col)
+    print(cnv_df)
     cnv_df.to_csv(col_fn)
 
+    '''
     # annotate_shifts(t, cnv_df, target_gene_fn=target_gene_fn, ref=ref)
     evo_dict[col] = phylo.get_evo_tree_dict(t, group_meta_df[col], cnv_df.columns.tolist())
 
@@ -123,6 +126,7 @@ def run_loupe(cnv_fn=None, group_meta_fn=None, region_meta_fn=None, out_prefix=N
     json_fn = out_prefix + '_evo.json'
     with open(json_fn, 'w') as f:
         f.write(res)
+    '''
 
     '''
     # output evo bin shifts ########
@@ -157,6 +161,7 @@ def get_tree_link_tsv(label, t):
 
 
 def run(loupe=None, **args):
+    print('run')
     if loupe:
         run_loupe(**args)
 
