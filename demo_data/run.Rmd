@@ -1,0 +1,32 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+m <- read.csv('T10_cnv.csv')
+rownames(m) <- m$X
+m$X <- NULL
+m <- m - 2
+head(m)
+
+library(pheatmap)
+library(reshape2)
+
+df <- melt(m)
+
+library(ggpubr)
+
+
+df
+ggdotplot(head(df, 100000), 'variable', 'value', fill='gray') +
+  theme(axis.text.x = element_blank(),
+        axis.title = element_blank())
+
+```
+
+

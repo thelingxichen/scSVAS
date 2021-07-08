@@ -1,9 +1,0 @@
-pathway,KEGG_NON_SMALL_CELL_LUNG_CANCER,KEGG_SMALL_CELL_LUNG_CANCER,,,,,,,,,,,,,,,,
-TCGA_LUAD,TP53,KRAS,KEAP1,STK11,EGFR,NF1,BRAF,SETD2,RBM10,MGA,MET,ARID1A,PIK3CA,SMARCA4,RB1,CDKN2A,U2AF1,RIT1
-TCGA_LUSC,TP53,CDKN2A,PTEN,PIK3CA,KEAP1,MLL2,HLA-A,NFE2L2,NOTCH1,RB1,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,
