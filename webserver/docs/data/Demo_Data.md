@@ -5,16 +5,16 @@ The following table lists scSVAS applications' demo datasets.
 
 |scSVAS Applications | Demo Datasets| Description |
 |--|--|--|
-|CNV View | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxilary scripts. |
-|CNV Heatmap | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxilary scripts. |
-|Cell Phylogeny | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxilary scripts. |
-|Ploidy Stairstep | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxilary scripts. |
-|Ploidy Distribution | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxilary scripts. |
-|Embedding Map | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxilary scripts. |
+|CNV View | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxiliary scripts. |
+|CNV Heatmap | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxiliary scripts. |
+|Cell Phylogeny | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxiliary scripts. |
+|Ploidy Stairstep | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxiliary scripts. |
+|Ploidy Distribution | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxiliary scripts. |
+|Embedding Map | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxiliary scripts. |
 |Time Lineage | AML, HGSOC_P7 | AML: raw data from Ding *et al*. [3], input files obtained from Smith *et al*. [4] </br> HGSOC_P7: raw data from McPherson *et al*. [5], input files obtained from Smith *et al*. [4]|
 |Space Lineage | HGSOC_P1,P7, PC_A21 | HGSOC_P1, P7: raw data from McPherson *et al*. [5], input files obtained from Smith *et al*. [4] </br> PC_A21: raw data from Gundem *et al*. [6], input files obtained from Smith *et al*. [4]|
 |Space Prevalence | HGSOC_P1,P7, PC_A21 | HGSOC_P1, P7: raw data from McPherson *et al*. [5], input files obtained from Smith *et al*. [4] </br> PC_A21: raw data from Gundem *et al*. [6], input files obtained from Smith *et al*. [4]|
-|Clonal Lineage | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxilary scripts. |
+|Clonal Lineage | TNBC_T10,T16 | Raw data obtained from Navin *et al*. [1], processed by SCYN [2] and scSVAS auxiliary scripts. |
 |Recurrent Event | LC | The lung cancer data present in "Recurrent Event" is prepared in another manuscript. |
 
 Aberrations: Triple-negative breast cancer (TNBC); Acute myeloid leukaemia (AML); High grade serous ovarian cancer (HGSOC); Prostate cancer (PC); Lung cancer (LC). 

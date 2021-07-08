@@ -4,17 +4,18 @@
 # transfer bed file to matrix csv file
 
 Usage:
-    process_10x_h5.py call --h5_fn=IN_FILE [--out_prefix=STR] [--bins=INT] [--assembly=STR] [--raw=STR]
+    process_10x_h5.py call --h5_fn=IN_FILE --summary_fn=IN_FILE [--out_prefix=STR] [--bins=INT] [--assembly=STR] [--raw=STR]
     process_10x_h5.py -h | --help
 
 Options:
-    -h --help           Show this screen.
-    --version           Show version.
-    --h5_fn=IN_FILE     Path of h5 file.
-    --bins=INT          Number of bins to average.[default: 256]
-    --out_prefix=STR    Path of out file prefix. [default: ./10x]
-    --assembly=STR      The assembly version of the sequence included as part of the reference. [default: hg38]
-    --raw=STR           If "True", output the raw and normazlied read count matrices. [default: False]
+    -h --help               Show this screen.
+    --version               Show version.
+    --h5_fn=IN_FILE         Path of h5 file.
+    --summary_fn=IN_FILE    Path of h5 file.
+    --bins=INT              Number of bins to average. [default: 256]
+    --out_prefix=STR        Path of out file prefix. [default: ./10x]
+    --assembly=STR          The assembly version of the sequence included as part of the reference. [default: hg38]
+    --raw=STR               If "True", output the raw and normazlied read count matrices. [default: False]
 """
 import numpy as np
 import pandas as pd
@@ -71,9 +72,11 @@ def get_tree_newick(h5_data, cell_names):
     return newick
 
 
-def run_call(h5_fn=None, out_prefix=None, bins=None, assembly=None, raw=None,
+def run_call(h5_fn=None, summary_fn=None, out_prefix=None, bins=None, assembly=None, raw=None,
              **args):
     bins = int(bins)
+    summary_df = pd.read_csv(summary_fn).set_index('barcode')
+    non_noisy_cell_names = summary_df[summary_df.is_noisy == 0].index.tolist() 
 
     h5_data = h5py.File(h5_fn, 'r')
     bin_size = get_bin_size(h5_data)
@@ -91,6 +94,10 @@ def run_call(h5_fn=None, out_prefix=None, bins=None, assembly=None, raw=None,
 
     df = get_cnv_df(h5_data, 'cnvs', bins, bin_size, assembly, cell_names)
     out_fn = out_prefix + '_cnv.csv'
+    df.to_csv(out_fn, float_format='%.2f')
+
+    df = df[df.index.isin(non_noisy_cell_names)]
+    out_fn = out_prefix + '_non-noisy_cnv.csv'
     df.to_csv(out_fn, float_format='%.2f')
 
     if raw == 'True':

@@ -20,6 +20,7 @@ def read_cnv_fn_from_loupe(cnv_fn, group_meta_fn, region_meta_fn, confidence):
 
     cnv_df = pd.read_csv(cnv_fn)
     cnv_df = cnv_df.set_index('node_id').drop(columns=['num_cells', 'num_noisy'])
+
     cnv_df.index.name = 'group'
     cnv_df = cnv_df.loc[group_meta_df.index]
     cnv_df = pd.merge(group_meta_df, cnv_df, on='group').drop(columns='num_cells')
