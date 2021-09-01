@@ -1,7 +1,7 @@
 # Ploidy Stairstep
 > For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_Data).
 
-> The uploaded input file must match the required format, please check the general accepted [input file format](https://docsc.deepomics.org/#/data/Input_Format). 
+> The uploaded input file must match the required format, please check the general accepted [input file format](https://docsc.deepomics.org/#/data/Prepare_Input). 
 
 ## Introduction
 As previously mentioned, for single-cell DNA cancer data, the ploidy distribution can intuitively show tumor heterogeneity. The ploidy line plot along the chromosomes can also visually show the heterogeneity between tumor subclones by combining genomic coordinates.

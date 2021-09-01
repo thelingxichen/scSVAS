@@ -13,7 +13,7 @@ We present an online platform scSVAS (https://sc.deepomics.org) for aestheticall
 ## Input files 
 
 <img src="https://raw.githubusercontent.com/paprikachan/scSVAS/master/webserver/fig/Figure2.png" style="width:100%" class="center">*Figure2: the input files required for each scSVAS application*
-Figure 2 demonstrates the input files required for each scSVAS application. The demo files are available at “Editor” on each application page. The input format are specified in [here](./data/Input_Format.md). The auxiliary scripts are available at [`./scripts`](https://github.com/paprikachan/scSVAS/tree/master/script).
+Figure 2 demonstrates the input files required for each scSVAS application. The demo files are available at “Editor” on each application page. The input format are specified in [here](./data/Prepare_Input.md). The auxiliary scripts are available at [`./scripts`](https://github.com/paprikachan/scSVAS/tree/master/script).
 
 ## Browser compatibility
 

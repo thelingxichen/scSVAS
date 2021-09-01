@@ -14,6 +14,6 @@
   - [Clonal Lineage](app/Clonal_Lineage.md)
   - [Recurrent Event](app/Recurrent_Event.md)
 ---
-- **Data Description**
+- **Data Preparation**
   - [Demo Data](data/Demo_Data.md)
-  - [Input Format](data/Input_Format.md)
+  - [Prepare Input](data/Prepare_Input.md)
