@@ -1,4 +1,6 @@
 # CNV Heatmap
+`A single cell CNV heatmap with single cells as rows and genomic regions as columns, equied with zoomable cut-dendrogram, cell meta annotation, genome zooming, and local region research and annotation.`
+
 > For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_Data).
 
 > The uploaded input file must match the required format, please check the general accepted [input file format](https://docsc.deepomics.org/#/data/Prepare_Input). 
