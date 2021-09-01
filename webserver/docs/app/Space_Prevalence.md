@@ -1,4 +1,7 @@
 # Space Prevalence
+
+`A visualization of clonal prevalence between subclones and lesions.`
+
 > For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_Data).
 
 > The uploaded input file must match the required format, please check the general accepted [input file format](https://docsc.deepomics.org/#/data/Input_Format). 
