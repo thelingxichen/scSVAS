@@ -1,6 +1,6 @@
 # Embedding Map
 
-`2D-embedding (PCA, TSNE, UMAP, etc.) plot of single cells.`
+`2D-embedding (PCA, TSNE, UMAP, etc.) plot of single cells with gene CNV annotation.`
 
 > For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_Data).
 
