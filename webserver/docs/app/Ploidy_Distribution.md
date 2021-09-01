@@ -1,4 +1,5 @@
 # Ploidy Distribution
+`Subclone/cell mean/median CNV ploidy distrbution density plot.`
 
 > For quick view of visualization application, please try the demo files in the "Editor" sidebar `Demo File Sets`. Description of demo files is available in [demo data](https://docsc.deepomics.org/#/data/Demo_Data).
 
