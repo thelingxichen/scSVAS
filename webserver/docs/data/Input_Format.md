@@ -3,7 +3,10 @@
 
 ## Run scSVAS offline scripts for CNV related applications
 
-First, run `scSVAS.py` to get the 
+
+### Guide to run scSVAS.py
+
+To get the uploaded files for applications CNV View, CNV Heatmap, Cell Phylogeny, Ploidy Stairstep, Ploidy Distribution, and Clonal Lineage, run `scSVAS.py` with the following command: 
 ```
 python3 scSVAS.py cnv --cnv_fn=IN_FILE [--meta_fn=IN_FILE] [--nwk_fn=IN_FILE] [--target_gene_fn=IN_FILE] [--k=INT] [--out_prefix=STR] [--ref=STR]
     
@@ -17,7 +20,18 @@ Options:
     --k=INT                     Number of clusters in the tree at the cut point. [optional, default: 50]
     --out_prefix=STR            Path of out file prefix, [optional, default: ./phylo]
     --ref=STR                   Reference version, [optional, default: hg38]
+    
+Outputs:
+    scSVAS.nwk                  Stores the dendrogram tree build by hierarchy clustering.
+    meta_cssvas.csv             Stores the clustering and embedding results for all single cells.
+    cut.json                    Stores cut-dendrogram for all single cells.
+    evo.tsv                     Stores the detail of clonal lineages result in tsv format.
+    evo.json                    Stores the detail of clonal lineages result in json format.
+    hcluster_cnv.csv            Stores the averaging copy number profiles of hcluster groups.
+    gene_cnv.csv                Stores  the copy number profiles of detected driver gene.
 ```
+
+#### Input files for scSVAS.py
 
 ##### `cnv.csv` \<required\>
 
@@ -49,43 +63,33 @@ Prefix `c` here denotes numeric continuous value. The absence of prefix `c` deno
 
 ##### `target_gene_fn` [optional]
 
+`target_gene_fn` is a list of genes file the user interested in to present in the Cell Phylogeny.
 
+<img src="https://raw.githubusercontent.com/paprikachan/scSVAS/master/webserver/fig/demo_target_gene_txt.png" style="width:100%" class="center">*Screenshot of demo file demo_target_gene.txt*
 
+#### Output files for scSVAS.py
 
-### 10x cellranger-dna Output File
+##### `scSVAS.nwk`
 
-scSVAS needs one 10x cellranger-dna Output File.
+`scSVAS.nwk` stores the dendrogram tree build by hierarchy clustering in [newick format](https://en.wikipedia.org/wiki/Newick_format). In dendrogram, the leaf nodes are single cells.
 
-##### `cnv_data.h5`
+##### `cut.json`
 
-  `cnv_data.h5` can be obtained by running 10x cellranger-dna if you adopt 10x CNV Solution. 
-
-
-
-
-
-## scSVAS Output Files
-
-##### `*_scSVAS.nwk`
-
-`*_scSVAS.nwk` stores the dendrogram tree build by hierarchy clustering in newick format. In dendrogram, the leaf nodes are single cells.
-
-##### `*_cut.json`
-
-`*_cut.json` stores cutted dendrogram for all nodes.
+`cut.json` stores cut-dendrogram for all nodes.
 
 ```
    "node_name": {
       "dist_to_root": number,    
       "parent": string,  // parent node name
       "newick": string,  // cutted dendrogram in newick format
-      "cells": list of string  // list of cell names included in current node
+      "leafs": list of string  // list of cell names included in current node
    }
 ```
+<img src="https://raw.githubusercontent.com/paprikachan/scSVAS/master/webserver/fig/demo_cut_json.png" style="width:100%" class="center">*Screenshot of demo file T10_cut5.json*
 
-##### `*_meta_scsvas.csv`
+##### `meta_scsvas.csv`
 
-After running `scSVAS.py`, user can get `*_meta_scsvas.csv` with single cell as row, and following meta field as column:
+After running `scSVAS.py`, user can get `meta_scsvas.csv` with single cell as row, and following meta field as column:
 
  + `hcluster`: the hierachy clustering result.
  + `e_PC1`: the first principle component of cells after PCA.
@@ -97,10 +101,11 @@ After running `scSVAS.py`, user can get `*_meta_scsvas.csv` with single cell as 
 
 Prefix `c` denotes numeric continuous value. The absence of prefix `c` denotes category meta information like `group` or `cluster`. Prefix `e` refers to embedding/dimension reduction methods.
 
+<img src="https://raw.githubusercontent.com/paprikachan/scSVAS/master/webserver/fig/demo_meta_csv.png" style="width:100%" class="center">*Screenshot of demo file T10_meta_scsvas.csv*
 
-##### `*_evo.tsv`
+##### `evo.tsv`
 
-`*_evo.tsv` stores the detail of clonal lineages results. The file header are listed as follow:
+`evo.tsv` stores the detail of clonal lineages results. The file header are listed as follow:
 
  + `category_label`: categorical meta label, e.g. `hcluster`
  + `parent`: parent node name, e.g. `c1`
@@ -110,22 +115,30 @@ Prefix `c` denotes numeric continuous value. The absence of prefix `c` denotes c
  + `cytoband`: cytoband, e.g. `10p13`
  + `parent_cnv`: CN of parent node in specified region, e.g. `1.93` 
  + `child_cnv`: CN of child node in specified region, e.g. `3.42`
- + `shift`: xx, e.g. `1.48`
+ + `shift`: The CN changes between `parent_cnv` and `child_cnv`, e.g. `1.48`
  + `gene`: genes in specified region, only genes in `target_gene_fn` and gene set will be shown, 
    e.g. `PNISR,CCNC,MMS22L,ASCC3`
 
+<img src="https://raw.githubusercontent.com/paprikachan/scSVAS/master/webserver/fig/demo_evo_tsv.png" style="width:100%" class="center">*Screenshot of demo file T10_evo.tsv*
 
-##### `*_evo.json`
+##### `evo.json`
 
-`*_evo.json` stores the all information needed for "CNV Clonal Lineage'' application. It includes lineage tree structure and all information of `*_evo.tsv`.
+`evo.json` stores the all information needed for "Clonal Lineage'' application. It includes lineage tree structure and all information of `evo.tsv`.
+<img src="https://raw.githubusercontent.com/paprikachan/scSVAS/master/webserver/fig/demo_evo_json.png" style="width:100%" class="center">*Screenshot of demo file T10_evo.json*
 
-##### `*_hcluster_cnv.csv`
 
-`*_hcluster_cnv.csv` stores the averaging copy number profiles of hcluster groups, with hcluster group as row and bin region as column. The first column stores the hcluster group IDs, and the first row stores bin region, e.g. `chr1:1-512000`. The bin regions are the same with input file `*_cnv.csv`.
+##### `hcluster_cnv.csv`
 
-##### `*_gene_cnv.csv`
+`hcluster_cnv.csv` stores the averaging copy number profiles of hcluster groups, with hcluster group as row and bin region as column. The first column stores the hcluster group IDs, and the first row stores bin region, e.g. `chr1:1-512000`. The bin regions are the same with input file `cnv.csv`.
+<img src="https://raw.githubusercontent.com/paprikachan/scSVAS/master/webserver/fig/demo_hcluster_cnv_csv.png" style="width:100%" class="center">*Screenshot of demo file T10_hcluster_cnv.csv*
 
-`*_hcluster_cnv.csv` stores  the copy number profiles of detected driver gene, with single cell as row and driver gene as column. The first column stores the single cell IDs, and the first row stores driver gene names.
+
+##### `gene_cnv.csv`
+
+`gene_cnv.csv` stores  the copy number profiles of detected driver gene, with single cell as row and driver gene as column. The first column stores the single cell IDs, and the first row stores driver gene names.
+<img src="https://raw.githubusercontent.com/paprikachan/scSVAS/master/webserver/fig/demo_gene_cnv_csv.png" style="width:100%" class="center">*Screenshot of demo file T10_gene_cnv.csv*
+
+
 
 
 
@@ -220,4 +233,16 @@ chr2    140924620       145924620
 chr3    140924620       145924620
 ```
 
- 
+ ### 10x cellranger-dna Output File
+
+scSVAS needs one 10x cellranger-dna Output File.
+
+##### `cnv_data.h5`
+
+  `cnv_data.h5` can be obtained by running 10x cellranger-dna if you adopt 10x CNV Solution. 
+
+
+
+
+
+## scSVAS Output Files
